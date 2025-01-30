@@ -9,15 +9,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.presentation.bottom_bar.model.BottomBarItems
 
 @Composable
 fun BottomBar() {
-    var selectedItem by remember { mutableStateOf(BottomBarItems.HOME) }
+    var selectedItem by rememberSaveable { mutableStateOf(BottomBarItems.HOME) }
 
     NavigationBar {
         BottomBarItems.entries.forEach {
@@ -31,7 +33,12 @@ fun BottomBar() {
                             contentDescription = null
                         )
                     },
-                    label = { Text(it.text) },
+                    label = {
+                        Text(
+                            stringResource(it.textId),
+                            fontWeight = if (selectedItem == it) FontWeight.Medium else FontWeight.Normal
+                        )
+                    },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.background,
                         unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
