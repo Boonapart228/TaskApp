@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">TaskApp</string>
     <string name="home_title">Home</string>
+    <string name="categories_title">Categories</string>
     <string name="all_notes">All Notes</string>
     <string name="resent">Resent</string>
     <string name="home_bottom_bar_text">Home</string>
