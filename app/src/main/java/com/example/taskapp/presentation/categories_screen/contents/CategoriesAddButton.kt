@@ -26,13 +26,15 @@ import com.example.taskapp.ui.theme.AppTheme
 import com.example.taskapp.ui.theme.LocalDimen
 
 @Composable
-fun CategoriesAddButton() {
+fun CategoriesAddButton(
+    onToggleDialogClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = LocalDimen.current.cardHorizontalPadding)
             .padding(vertical = LocalDimen.current.cardVerticalPadding)
-            .clickable { },
+            .clickable { onToggleDialogClick() },
         elevation = CardDefaults.cardElevation(
             defaultElevation = LocalDimen.current.cardElevation
         ),
@@ -46,7 +48,7 @@ fun CategoriesAddButton() {
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { onToggleDialogClick() }) {
                 Icon(
                     imageVector = Icons.Default.AddCircle,
                     contentDescription = null,
@@ -70,6 +72,6 @@ fun CategoriesAddButtonPreview() {
         darkTheme = false,
         dynamicColor = false
     ) {
-        CategoriesAddButton()
+        CategoriesAddButton({})
     }
 }

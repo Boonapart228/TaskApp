@@ -9,5 +9,8 @@
     <string name="create_categories_text">Create Categories</string>
     <string name="categories_list_text">Categories List</string>
     <string name="sort_by_text">Sort by</string>
+    <string name="create_text">Create</string>
+    <string name="dismiss_text">Dismiss</string>
+    <string name="enter_category_name_text">Enter category name</string>
     <string name="empty_text" />
 </resources>
