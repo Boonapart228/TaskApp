@@ -48,8 +48,11 @@ fun CategoriesContent(
                 ),
 
                 ) {
-                items(state.listCategory) {
-                    CategoriesDetails(categoriesTitle = it, sizeNote = it.length)
+                items(state.taskManagerItems.toList(), key = { it }) { category ->
+                    CategoriesDetails(
+                        categoriesTitle = category.first,
+                        sizeNote = category.second.size
+                    )
                 }
             }
             if (state.showDialogCreateCategory) {
