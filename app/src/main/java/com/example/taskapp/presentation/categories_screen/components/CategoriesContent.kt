@@ -16,17 +16,22 @@ import com.example.taskapp.presentation.categories_screen.contents.CategoriesCre
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesDetails
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesListBar
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesTopBar
+import com.example.taskapp.presentation.categories_screen.contents.CategoriesUpdateDialog
 import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.ui.theme.LocalDimen
 
 @Composable
 fun CategoriesContent(
     state: CategoriesState,
-    onToggleDialogClick: () -> Unit,
+    onToggleDialogCreateClick: () -> Unit,
     onBottomBarNavigationClick: (Screens) -> Unit,
     onCategoryTitleChange: (String) -> Unit,
     createCategory: () -> Unit,
-    clearCategoryTitle: () -> Unit
+    clearCategoryTitle: () -> Unit,
+    onDeleteCategoryClick: (String) -> Unit,
+    onEditCategoryClick: (String) -> Unit,
+    onToggleDialogUpdateClick: () -> Unit,
+    updateCategory: () -> Unit
 ) {
     Scaffold(topBar = { CategoriesTopBar() },
         bottomBar = {
@@ -37,7 +42,7 @@ fun CategoriesContent(
         }) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             CategoriesAddButton(
-                onToggleDialogClick = onToggleDialogClick
+                onToggleDialogClick = onToggleDialogCreateClick
             )
             CategoriesListBar()
             LazyVerticalGrid(
@@ -51,17 +56,31 @@ fun CategoriesContent(
                 items(state.taskManagerItems.toList(), key = { it }) { category ->
                     CategoriesDetails(
                         categoriesTitle = category.first,
-                        sizeNote = category.second.size
+                        sizeNote = category.second.size,
+                        onDeleteCategory = { onDeleteCategoryClick(category.first) },
+                        onEditCategory = {
+                            onToggleDialogUpdateClick()
+                            onEditCategoryClick(category.first)
+                        }
                     )
                 }
             }
             if (state.showDialogCreateCategory) {
                 CategoriesCreationDialog(
-                    value = state.categoriesTitle,
+                    value = state.categoryTitle,
                     onValueChange = onCategoryTitleChange,
-                    onToggleDialogClick = onToggleDialogClick,
+                    onToggleDialogClick = onToggleDialogCreateClick,
                     createCategory = createCategory,
-                    clearCategoryTitle = clearCategoryTitle
+                    clearCategoryTitle = clearCategoryTitle,
+                )
+            }
+            if (state.showDialogUpdateCategory) {
+                CategoriesUpdateDialog(
+                    value = state.categoryTitle,
+                    onValueChange = onCategoryTitleChange,
+                    onToggleDialogClick = onToggleDialogUpdateClick,
+                    updateCategory = updateCategory,
+                    clearCategoryTitle = clearCategoryTitle,
                 )
             }
         }
@@ -75,9 +94,13 @@ fun CategoriesContent(
 fun CategoriesContentPreview() {
     CategoriesContent(
         state = CategoriesState(),
-        onToggleDialogClick = {},
+        onToggleDialogCreateClick = {},
         onCategoryTitleChange = {},
         onBottomBarNavigationClick = {},
         createCategory = {},
-        clearCategoryTitle = {})
+        clearCategoryTitle = {},
+        onDeleteCategoryClick = {},
+        onToggleDialogUpdateClick = {},
+        onEditCategoryClick = {},
+        updateCategory = {})
 }
