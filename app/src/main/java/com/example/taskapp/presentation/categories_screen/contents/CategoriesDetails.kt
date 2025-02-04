@@ -8,11 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +24,9 @@ import com.example.taskapp.ui.theme.LocalDimen
 @Composable
 fun CategoriesDetails(
     categoriesTitle: String,
-    sizeNote: Int
+    sizeNote: Int,
+    onDeleteCategory: () -> Unit,
+    onEditCategory: () -> Unit
 ) {
     Card(
         modifier = Modifier.padding(
@@ -37,9 +36,10 @@ fun CategoriesDetails(
         shape = RoundedCornerShape(LocalDimen.current.categoriesCardShape)
     ) {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Default.MoreVert, contentDescription = null)
-            }
+            CategoriesDropDawnMenu(
+                onDeleteCategory = onDeleteCategory,
+                onEditCategory = onEditCategory
+            )
             Column(
                 verticalArrangement = Arrangement.spacedBy(LocalDimen.current.categoriesColumnSpaceBy),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -76,6 +76,8 @@ fun CategoriesDetails(
 fun CategoriesDetailsPreview() {
     CategoriesDetails(
         categoriesTitle = "Category 01",
-        sizeNote = 2
+        sizeNote = 2,
+        onDeleteCategory = {},
+        onEditCategory = {}
     )
 }

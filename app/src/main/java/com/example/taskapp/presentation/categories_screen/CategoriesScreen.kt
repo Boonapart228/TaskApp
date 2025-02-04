@@ -28,9 +28,13 @@ fun CategoriesScreen(
     CategoriesContent(
         state = state,
         onBottomBarNavigationClick = viewModel::onBottomBarNavigationClick,
-        onToggleDialogClick = viewModel::onToggleDialogClick,
+        onToggleDialogCreateClick = viewModel::onToggleDialogCreateClick,
         onCategoryTitleChange = viewModel::onCategoryTitleChange,
         createCategory = viewModel::createCategory,
-        clearCategoryTitle = viewModel::clearCategoryTitle
+        clearCategoryTitle = viewModel::clearCategoryTitle,
+        onDeleteCategoryClick = viewModel::onDeleteCategoryClick,
+        onEditCategoryClick = viewModel::onEditCategoryClick,
+        onToggleDialogUpdateClick = viewModel::onToggleDialogUpdateClick,
+        updateCategory = viewModel::updateCategory
     )
 }

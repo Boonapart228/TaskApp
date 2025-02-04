@@ -28,30 +28,71 @@ class CategoriesViewModel @Inject constructor(
         getMap(taskManager.getAllTaskManager())
     }
 
-    private fun getMap(list: MutableMap<String, MutableList<Task>>) {
+    private fun getMap(map: MutableMap<String, MutableList<Task>>) {
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    taskManagerItems = list
+                    taskManagerItems = map
                 )
             }
         }
     }
 
-    fun onToggleDialogClick() {
+    fun onToggleDialogCreateClick() {
         viewModelScope.launch {
             _state.update {
-                it.copy(showDialogCreateCategory = !it.showDialogCreateCategory)
+                it.copy(
+                    showDialogCreateCategory = !it.showDialogCreateCategory,
+                )
             }
         }
     }
 
-    fun createCategory() {
-        taskManager.addCategories(_state.value.categoriesTitle)
+    fun onToggleDialogUpdateClick() {
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    categoriesTitle = ""
+                    showDialogUpdateCategory = !it.showDialogUpdateCategory,
+                )
+            }
+        }
+    }
+
+    fun onEditCategoryClick(category: String) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(categoryTitle = category, oldCategoryTitle = category)
+            }
+        }
+    }
+
+    fun updateCategory() {
+        viewModelScope.launch {
+            taskManager.updateCategory(
+                oldCategoryTitle = _state.value.oldCategoryTitle,
+                newCategoryTitle = _state.value.categoryTitle
+            )
+            _state.update {
+                it.copy(
+                    categoryTitle = "",
+                    oldCategoryTitle = ""
+                )
+            }
+        }
+    }
+
+    fun onDeleteCategoryClick(category: String) {
+        viewModelScope.launch {
+            taskManager.deleteCategory(category)
+        }
+    }
+
+    fun createCategory() {
+        taskManager.addCategory(_state.value.categoryTitle)
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    categoryTitle = ""
                 )
             }
         }
@@ -60,7 +101,7 @@ class CategoriesViewModel @Inject constructor(
     fun clearCategoryTitle() {
         viewModelScope.launch {
             _state.update {
-                it.copy(categoriesTitle = "")
+                it.copy(categoryTitle = "")
             }
         }
     }
@@ -68,7 +109,7 @@ class CategoriesViewModel @Inject constructor(
     fun onCategoryTitleChange(categoriesTitle: String) {
         viewModelScope.launch {
             _state.update {
-                it.copy(categoriesTitle = categoriesTitle)
+                it.copy(categoryTitle = categoriesTitle)
             }
         }
     }
