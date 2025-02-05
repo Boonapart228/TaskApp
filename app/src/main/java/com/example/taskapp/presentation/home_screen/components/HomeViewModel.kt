@@ -20,11 +20,11 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     private val _event = MutableSharedFlow<HomeNavigationEvent>()
     val event = _event.asSharedFlow()
 
-    fun onBottomBarNavigationClick(route: Screens) {
+    fun onNavigationClick(route: Screens) {
         when (route) {
             Screens.HOME_SCREEN -> {}
             Screens.CATEGORIES_SCREEN -> viewModelScope.launch { _event.emit(HomeNavigationEvent.NavigationToCategories) }
-
+            Screens.TASK_EDITOR_SCREEN -> viewModelScope.launch { _event.emit(HomeNavigationEvent.NavigationToTaskEditor) }
         }
     }
 }

@@ -27,19 +27,19 @@ import com.example.taskapp.ui.theme.LocalDimen
 
 @Composable
 fun HomeContent(
-    onBottomBarNavigationClick: (Screens) -> Unit,
+    onNavigationClick: (Screens) -> Unit,
     state: HomeState
 ) {
     Scaffold(topBar = { HomeTopBar() },
         bottomBar = {
             BottomBar(
-                onClick = onBottomBarNavigationClick,
+                onClick = onNavigationClick,
                 selectedNavigate = state.selectedScreen
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {},
+                onClick = { onNavigationClick(Screens.TASK_EDITOR_SCREEN) },
                 shape = CircleShape
             ) {
                 Icon(
