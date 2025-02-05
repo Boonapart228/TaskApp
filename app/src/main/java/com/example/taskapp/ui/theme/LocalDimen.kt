@@ -49,5 +49,15 @@ data class Dimensions(
     val iconMediumSize: Dp = 28.dp,
     val textCategoriesTitleMediumSize: TextUnit = 18.sp,
     val verticalGridHorizontalPadding: Dp = 4.dp,
-    val verticalGridVerticalPadding : Dp = 8.dp
+    val verticalGridVerticalPadding: Dp = 8.dp,
+    val homeIconFABSize: Dp = 32.dp,
+    val homeColumnPaddingTop: Dp = 24.dp,
+    val lazyVerticalGridHeight: Dp = 180.dp,
+    val homeSpacerPaddingTop: Dp = 12.dp,
+    val homeTextCategoryTitle: TextUnit = 20.sp,
+    val homeDetailsCardHorizontalPadding: Dp = 10.dp,
+    val homeDetailsCardVerticalPadding: Dp = 12.dp,
+    val homeDetailsHorizontalSpacedBy: Dp = 2.dp,
+    val homeDetailsIconSize: Dp = 10.dp,
+    val homeDetailsDataTextSize: TextUnit = 10.sp
 )
