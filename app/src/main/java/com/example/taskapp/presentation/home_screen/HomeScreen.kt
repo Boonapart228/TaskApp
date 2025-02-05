@@ -14,6 +14,7 @@ import com.example.taskapp.presentation.home_screen.components.HomeViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navigateToCategories: () -> Unit,
+    navigationToTaskEditor: () -> Unit,
     viewModel: HomeViewModel
 ) {
     val state by viewModel.state.collectAsState()
@@ -21,11 +22,12 @@ fun HomeScreen(
         viewModel.event.collect {
             when (it) {
                 HomeNavigationEvent.NavigationToCategories -> navigateToCategories()
+                HomeNavigationEvent.NavigationToTaskEditor -> navigationToTaskEditor()
             }
         }
     }
     HomeContent(
         state = state,
-        onBottomBarNavigationClick = viewModel::onBottomBarNavigationClick
+        onNavigationClick = viewModel::onNavigationClick
     )
 }

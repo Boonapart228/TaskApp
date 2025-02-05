@@ -12,6 +12,8 @@ import com.example.taskapp.presentation.categories_screen.components.CategoriesV
 import com.example.taskapp.presentation.home_screen.HomeScreen
 import com.example.taskapp.presentation.home_screen.components.HomeViewModel
 import com.example.taskapp.presentation.navigation.model.Screens
+import com.example.taskapp.presentation.task_editor_screen.TaskEditorScreen
+import com.example.taskapp.presentation.task_editor_screen.components.TaskEditorViewModel
 
 @Composable
 fun Navigation(modifier: Modifier = Modifier) {
@@ -21,12 +23,16 @@ fun Navigation(modifier: Modifier = Modifier) {
 
 @Composable
 private fun NavigationHost(navHostController: NavHostController) {
-    NavHost(navController = navHostController, startDestination = Screens.HOME_SCREEN.route) {
+    NavHost(
+        navController = navHostController,
+        startDestination = Screens.HOME_SCREEN.route
+    ) {
         composable(route = Screens.HOME_SCREEN.route) {
             val viewModel: HomeViewModel = hiltViewModel()
             HomeScreen(
                 viewModel = viewModel,
-                navigateToCategories = { navHostController.navigate(Screens.CATEGORIES_SCREEN.route) }
+                navigateToCategories = { navHostController.navigate(Screens.CATEGORIES_SCREEN.route) },
+                navigationToTaskEditor = { navHostController.navigate(Screens.TASK_EDITOR_SCREEN.route) }
             )
         }
         composable(route = Screens.CATEGORIES_SCREEN.route) {
@@ -35,6 +41,11 @@ private fun NavigationHost(navHostController: NavHostController) {
                 viewModel = viewModel,
                 navigateToHome = { navHostController.navigate(Screens.HOME_SCREEN.route) }
             )
+        }
+        composable(route = Screens.TASK_EDITOR_SCREEN.route) {
+            val viewModel: TaskEditorViewModel = hiltViewModel()
+            TaskEditorScreen(viewModel = viewModel,
+                navigationToHomeScreen = { navHostController.navigate(Screens.HOME_SCREEN.route) })
         }
     }
 }

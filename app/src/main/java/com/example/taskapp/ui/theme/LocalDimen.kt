@@ -59,5 +59,9 @@ data class Dimensions(
     val homeDetailsCardVerticalPadding: Dp = 12.dp,
     val homeDetailsHorizontalSpacedBy: Dp = 2.dp,
     val homeDetailsIconSize: Dp = 10.dp,
-    val homeDetailsDataTextSize: TextUnit = 10.sp
+    val homeDetailsDataTextSize: TextUnit = 10.sp,
+    val taskEditorColumnTopPadding: Dp = 20.dp,
+    val taskEditorTaskTitleSize: TextUnit = 22.sp,
+    val taskEditorTaskDescriptionSize: TextUnit = 18.sp,
+    val taskEditorTextFieldPaddingAll: Dp = 10.dp
 )
