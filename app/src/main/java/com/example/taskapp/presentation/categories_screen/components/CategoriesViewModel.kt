@@ -2,22 +2,25 @@ package com.example.taskapp.presentation.categories_screen.components
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.taskapp.domain.TaskManager
-import com.example.taskapp.domain.model.Task
+import com.example.taskapp.domain.CategoryRepository
+import com.example.taskapp.domain.model.Category
 import com.example.taskapp.presentation.navigation.model.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
-    private val taskManager: TaskManager
+    private val categoryRepository: CategoryRepository
 ) : ViewModel() {
+
     private val _state = MutableStateFlow(CategoriesState())
     val state = _state.asStateFlow()
 
@@ -25,15 +28,9 @@ class CategoriesViewModel @Inject constructor(
     val event = _event.asSharedFlow()
 
     init {
-        getMap(taskManager.getAllTaskManager())
-    }
-
-    private fun getMap(map: MutableMap<String, MutableList<Task>>) {
-        viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    taskManagerItems = map
-                )
+        viewModelScope.launch(Dispatchers.IO) {
+            categoryRepository.getAllCategories().collect { categories ->
+                _state.update { it.copy(categories = categories) }
             }
         }
     }
@@ -58,38 +55,43 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    fun onEditCategoryClick(category: String) {
+    fun onEditCategoryClick(category: Category) {
         viewModelScope.launch {
             _state.update {
-                it.copy(categoryTitle = category, oldCategoryTitle = category)
+                it.copy(categoryTitle = category.title, currentCategory = category)
             }
         }
     }
 
     fun updateCategory() {
         viewModelScope.launch {
-            taskManager.updateCategory(
-                oldCategoryTitle = _state.value.oldCategoryTitle,
-                newCategoryTitle = _state.value.categoryTitle
-            )
+            val category = _state.value.currentCategory?.copy(title = _state.value.categoryTitle)
+            if (category != null) {
+                withContext(Dispatchers.IO) {
+                    categoryRepository.updateCategory(category)
+                }
+            }
             _state.update {
                 it.copy(
-                    categoryTitle = "",
-                    oldCategoryTitle = ""
+                    categoryTitle = ""
                 )
             }
         }
     }
 
-    fun onDeleteCategoryClick(category: String) {
-        viewModelScope.launch {
-            taskManager.deleteCategory(category)
+    fun onDeleteCategoryClick(category: Category) {
+        viewModelScope.launch(Dispatchers.IO) {
+            categoryRepository.deleteCategory(category)
         }
+
     }
 
     fun createCategory() {
-        taskManager.addCategory(_state.value.categoryTitle)
+        val category = Category(title = _state.value.categoryTitle, id = 0L)
         viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                categoryRepository.createCategory(category)
+            }
             _state.update {
                 it.copy(
                     categoryTitle = ""

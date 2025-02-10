@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.taskapp.domain.model.Category
 import com.example.taskapp.presentation.bottom_bar.BottomBar
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesAddButton
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesCreationDialog
@@ -28,8 +29,8 @@ fun CategoriesContent(
     onCategoryTitleChange: (String) -> Unit,
     createCategory: () -> Unit,
     clearCategoryTitle: () -> Unit,
-    onDeleteCategoryClick: (String) -> Unit,
-    onEditCategoryClick: (String) -> Unit,
+    onDeleteCategoryClick: (Category) -> Unit,
+    onEditCategoryClick: (Category) -> Unit,
     onToggleDialogUpdateClick: () -> Unit,
     updateCategory: () -> Unit
 ) {
@@ -53,14 +54,14 @@ fun CategoriesContent(
                 ),
 
                 ) {
-                items(state.taskManagerItems.toList(), key = { it }) { category ->
+                items(state.categories) { category ->
                     CategoriesDetails(
-                        categoriesTitle = category.first,
-                        sizeNote = category.second.size,
-                        onDeleteCategory = { onDeleteCategoryClick(category.first) },
+                        categoriesTitle = category.title,
+                        sizeNote = category.id.toInt(),
+                        onDeleteCategory = { onDeleteCategoryClick(category) },
                         onEditCategory = {
                             onToggleDialogUpdateClick()
-                            onEditCategoryClick(category.first)
+                            onEditCategoryClick(category)
                         }
                     )
                 }
