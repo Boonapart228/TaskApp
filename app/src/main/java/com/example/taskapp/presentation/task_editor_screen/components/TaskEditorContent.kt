@@ -33,7 +33,8 @@ fun TaskEditorContent(
     state: TaskEditorState,
     onSetTaskTitle: (String) -> Unit,
     onSetTaskDescription: (String) -> Unit,
-    onHomeScreenNavigationClick: (Screens) -> Unit
+    onHomeScreenNavigationClick: (Screens) -> Unit,
+    onCreateTaskClick: () -> Unit
 ) {
     Scaffold(topBar = {
         TaskEditorTopBar(
@@ -42,7 +43,7 @@ fun TaskEditorContent(
     },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {},
+                onClick = onCreateTaskClick,
                 shape = CircleShape
             ) {
                 Icon(
@@ -94,7 +95,8 @@ fun TaskEditorContentPreview() {
         state = TaskEditorState(),
         onHomeScreenNavigationClick = {},
         onSetTaskDescription = {},
-        onSetTaskTitle = {}
+        onSetTaskTitle = {},
+        onCreateTaskClick = {}
     )
 }
 

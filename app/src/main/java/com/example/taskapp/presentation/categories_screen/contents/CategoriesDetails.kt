@@ -1,5 +1,6 @@
 package com.example.taskapp.presentation.categories_screen.contents
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,13 +27,16 @@ fun CategoriesDetails(
     categoriesTitle: String,
     sizeNote: Int,
     onDeleteCategory: () -> Unit,
-    onEditCategory: () -> Unit
+    onEditCategory: () -> Unit,
+    onCategorySelectClick: () -> Unit
 ) {
     Card(
-        modifier = Modifier.padding(
-            horizontal = LocalDimen.current.categoriesCardHorizontalPadding,
-            vertical = LocalDimen.current.categoriesCardVerticalPadding
-        ),
+        modifier = Modifier
+            .padding(
+                horizontal = LocalDimen.current.categoriesCardHorizontalPadding,
+                vertical = LocalDimen.current.categoriesCardVerticalPadding
+            )
+            .clickable { onCategorySelectClick() },
         shape = RoundedCornerShape(LocalDimen.current.categoriesCardShape)
     ) {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
@@ -78,6 +82,7 @@ fun CategoriesDetailsPreview() {
         categoriesTitle = "Category 01",
         sizeNote = 2,
         onDeleteCategory = {},
-        onEditCategory = {}
+        onEditCategory = {},
+        onCategorySelectClick = {}
     )
 }

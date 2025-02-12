@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -20,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.R
 import com.example.taskapp.presentation.bottom_bar.BottomBar
 import com.example.taskapp.presentation.home_screen.contents.HomeListBar
+import com.example.taskapp.presentation.home_screen.contents.HomeTaskDetails
 import com.example.taskapp.presentation.home_screen.contents.HomeTopBar
 import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.ui.theme.LocalDimen
@@ -27,8 +29,10 @@ import com.example.taskapp.ui.theme.LocalDimen
 
 @Composable
 fun HomeContent(
+    state: HomeState,
     onNavigationClick: (Screens) -> Unit,
-    state: HomeState
+    formatTime: (Long) -> String,
+    formatDate: (Long) -> String
 ) {
     Scaffold(topBar = { HomeTopBar() },
         bottomBar = {
@@ -67,6 +71,13 @@ fun HomeContent(
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding)
             ) {
+                items(state.tasks) {
+                    HomeTaskDetails(
+                        title = it.title, description = it.description,
+                        formatTime = { formatTime(it.createdAt) },
+                        formatDate = { formatDate(it.createdAt) }
+                    )
+                }
             }
 
         }
@@ -77,5 +88,8 @@ fun HomeContent(
 @Composable
 @Preview
 fun HomeContentPreview() {
-    HomeContent({}, HomeState())
+    HomeContent(state = HomeState(),
+        onNavigationClick = {},
+        formatTime = { "" },
+        formatDate = { "" })
 }

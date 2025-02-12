@@ -2,6 +2,7 @@ package com.example.taskapp.presentation.categories_screen.components
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.CategoryRepository
 import com.example.taskapp.domain.model.Category
 import com.example.taskapp.presentation.navigation.model.Screens
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
+    private val categoryIdStorage: CategoryIdStorage
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CategoriesState())
@@ -108,6 +110,13 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
+    fun onCategorySelectClick(id: Long) {
+        viewModelScope.launch {
+            categoryIdStorage.setId(id)
+            onNavigationClick(Screens.HOME_SCREEN)
+        }
+    }
+
     fun onCategoryTitleChange(categoriesTitle: String) {
         viewModelScope.launch {
             _state.update {
@@ -116,7 +125,7 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    fun onBottomBarNavigationClick(route: Screens) {
+    fun onNavigationClick(route: Screens) {
         when (route) {
             Screens.HOME_SCREEN -> viewModelScope.launch { _event.emit(CategoriesNavigationEvent.NavigationToHome) }
             Screens.CATEGORIES_SCREEN -> {}

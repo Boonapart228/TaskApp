@@ -28,6 +28,7 @@ fun TaskEditorScreen(
         state = state,
         onSetTaskTitle = viewModel::onSetTaskTitle,
         onSetTaskDescription = viewModel::onSetTaskDescription,
-        onHomeScreenNavigationClick = viewModel::onHomeScreenNavigationClick
+        onHomeScreenNavigationClick = viewModel::onHomeScreenNavigationClick,
+        onCreateTaskClick = viewModel::onCreateTaskClick
     )
 }

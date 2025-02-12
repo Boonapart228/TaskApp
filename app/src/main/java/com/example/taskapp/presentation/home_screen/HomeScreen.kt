@@ -28,6 +28,8 @@ fun HomeScreen(
     }
     HomeContent(
         state = state,
-        onNavigationClick = viewModel::onNavigationClick
+        onNavigationClick = viewModel::onNavigationClick,
+        formatDate = viewModel::formatDate,
+        formatTime = viewModel::formatTime
     )
 }

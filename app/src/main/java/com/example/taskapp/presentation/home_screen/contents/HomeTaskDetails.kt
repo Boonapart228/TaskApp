@@ -28,7 +28,9 @@ import com.example.taskapp.ui.theme.LocalDimen
 fun HomeTaskDetails(
     title: String,
     description: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    formatDate: () -> String,
+    formatTime: () -> String
 ) {
     Card(
         modifier = Modifier.padding(
@@ -74,7 +76,7 @@ fun HomeTaskDetails(
                         Modifier.size(LocalDimen.current.homeDetailsIconSize)
                     )
                     Text(
-                        text = "09:22", textAlign = TextAlign.Center,
+                        text = formatTime(), textAlign = TextAlign.Center,
                         fontSize = LocalDimen.current.homeDetailsDataTextSize
                     )
                     Text(text = "|", textAlign = TextAlign.Center)
@@ -82,7 +84,11 @@ fun HomeTaskDetails(
                         imageVector = Icons.Default.DateRange, contentDescription = null,
                         Modifier.size(LocalDimen.current.homeDetailsIconSize)
                     )
-                    Text(text = "2023/07/01", textAlign = TextAlign.Center, fontSize = LocalDimen.current.homeDetailsDataTextSize)
+                    Text(
+                        text = formatDate(),
+                        textAlign = TextAlign.Center,
+                        fontSize = LocalDimen.current.homeDetailsDataTextSize
+                    )
                 }
             }
 
@@ -95,6 +101,8 @@ fun HomeTaskDetails(
 fun HomeTaskDetailsPreview() {
     HomeTaskDetails(
         "Title",
-        "You said you'll be with me forever\\nWith you personally, I am absolutely sincere."
+        "You said you'll be with me forever\\nWith you personally, I am absolutely sincere.",
+        formatDate = { "" },
+        formatTime = { "" }
     )
 }
