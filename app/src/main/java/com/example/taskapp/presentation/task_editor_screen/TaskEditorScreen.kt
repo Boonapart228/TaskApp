@@ -29,6 +29,8 @@ fun TaskEditorScreen(
         onSetTaskTitle = viewModel::onSetTaskTitle,
         onSetTaskDescription = viewModel::onSetTaskDescription,
         onHomeScreenNavigationClick = viewModel::onHomeScreenNavigationClick,
-        onCreateTaskClick = viewModel::onCreateTaskClick
+        onCreateTaskClick = viewModel::onCreateTaskClick,
+        onToggleDropDawnMenuClick = viewModel::onToggleDropDawnMenuClick,
+        onTogglePinTaskClick = viewModel::onTogglePinTaskClick
     )
 }

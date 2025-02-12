@@ -60,6 +60,24 @@ class TaskEditorViewModel @Inject constructor(
         }
     }
 
+    fun onTogglePinTaskClick() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(pin = !it.pin)
+            }
+        }
+    }
+
+    fun onToggleDropDawnMenuClick() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    expanded = !it.expanded
+                )
+            }
+        }
+    }
+
     fun onCreateTaskClick() {
         viewModelScope.launch {
             val currentCategoryId = categoryIdStorage.getId()
@@ -69,7 +87,7 @@ class TaskEditorViewModel @Inject constructor(
                     id = 0L,
                     title = _state.value.title,
                     description = _state.value.description,
-                    isActive = false,
+                    isActive = _state.value.pin,
                     categoryId = currentCategoryId,
                     createdAt = currentTimeMillis
                 )
