@@ -2,10 +2,12 @@ package com.example.taskapp.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.taskapp.data.implementation.AppSettingsImpl
 import com.example.taskapp.data.implementation.CategoryIdStorageImpl
 import com.example.taskapp.data.implementation.CategoryRepositoryImpl
 import com.example.taskapp.data.implementation.DateTimeFormatterImpl
 import com.example.taskapp.data.implementation.TaskRepositoryImpl
+import com.example.taskapp.domain.AppSettings
 import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.CategoryRepository
 import com.example.taskapp.domain.DateTimeFormatter
@@ -63,5 +65,11 @@ class DataModule {
     @Provides
     fun provideDateTimeFormatter(): DateTimeFormatter {
         return DateTimeFormatterImpl()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppSettings(@ApplicationContext applicationContext: Context): AppSettings {
+        return AppSettingsImpl(applicationContext)
     }
 }

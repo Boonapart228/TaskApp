@@ -30,6 +30,7 @@ fun HomeScreen(
         state = state,
         onNavigationClick = viewModel::onNavigationClick,
         formatDate = viewModel::formatDate,
-        formatTime = viewModel::formatTime
+        formatTime = viewModel::formatTime,
+        onChangeGridColumnsClick = viewModel::onChangeGridColumnsClick
     )
 }
