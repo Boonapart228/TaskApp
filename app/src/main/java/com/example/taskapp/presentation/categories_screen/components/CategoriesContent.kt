@@ -32,7 +32,8 @@ fun CategoriesContent(
     onDeleteCategoryClick: (Category) -> Unit,
     onEditCategoryClick: (Category) -> Unit,
     onToggleDialogUpdateClick: () -> Unit,
-    updateCategory: () -> Unit
+    updateCategory: () -> Unit,
+    onCategorySelectClick: (Long) -> Unit
 ) {
     Scaffold(topBar = { CategoriesTopBar() },
         bottomBar = {
@@ -62,7 +63,8 @@ fun CategoriesContent(
                         onEditCategory = {
                             onToggleDialogUpdateClick()
                             onEditCategoryClick(category)
-                        }
+                        },
+                        onCategorySelectClick = { onCategorySelectClick(category.id) }
                     )
                 }
             }
@@ -103,5 +105,6 @@ fun CategoriesContentPreview() {
         onDeleteCategoryClick = {},
         onToggleDialogUpdateClick = {},
         onEditCategoryClick = {},
-        updateCategory = {})
+        updateCategory = {},
+        onCategorySelectClick = {})
 }

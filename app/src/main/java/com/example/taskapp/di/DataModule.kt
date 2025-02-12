@@ -2,9 +2,13 @@ package com.example.taskapp.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.taskapp.data.implementation.CategoryIdStorageImpl
 import com.example.taskapp.data.implementation.CategoryRepositoryImpl
+import com.example.taskapp.data.implementation.DateTimeFormatterImpl
 import com.example.taskapp.data.implementation.TaskRepositoryImpl
+import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.CategoryRepository
+import com.example.taskapp.domain.DateTimeFormatter
 import com.example.taskapp.domain.TaskRepository
 import com.example.taskapp.domain.model.database.AppDataBase
 import com.example.taskapp.domain.model.database.dao.CategoryDao
@@ -48,5 +52,16 @@ class DataModule {
     @Provides
     fun provideTaskRepository(taskDao: TaskDao): TaskRepository {
         return TaskRepositoryImpl(taskDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCategoryIdStorage(): CategoryIdStorage {
+        return CategoryIdStorageImpl()
+    }
+
+    @Provides
+    fun provideDateTimeFormatter(): DateTimeFormatter {
+        return DateTimeFormatterImpl()
     }
 }
