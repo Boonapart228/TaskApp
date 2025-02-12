@@ -63,7 +63,15 @@ fun HomeContent(
                 contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding),
                 modifier = Modifier.height(LocalDimen.current.lazyVerticalGridHeight)
             ) {
-
+                items(state.tasks.filter { it.isActive }) {
+                    HomeTaskDetails(
+                        title = it.title,
+                        description = it.description,
+                        pinned = it.isActive,
+                        formatTime = { formatTime(it.createdAt) },
+                        formatDate = { formatDate(it.createdAt) }
+                    )
+                }
             }
             Spacer(modifier = Modifier.padding(top = LocalDimen.current.homeSpacerPaddingTop))
             HomeListBar(textId = R.string.list_notes_text)
@@ -71,9 +79,11 @@ fun HomeContent(
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding)
             ) {
-                items(state.tasks) {
+                items(state.tasks.filter { !it.isActive }) {
                     HomeTaskDetails(
-                        title = it.title, description = it.description,
+                        title = it.title,
+                        description = it.description,
+                        pinned = it.isActive,
                         formatTime = { formatTime(it.createdAt) },
                         formatDate = { formatDate(it.createdAt) }
                     )
