@@ -18,6 +18,10 @@
     <string name="list_notes_text">List Notes</string>
     <string name="pinned_notes_text">Pinned</string>
     <string name="task_editor_title">Task Editor</string>
-    <string name="enter_title_text">Enter title</string>
+    <string name="enter_title_text">Title…</string>
+    <string name="enter_description_text">Description…</string>
+    <string name="color_text">Color</string>
+    <string name="pin_text">Pin</string>
+    <string name="unpin_text">Unpin</string>
     <string name="empty_text" />
 </resources>

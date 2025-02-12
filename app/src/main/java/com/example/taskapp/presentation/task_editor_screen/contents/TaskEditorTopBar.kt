@@ -10,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,7 +19,12 @@ import com.example.taskapp.presentation.navigation.model.Screens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskEditorTopBar(
-    onHomeScreenNavigationClick: (Screens) -> Unit
+    expanded: Boolean,
+    pin: Boolean,
+    onHomeScreenNavigationClick: (Screens) -> Unit,
+    onToggleDropDawnMenuClick: () -> Unit,
+    onTogglePinTaskClick: () -> Unit,
+    onDeleteTaskClick: () -> Unit
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -42,19 +46,18 @@ fun TaskEditorTopBar(
             }
         },
         actions = {
-            IconButton(onClick = { }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.palette_ui),
-                    contentDescription = null
-                )
+            TaskEditorDropDawnMenu(
+                expanded = expanded,
+                pin = pin,
+                onToggleDropDawnMenuClick = onToggleDropDawnMenuClick,
+                onTogglePinTaskClick = onTogglePinTaskClick,
+                onDeleteTaskClick = onDeleteTaskClick
+            ) {
+
             }
-            IconButton(onClick = { }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.trash_ui),
-                    contentDescription = null
-                )
-            }
-        })
+        }
+
+    )
 }
 
 
@@ -62,6 +65,11 @@ fun TaskEditorTopBar(
 @Preview
 fun TaskEditorTopBarPreview() {
     TaskEditorTopBar(
-        onHomeScreenNavigationClick = {}
+        onHomeScreenNavigationClick = {},
+        expanded = false,
+        pin = false,
+        onToggleDropDawnMenuClick = { /*TODO*/ },
+        onTogglePinTaskClick = { /*TODO*/ },
+        onDeleteTaskClick = { /*TODO*/ }
     )
 }
