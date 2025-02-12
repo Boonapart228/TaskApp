@@ -11,5 +11,7 @@ data class Property(
     val eightyPercent: Float = 8f,
     val rotation270: Float = 270f,
     val rotation90: Float = 90f,
-    val ninetyPercent: Float = 9f
+    val ninetyPercent: Float = 9f,
+    val offSetByX: Int = -10,
+    val offSetByY: Int = 10,
 )
