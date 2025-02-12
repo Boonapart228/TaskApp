@@ -37,7 +37,9 @@ import com.example.taskapp.ui.theme.LocalDimen
 import com.example.taskapp.ui.theme.LocalProperty
 
 @Composable
-fun HomeTopBar() {
+fun HomeTopBar(
+    onChangeGridColumnsClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.primaryContainer)
@@ -90,11 +92,11 @@ fun HomeTopBar() {
         ) {
             SegmentedControl()
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = onChangeGridColumnsClick,
                 modifier = Modifier.offset(x = LocalDimen.current.iconButtonTopBarOffsetByX)
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.baseline_grid_view_24),
+                    painter = painterResource(id = R.drawable.grid_ui),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.background
                 )
@@ -140,6 +142,8 @@ fun SegmentedControl() {
 @Preview(showBackground = true)
 fun HomeTopBarPreview() {
     AppTheme(dynamicColor = false) {
-        HomeTopBar()
+        HomeTopBar(
+            onChangeGridColumnsClick = {}
+        )
     }
 }

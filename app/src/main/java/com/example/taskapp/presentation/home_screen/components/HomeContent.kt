@@ -31,10 +31,15 @@ import com.example.taskapp.ui.theme.LocalDimen
 fun HomeContent(
     state: HomeState,
     onNavigationClick: (Screens) -> Unit,
+    onChangeGridColumnsClick: () -> Unit,
     formatTime: (Long) -> String,
     formatDate: (Long) -> String
 ) {
-    Scaffold(topBar = { HomeTopBar() },
+    Scaffold(topBar = {
+        HomeTopBar(
+            onChangeGridColumnsClick = onChangeGridColumnsClick
+        )
+    },
         bottomBar = {
             BottomBar(
                 onClick = onNavigationClick,
@@ -59,7 +64,7 @@ fun HomeContent(
         ) {
             HomeListBar(textId = R.string.pinned_notes_text)
             LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
+                columns = GridCells.Fixed(state.gridColumns),
                 contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding),
                 modifier = Modifier.height(LocalDimen.current.lazyVerticalGridHeight)
             ) {
@@ -76,7 +81,7 @@ fun HomeContent(
             Spacer(modifier = Modifier.padding(top = LocalDimen.current.homeSpacerPaddingTop))
             HomeListBar(textId = R.string.list_notes_text)
             LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
+                columns = GridCells.Fixed(state.gridColumns),
                 contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding)
             ) {
                 items(state.tasks.filter { !it.isActive }) {
@@ -101,5 +106,6 @@ fun HomeContentPreview() {
     HomeContent(state = HomeState(),
         onNavigationClick = {},
         formatTime = { "" },
-        formatDate = { "" })
+        formatDate = { "" },
+        onChangeGridColumnsClick = {})
 }
