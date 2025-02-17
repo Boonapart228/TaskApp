@@ -8,15 +8,18 @@ import com.example.taskapp.domain.model.Category
 data class CategoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val title: String = ""
+    val title: String = "",
+    val hexColorCode: String = ""
 )
 
 fun CategoryEntity.toCategory() = Category(
     id = id,
-    title = title
+    title = title,
+    hexColorCode = hexColorCode
 )
 
 fun Category.toCategoryEntity() = CategoryEntity(
     id = id,
-    title = title
+    title = title,
+    hexColorCode = hexColorCode
 )

@@ -64,5 +64,7 @@ data class Dimensions(
     val taskEditorTaskTitleSize: TextUnit = 22.sp,
     val taskEditorTaskDescriptionSize: TextUnit = 18.sp,
     val taskEditorTextFieldPaddingAll: Dp = 10.dp,
-    val homePinIconSize: Dp = 18.dp
+    val homePinIconSize: Dp = 18.dp,
+    val colorButtonSize: Dp = 32.dp,
+    val colorButtonWidth: Dp = 8.dp
 )

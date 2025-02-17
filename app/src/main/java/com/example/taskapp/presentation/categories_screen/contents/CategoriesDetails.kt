@@ -1,5 +1,6 @@
 package com.example.taskapp.presentation.categories_screen.contents
 
+import android.graphics.Color.parseColor
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,11 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +29,7 @@ import com.example.taskapp.ui.theme.LocalDimen
 fun CategoriesDetails(
     categoriesTitle: String,
     sizeNote: Int,
+    hexColorCode: String,
     onDeleteCategory: () -> Unit,
     onEditCategory: () -> Unit,
     onCategorySelectClick: () -> Unit
@@ -37,6 +41,9 @@ fun CategoriesDetails(
                 vertical = LocalDimen.current.categoriesCardVerticalPadding
             )
             .clickable { onCategorySelectClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = Color(parseColor(hexColorCode))
+        ),
         shape = RoundedCornerShape(LocalDimen.current.categoriesCardShape)
     ) {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
@@ -54,17 +61,20 @@ fun CategoriesDetails(
                 Icon(
                     painter = painterResource(id = R.drawable.file_ui),
                     contentDescription = null,
-                    modifier = Modifier.size(LocalDimen.current.categoriesIconSizeLarge)
+                    modifier = Modifier.size(LocalDimen.current.categoriesIconSizeLarge),
+                    tint = Color.Black
                 )
                 Text(
                     text = categoriesTitle, fontSize = LocalDimen.current.categoriesTextSize,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
                 Row {
                     Text(
                         text = "$sizeNote ${stringResource(id = R.string.all_notes)}",
                         fontSize = LocalDimen.current.categoriesTextSizeSmall,
                         fontWeight = FontWeight.Normal,
+                        color = Color.Black,
                         modifier = Modifier.padding(bottom = LocalDimen.current.categoriesTextBottomPadding)
                     )
                 }
@@ -83,6 +93,7 @@ fun CategoriesDetailsPreview() {
         sizeNote = 2,
         onDeleteCategory = {},
         onEditCategory = {},
-        onCategorySelectClick = {}
+        onCategorySelectClick = {},
+        hexColorCode = "#dda5e4"
     )
 }

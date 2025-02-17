@@ -27,15 +27,18 @@ fun CategoriesScreen(
 
     CategoriesContent(
         state = state,
-        onBottomBarNavigationClick = viewModel::onNavigationClick,
         onToggleDialogCreateClick = viewModel::onToggleDialogCreateClick,
+        onBottomBarNavigationClick = viewModel::onNavigationClick,
         onCategoryTitleChange = viewModel::onCategoryTitleChange,
-        createCategory = viewModel::createCategory,
+        handleCategory = viewModel::handleCategory,
         clearCategoryTitle = viewModel::clearCategoryTitle,
         onDeleteCategoryClick = viewModel::onDeleteCategoryClick,
         onEditCategoryClick = viewModel::onEditCategoryClick,
-        onToggleDialogUpdateClick = viewModel::onToggleDialogUpdateClick,
-        updateCategory = viewModel::updateCategory,
-        onCategorySelectClick = viewModel::onCategorySelectClick
+        onToggleDialogEditClick = viewModel::onToggleDialogEditClick,
+        onCategorySelectClick = viewModel::onCategorySelectClick,
+        onSelectColorClick = viewModel::onSelectColorClick,
+        onConfirmClick = viewModel::onConfirmClick,
+        onDismissClick = viewModel::onDismissClick,
+        onBackClick = viewModel::onBackClick
     )
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.CategoryRepository
 import com.example.taskapp.domain.model.Category
+import com.example.taskapp.presentation.categories_screen.model.CategoryOperation
 import com.example.taskapp.presentation.navigation.model.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -41,33 +42,90 @@ class CategoriesViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    showDialogCreateCategory = !it.showDialogCreateCategory,
+                    showDialogCategory = !it.showDialogCategory,
+                    categoryOperation = CategoryOperation.CREATE
                 )
             }
         }
     }
 
-    fun onToggleDialogUpdateClick() {
+    fun onToggleDialogEditClick() {
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    showDialogUpdateCategory = !it.showDialogUpdateCategory,
+                    showDialogCategory = !it.showDialogCategory,
+                    categoryOperation = CategoryOperation.EDIT
                 )
             }
+        }
+    }
+
+    fun onConfirmClick() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    showDialogCategory = false,
+                    showDialogColorPicker = true
+                )
+            }
+        }
+    }
+
+    fun onDismissClick() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    showDialogCategory = false,
+                    showDialogColorPicker = false
+                )
+            }
+        }
+    }
+
+    fun onBackClick() {
+        _state.update {
+            it.copy(
+                showDialogCategory = true,
+                showDialogColorPicker = false
+            )
         }
     }
 
     fun onEditCategoryClick(category: Category) {
         viewModelScope.launch {
             _state.update {
-                it.copy(categoryTitle = category.title, currentCategory = category)
+                it.copy(
+                    categoryTitle = category.title,
+                    hexColorCode = category.hexColorCode,
+                    currentCategory = category
+                )
             }
         }
     }
 
-    fun updateCategory() {
+    fun handleCategory() {
         viewModelScope.launch {
-            val category = _state.value.currentCategory?.copy(title = _state.value.categoryTitle)
+            _state.update {
+                it.copy(showDialogColorPicker = false)
+            }
+            when (_state.value.categoryOperation) {
+                CategoryOperation.CREATE -> {
+                    createCategory()
+                }
+
+                CategoryOperation.EDIT -> {
+                    updateCategory()
+                }
+            }
+        }
+    }
+
+    private fun updateCategory() {
+        viewModelScope.launch {
+            val category = _state.value.currentCategory?.copy(
+                title = _state.value.categoryTitle,
+                hexColorCode = _state.value.hexColorCode
+            )
             if (category != null) {
                 withContext(Dispatchers.IO) {
                     categoryRepository.updateCategory(category)
@@ -88,8 +146,12 @@ class CategoriesViewModel @Inject constructor(
 
     }
 
-    fun createCategory() {
-        val category = Category(title = _state.value.categoryTitle, id = 0L)
+    private fun createCategory() {
+        val category = Category(
+            title = _state.value.categoryTitle,
+            id = 0L,
+            hexColorCode = _state.value.hexColorCode
+        )
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 categoryRepository.createCategory(category)
@@ -121,6 +183,16 @@ class CategoriesViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update {
                 it.copy(categoryTitle = categoriesTitle)
+            }
+        }
+    }
+
+    fun onSelectColorClick(hexColorCode: String) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    hexColorCode = hexColorCode
+                )
             }
         }
     }
