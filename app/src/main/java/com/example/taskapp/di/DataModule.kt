@@ -60,8 +60,8 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideCategoryIdStorage(): CategoryIdStorage {
-        return CategoryIdStorageImpl()
+    fun provideCategoryIdStorage(@ApplicationContext applicationContext: Context): CategoryIdStorage {
+        return CategoryIdStorageImpl(applicationContext)
     }
 
     @Provides
