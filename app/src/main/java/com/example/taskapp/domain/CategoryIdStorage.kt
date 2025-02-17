@@ -1,6 +1,6 @@
 package com.example.taskapp.domain
 
 interface CategoryIdStorage {
-    fun setId(id: Long)
-    fun getId(): Long?
+    suspend fun setId(id: Long)
+    suspend fun getId(): Long?
 }

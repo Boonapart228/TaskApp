@@ -38,8 +38,8 @@ class HomeViewModel @Inject constructor(
     val messageEvent = _messageEvent.asSharedFlow()
 
     init {
-        val currentCategoryId = categoryIdStorage.getId()
         viewModelScope.launch(Dispatchers.IO) {
+            val currentCategoryId = categoryIdStorage.getId()
             if (currentCategoryId != null) {
                 taskRepository.getCurrentTasksById(currentCategoryId).collect { tasks ->
                     _state.update { it.copy(tasks = tasks) }
