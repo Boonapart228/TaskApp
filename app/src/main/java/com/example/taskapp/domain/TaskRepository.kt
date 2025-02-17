@@ -5,12 +5,14 @@ import kotlinx.coroutines.flow.Flow
 
 interface TaskRepository {
 
-    suspend fun create(task : Task)
+    suspend fun create(task: Task): Long
 
-    suspend fun update(task : Task)
+    suspend fun update(task: Task)
 
-    suspend fun delete(task : Task)
+    suspend fun delete(task: Task)
 
-    fun getCurrentTaskById(categoryId: Long): Flow<List<Task>>
+    fun getCurrentTasksById(categoryId: Long): Flow<List<Task>>
+
+    fun getCurrentTaskById(taskId: Long): Flow<Task>
 
 }

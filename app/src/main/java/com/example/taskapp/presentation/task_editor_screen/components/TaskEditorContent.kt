@@ -4,12 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +18,7 @@ import com.example.taskapp.ui.theme.LocalDimen
 @Composable
 fun TaskEditorContent(
     state: TaskEditorState,
-    onCreateTaskClick: () -> Unit,
+    onEditTaskClick: () -> Unit,
     onToggleDropDawnMenuClick: () -> Unit,
     onTogglePinTaskClick: () -> Unit,
     onSetTaskTitle: (String) -> Unit,
@@ -35,23 +29,14 @@ fun TaskEditorContent(
         TaskEditorTopBar(
             expanded = state.expanded,
             pin = state.pin,
+            fieldsChanged = state.fieldsChanged,
             onDeleteTaskClick = {},
             onTogglePinTaskClick = onTogglePinTaskClick,
             onToggleDropDawnMenuClick = onToggleDropDawnMenuClick,
             onHomeScreenNavigationClick = onHomeScreenNavigationClick,
+            onEditTaskClick = onEditTaskClick
         )
-    },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = onCreateTaskClick,
-                shape = CircleShape
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Done, contentDescription = null,
-                    modifier = Modifier.size(LocalDimen.current.homeIconFABSize)
-                )
-            }
-        }) { innerPadding ->
+    }) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -86,7 +71,7 @@ fun TaskEditorContentPreview() {
         onHomeScreenNavigationClick = {},
         onSetTaskDescription = {},
         onSetTaskTitle = {},
-        onCreateTaskClick = {},
+        onEditTaskClick = {},
         onToggleDropDawnMenuClick = {},
         onTogglePinTaskClick = {}
     )

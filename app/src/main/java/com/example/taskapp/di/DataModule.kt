@@ -6,11 +6,13 @@ import com.example.taskapp.data.implementation.AppSettingsImpl
 import com.example.taskapp.data.implementation.CategoryIdStorageImpl
 import com.example.taskapp.data.implementation.CategoryRepositoryImpl
 import com.example.taskapp.data.implementation.DateTimeFormatterImpl
+import com.example.taskapp.data.implementation.TaskIdStorageImpl
 import com.example.taskapp.data.implementation.TaskRepositoryImpl
 import com.example.taskapp.domain.AppSettings
 import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.CategoryRepository
 import com.example.taskapp.domain.DateTimeFormatter
+import com.example.taskapp.domain.TaskIdStorage
 import com.example.taskapp.domain.TaskRepository
 import com.example.taskapp.domain.model.database.AppDataBase
 import com.example.taskapp.domain.model.database.dao.CategoryDao
@@ -71,5 +73,11 @@ class DataModule {
     @Singleton
     fun provideAppSettings(@ApplicationContext applicationContext: Context): AppSettings {
         return AppSettingsImpl(applicationContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTaskIdStorage(): TaskIdStorage {
+        return TaskIdStorageImpl()
     }
 }

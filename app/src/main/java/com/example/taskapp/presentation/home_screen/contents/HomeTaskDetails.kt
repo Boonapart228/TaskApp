@@ -1,5 +1,6 @@
 package com.example.taskapp.presentation.home_screen.contents
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,14 +36,17 @@ fun HomeTaskDetails(
     pinned: Boolean,
     modifier: Modifier = Modifier,
     formatDate: () -> String,
-    formatTime: () -> String
+    formatTime: () -> String,
+    onTaskSelectClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
         Card(
-            modifier = Modifier.padding(
-                horizontal = LocalDimen.current.homeDetailsCardHorizontalPadding,
-                vertical = LocalDimen.current.homeDetailsCardVerticalPadding
-            ),
+            modifier = Modifier
+                .padding(
+                    horizontal = LocalDimen.current.homeDetailsCardHorizontalPadding,
+                    vertical = LocalDimen.current.homeDetailsCardVerticalPadding
+                )
+                .clickable { onTaskSelectClick() },
             shape = RoundedCornerShape(LocalDimen.current.categoriesCardShape)
         ) {
             Column(
@@ -123,6 +127,7 @@ fun HomeTaskDetailsPreview() {
         "You said you'll be with me forever\\nWith you personally, I am absolutely sincere.",
         pinned = true,
         formatDate = { "" },
-        formatTime = { "" }
+        formatTime = { "" },
+        onTaskSelectClick = {}
     )
 }

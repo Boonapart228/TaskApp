@@ -23,5 +23,8 @@
     <string name="color_text">Color</string>
     <string name="pin_text">Pin</string>
     <string name="unpin_text">Unpin</string>
+    <string name="success_create_text">Task successfully created</string>
+    <string name="success_update_text">Task successfully updated</string>
+    <string name="choose_category_text">Choose category</string>
     <string name="empty_text" />
 </resources>
