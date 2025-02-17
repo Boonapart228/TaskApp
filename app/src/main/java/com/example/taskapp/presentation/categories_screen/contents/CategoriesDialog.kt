@@ -13,11 +13,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.R
 
 @Composable
-fun CategoriesCreationDialog(
+fun CategoriesDialog(
     value: String,
     onValueChange: (String) -> Unit,
-    onToggleDialogClick: () -> Unit,
-    createCategory: () -> Unit,
+    onConfirmClick: () -> Unit,
+    onDismissClick: () -> Unit,
     clearCategoryTitle: () -> Unit
 ) {
     AlertDialog(
@@ -35,23 +35,22 @@ fun CategoriesCreationDialog(
         },
         onDismissRequest = {
             clearCategoryTitle()
-            onToggleDialogClick()
+            onDismissClick()
         },
         confirmButton = {
             TextButton(
                 onClick = {
-                    createCategory()
-                    onToggleDialogClick()
+                    onConfirmClick()
                 }
             ) {
-                Text(stringResource(id = R.string.create_text))
+                Text(stringResource(id = R.string.next_text))
             }
         },
         dismissButton = {
             TextButton(
                 onClick = {
                     clearCategoryTitle()
-                    onToggleDialogClick()
+                    onDismissClick()
                 }
             ) {
                 Text(stringResource(id = R.string.dismiss_text))
@@ -63,11 +62,11 @@ fun CategoriesCreationDialog(
 @Composable
 @Preview
 fun CategoriesCreationDialogPreview() {
-    CategoriesCreationDialog(
+    CategoriesDialog(
         value = "",
         onValueChange = {},
-        onToggleDialogClick = {},
-        createCategory = {},
-        clearCategoryTitle = {}
+        clearCategoryTitle = {},
+        onConfirmClick = {},
+        onDismissClick = {}
     )
 }

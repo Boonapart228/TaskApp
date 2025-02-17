@@ -13,11 +13,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.domain.model.Category
 import com.example.taskapp.presentation.bottom_bar.BottomBar
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesAddButton
-import com.example.taskapp.presentation.categories_screen.contents.CategoriesCreationDialog
+import com.example.taskapp.presentation.categories_screen.contents.CategoriesColorPicker
+import com.example.taskapp.presentation.categories_screen.contents.CategoriesDialog
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesDetails
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesListBar
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesTopBar
-import com.example.taskapp.presentation.categories_screen.contents.CategoriesUpdateDialog
 import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.ui.theme.LocalDimen
 
@@ -27,13 +27,16 @@ fun CategoriesContent(
     onToggleDialogCreateClick: () -> Unit,
     onBottomBarNavigationClick: (Screens) -> Unit,
     onCategoryTitleChange: (String) -> Unit,
-    createCategory: () -> Unit,
+    handleCategory: () -> Unit,
     clearCategoryTitle: () -> Unit,
     onDeleteCategoryClick: (Category) -> Unit,
     onEditCategoryClick: (Category) -> Unit,
-    onToggleDialogUpdateClick: () -> Unit,
-    updateCategory: () -> Unit,
-    onCategorySelectClick: (Long) -> Unit
+    onToggleDialogEditClick: () -> Unit,
+    onCategorySelectClick: (Long) -> Unit,
+    onSelectColorClick: (String) -> Unit,
+    onConfirmClick: () -> Unit,
+    onDismissClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     Scaffold(topBar = { CategoriesTopBar() },
         bottomBar = {
@@ -59,31 +62,33 @@ fun CategoriesContent(
                     CategoriesDetails(
                         categoriesTitle = category.title,
                         sizeNote = category.id.toInt(),
+                        hexColorCode = category.hexColorCode,
                         onDeleteCategory = { onDeleteCategoryClick(category) },
                         onEditCategory = {
-                            onToggleDialogUpdateClick()
+                            onToggleDialogEditClick()
                             onEditCategoryClick(category)
                         },
                         onCategorySelectClick = { onCategorySelectClick(category.id) }
                     )
                 }
             }
-            if (state.showDialogCreateCategory) {
-                CategoriesCreationDialog(
+            if (state.showDialogCategory) {
+                CategoriesDialog(
                     value = state.categoryTitle,
                     onValueChange = onCategoryTitleChange,
-                    onToggleDialogClick = onToggleDialogCreateClick,
-                    createCategory = createCategory,
                     clearCategoryTitle = clearCategoryTitle,
+                    onConfirmClick = onConfirmClick,
+                    onDismissClick = onDismissClick
                 )
             }
-            if (state.showDialogUpdateCategory) {
-                CategoriesUpdateDialog(
-                    value = state.categoryTitle,
-                    onValueChange = onCategoryTitleChange,
-                    onToggleDialogClick = onToggleDialogUpdateClick,
-                    updateCategory = updateCategory,
+            if (state.showDialogColorPicker) {
+                CategoriesColorPicker(
+                    hexColorCode = state.hexColorCode,
+                    onSelectColorClick = onSelectColorClick,
+                    onBackClick = onBackClick,
+                    handleCategory = handleCategory,
                     clearCategoryTitle = clearCategoryTitle,
+                    onDismissClick = onDismissClick
                 )
             }
         }
@@ -98,13 +103,17 @@ fun CategoriesContentPreview() {
     CategoriesContent(
         state = CategoriesState(),
         onToggleDialogCreateClick = {},
-        onCategoryTitleChange = {},
         onBottomBarNavigationClick = {},
-        createCategory = {},
+        onCategoryTitleChange = {},
+        handleCategory = {},
         clearCategoryTitle = {},
         onDeleteCategoryClick = {},
-        onToggleDialogUpdateClick = {},
         onEditCategoryClick = {},
-        updateCategory = {},
-        onCategorySelectClick = {})
+        onToggleDialogEditClick = {},
+        onCategorySelectClick = {},
+        onSelectColorClick = {},
+        onConfirmClick = {},
+        onDismissClick = {},
+        onBackClick = {}
+    )
 }

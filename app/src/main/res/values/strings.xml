@@ -11,6 +11,8 @@
     <string name="sort_by_text">Sort by</string>
     <string name="create_text">Create</string>
     <string name="dismiss_text">Dismiss</string>
+    <string name="back_text">Back</string>
+    <string name="next_text">Next</string>
     <string name="enter_category_name_text">Enter category name</string>
     <string name="edit_text">Edit</string>
     <string name="delete_text">Delete</string>
@@ -26,5 +28,6 @@
     <string name="success_create_text">Task successfully created</string>
     <string name="success_update_text">Task successfully updated</string>
     <string name="choose_category_text">Choose category</string>
+    <string name="choose_color_text">Choose color</string>
     <string name="empty_text" />
 </resources>
