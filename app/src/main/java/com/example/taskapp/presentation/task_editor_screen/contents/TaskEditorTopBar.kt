@@ -1,7 +1,9 @@
 package com.example.taskapp.presentation.task_editor_screen.contents
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,10 +23,12 @@ import com.example.taskapp.presentation.navigation.model.Screens
 fun TaskEditorTopBar(
     expanded: Boolean,
     pin: Boolean,
+    fieldsChanged: Boolean,
     onHomeScreenNavigationClick: (Screens) -> Unit,
     onToggleDropDawnMenuClick: () -> Unit,
     onTogglePinTaskClick: () -> Unit,
-    onDeleteTaskClick: () -> Unit
+    onDeleteTaskClick: () -> Unit,
+    onEditTaskClick: () -> Unit
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -37,6 +41,7 @@ fun TaskEditorTopBar(
                 overflow = TextOverflow.Ellipsis
             )
         },
+
         navigationIcon = {
             IconButton(onClick = { onHomeScreenNavigationClick(Screens.HOME_SCREEN) }) {
                 Icon(
@@ -46,6 +51,14 @@ fun TaskEditorTopBar(
             }
         },
         actions = {
+            AnimatedVisibility(fieldsChanged) {
+                IconButton(onClick = { onEditTaskClick() }) {
+                    Icon(
+                        imageVector = Icons.Default.Done,
+                        contentDescription = null
+                    )
+                }
+            }
             TaskEditorDropDawnMenu(
                 expanded = expanded,
                 pin = pin,
@@ -68,8 +81,10 @@ fun TaskEditorTopBarPreview() {
         onHomeScreenNavigationClick = {},
         expanded = false,
         pin = false,
-        onToggleDropDawnMenuClick = { /*TODO*/ },
-        onTogglePinTaskClick = { /*TODO*/ },
-        onDeleteTaskClick = { /*TODO*/ }
+        fieldsChanged = false,
+        onToggleDropDawnMenuClick = {},
+        onTogglePinTaskClick = {},
+        onDeleteTaskClick = {},
+        onEditTaskClick = {}
     )
 }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TaskDao {
     @Insert
-    suspend fun create(taskEntity: TaskEntity)
+    suspend fun create(taskEntity: TaskEntity): Long
 
     @Update
     suspend fun update(taskEntity: TaskEntity)
@@ -20,6 +20,9 @@ interface TaskDao {
     suspend fun delete(taskEntity: TaskEntity)
 
     @Query("SELECT * FROM task_table WHERE categoryId = :categoryId")
-    fun getCurrentTaskById(categoryId: Long): Flow<List<TaskEntity>>
+    fun getCurrentTasksById(categoryId: Long): Flow<List<TaskEntity>>
+
+    @Query("SELECT * FROM task_table WHERE id = :taskId")
+    fun getCurrentTaskById(taskId: Long): Flow<TaskEntity>
 
 }

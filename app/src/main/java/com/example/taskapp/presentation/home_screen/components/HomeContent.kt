@@ -33,7 +33,9 @@ fun HomeContent(
     onNavigationClick: (Screens) -> Unit,
     onChangeGridColumnsClick: () -> Unit,
     formatTime: (Long) -> String,
-    formatDate: (Long) -> String
+    formatDate: (Long) -> String,
+    onTaskSelectClick: (Long) -> Unit,
+    onNavigateToTaskEditorClick: () -> Unit
 ) {
     Scaffold(topBar = {
         HomeTopBar(
@@ -48,7 +50,7 @@ fun HomeContent(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { onNavigationClick(Screens.TASK_EDITOR_SCREEN) },
+                onClick = onNavigateToTaskEditorClick,
                 shape = CircleShape
             ) {
                 Icon(
@@ -74,7 +76,8 @@ fun HomeContent(
                         description = it.description,
                         pinned = it.isActive,
                         formatTime = { formatTime(it.createdAt) },
-                        formatDate = { formatDate(it.createdAt) }
+                        formatDate = { formatDate(it.createdAt) },
+                        onTaskSelectClick = { onTaskSelectClick(it.id) }
                     )
                 }
             }
@@ -90,7 +93,8 @@ fun HomeContent(
                         description = it.description,
                         pinned = it.isActive,
                         formatTime = { formatTime(it.createdAt) },
-                        formatDate = { formatDate(it.createdAt) }
+                        formatDate = { formatDate(it.createdAt) },
+                        onTaskSelectClick = { onTaskSelectClick(it.id) }
                     )
                 }
             }
@@ -107,5 +111,7 @@ fun HomeContentPreview() {
         onNavigationClick = {},
         formatTime = { "" },
         formatDate = { "" },
-        onChangeGridColumnsClick = {})
+        onChangeGridColumnsClick = {},
+        onTaskSelectClick = {},
+        onNavigateToTaskEditorClick = {})
 }

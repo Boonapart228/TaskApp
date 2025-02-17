@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.taskapp.domain.AppSettings
 import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.DateTimeFormatter
+import com.example.taskapp.domain.TaskIdStorage
 import com.example.taskapp.domain.TaskRepository
 import com.example.taskapp.presentation.navigation.model.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +24,8 @@ class HomeViewModel @Inject constructor(
     private val taskRepository: TaskRepository,
     private val categoryIdStorage: CategoryIdStorage,
     private val dateTimeFormatter: DateTimeFormatter,
-    private val appSettings: AppSettings
+    private val appSettings: AppSettings,
+    private val taskIdStorage: TaskIdStorage
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
@@ -32,11 +34,14 @@ class HomeViewModel @Inject constructor(
     private val _event = MutableSharedFlow<HomeNavigationEvent>()
     val event = _event.asSharedFlow()
 
+    private val _messageEvent = MutableSharedFlow<HomeMessageEvent>()
+    val messageEvent = _messageEvent.asSharedFlow()
+
     init {
         val currentCategoryId = categoryIdStorage.getId()
         viewModelScope.launch(Dispatchers.IO) {
             if (currentCategoryId != null) {
-                taskRepository.getCurrentTaskById(currentCategoryId).collect { tasks ->
+                taskRepository.getCurrentTasksById(currentCategoryId).collect { tasks ->
                     _state.update { it.copy(tasks = tasks) }
                 }
             }
@@ -67,6 +72,28 @@ class HomeViewModel @Inject constructor(
 
     fun formatTime(timestamp: Long): String {
         return dateTimeFormatter.formatTime(timestamp)
+    }
+
+    fun onTaskSelectClick(id: Long) {
+        viewModelScope.launch {
+            taskIdStorage.setId(id)
+            onNavigationClick(Screens.TASK_EDITOR_SCREEN)
+        }
+    }
+
+    private fun clearTaskId() {
+        taskIdStorage.setId(null)
+    }
+
+    fun onNavigateToTaskEditorClick() {
+        viewModelScope.launch {
+            if (categoryIdStorage.getId() != null) {
+                clearTaskId()
+                onNavigationClick(Screens.TASK_EDITOR_SCREEN)
+            } else {
+                _messageEvent.emit(HomeMessageEvent.ChoseCategory)
+            }
+        }
     }
 
     fun onNavigationClick(route: Screens) {

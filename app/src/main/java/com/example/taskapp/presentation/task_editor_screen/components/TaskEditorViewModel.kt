@@ -3,6 +3,7 @@ package com.example.taskapp.presentation.task_editor_screen.components
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.taskapp.domain.CategoryIdStorage
+import com.example.taskapp.domain.TaskIdStorage
 import com.example.taskapp.domain.TaskRepository
 import com.example.taskapp.domain.model.Task
 import com.example.taskapp.presentation.navigation.model.Screens
@@ -22,12 +23,54 @@ import javax.inject.Inject
 class TaskEditorViewModel @Inject constructor(
     private val taskRepository: TaskRepository,
     private val categoryIdStorage: CategoryIdStorage,
+    private val taskIdStorage: TaskIdStorage
 ) : ViewModel() {
     private val _event = MutableSharedFlow<TaskEditorNavigationEvent>()
     val event = _event.asSharedFlow()
 
+    private val _messageEvent = MutableSharedFlow<TaskEditorMessageEvent>()
+    val messageEvent = _messageEvent.asSharedFlow()
+
     private val _state = MutableStateFlow(TaskEditorState())
     val state = _state.asStateFlow()
+
+    init {
+
+        taskIdStorage.getId()?.let {
+            viewModelScope.launch {
+                taskRepository.getCurrentTaskById(taskId = it).collect { task ->
+                    _state.update {
+                        it.copy(
+                            title = task.title,
+                            description = task.description,
+                            oldTitle = task.title,
+                            oldDescription = task.description,
+                            pin = task.isActive,
+                            oldPin = task.isActive
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun detectFieldChanges() {
+        _state.update {
+            it.copy(
+                fieldsChanged = it.title != it.oldTitle || it.description != it.oldDescription || it.pin != it.oldPin
+            )
+        }
+    }
+
+    private fun updateFieldChanges() {
+        _state.update {
+            it.copy(
+                oldTitle = it.title,
+                oldDescription = it.description,
+                oldPin = it.pin
+            )
+        }
+    }
 
     fun onHomeScreenNavigationClick(route: Screens) {
         when (route) {
@@ -47,6 +90,7 @@ class TaskEditorViewModel @Inject constructor(
                     title = title
                 )
             }
+            detectFieldChanges()
         }
     }
 
@@ -57,6 +101,7 @@ class TaskEditorViewModel @Inject constructor(
                     description = description
                 )
             }
+            detectFieldChanges()
         }
     }
 
@@ -65,6 +110,7 @@ class TaskEditorViewModel @Inject constructor(
             _state.update {
                 it.copy(pin = !it.pin)
             }
+            detectFieldChanges()
         }
     }
 
@@ -78,7 +124,7 @@ class TaskEditorViewModel @Inject constructor(
         }
     }
 
-    fun onCreateTaskClick() {
+    fun onEditTaskClick() {
         viewModelScope.launch {
             val currentCategoryId = categoryIdStorage.getId()
             val currentTimeMillis = Calendar.getInstance().timeInMillis
@@ -91,13 +137,29 @@ class TaskEditorViewModel @Inject constructor(
                     categoryId = currentCategoryId,
                     createdAt = currentTimeMillis
                 )
-                withContext(Dispatchers.IO) {
-                    taskRepository.create(newTask)
-                }
+                handleTask(task = newTask)
             }
-            onHomeScreenNavigationClick(Screens.HOME_SCREEN)
         }
+    }
 
+    private fun handleTask(task: Task) {
+        viewModelScope.launch {
+            val taskId = taskIdStorage.getId()
+            if (taskId == null) {
+                withContext(Dispatchers.IO) {
+                    val d = taskRepository.create(task)
+                    taskIdStorage.setId(d)
+                }
+                _messageEvent.emit(TaskEditorMessageEvent.TaskCreationSuccess)
+            } else {
+                withContext(Dispatchers.IO) {
+                    taskRepository.update(task.copy(id = taskId))
+                }
+                _messageEvent.emit(TaskEditorMessageEvent.TaskUpdateSuccess)
+            }
+            updateFieldChanges()
+            detectFieldChanges()
+        }
     }
 
 }
