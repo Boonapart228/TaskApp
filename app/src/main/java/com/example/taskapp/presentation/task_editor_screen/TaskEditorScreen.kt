@@ -59,6 +59,9 @@ fun TaskEditorScreen(
         onHomeScreenNavigationClick = viewModel::onHomeScreenNavigationClick,
         onEditTaskClick = viewModel::onEditTaskClick,
         onToggleDropDawnMenuClick = viewModel::onToggleDropDawnMenuClick,
-        onTogglePinTaskClick = viewModel::onTogglePinTaskClick
+        onTogglePinTaskClick = viewModel::onTogglePinTaskClick,
+        onToggleColorPickerClick = viewModel::onToggleColorPickerClick,
+        onSelectColorClick = viewModel::onSelectColorCodeClick,
+        onSaveColorClick = viewModel::onSaveColorClick
     )
 }

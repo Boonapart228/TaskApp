@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.TaskIdStorage
 import com.example.taskapp.domain.TaskRepository
+import com.example.taskapp.domain.constants.ColorItems
 import com.example.taskapp.domain.model.Task
 import com.example.taskapp.presentation.navigation.model.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,18 +36,21 @@ class TaskEditorViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
-
+        randomHexColorCode()
         taskIdStorage.getId()?.let {
             viewModelScope.launch {
                 taskRepository.getCurrentTaskById(taskId = it).collect { task ->
                     _state.update {
                         it.copy(
                             title = task.title,
-                            description = task.description,
                             oldTitle = task.title,
+                            description = task.description,
                             oldDescription = task.description,
                             pin = task.isActive,
-                            oldPin = task.isActive
+                            oldPin = task.isActive,
+                            hexColorCode = task.hexColorCode,
+                            oldHexColorCode = task.hexColorCode,
+                            previewColorCode = task.hexColorCode
                         )
                     }
                 }
@@ -54,10 +58,17 @@ class TaskEditorViewModel @Inject constructor(
         }
     }
 
+    private fun randomHexColorCode() {
+        taskIdStorage.getId() ?: run {
+            val randomColor = ColorItems.entries.random().hexColorCode
+            _state.update { it.copy(hexColorCode = randomColor, previewColorCode = randomColor) }
+        }
+    }
+
     private fun detectFieldChanges() {
         _state.update {
             it.copy(
-                fieldsChanged = it.title != it.oldTitle || it.description != it.oldDescription || it.pin != it.oldPin
+                fieldsChanged = it.title != it.oldTitle || it.description != it.oldDescription || it.pin != it.oldPin || it.hexColorCode != it.oldHexColorCode
             )
         }
     }
@@ -67,7 +78,8 @@ class TaskEditorViewModel @Inject constructor(
             it.copy(
                 oldTitle = it.title,
                 oldDescription = it.description,
-                oldPin = it.pin
+                oldPin = it.pin,
+                oldHexColorCode = it.hexColorCode
             )
         }
     }
@@ -135,6 +147,7 @@ class TaskEditorViewModel @Inject constructor(
                     description = _state.value.description,
                     isActive = _state.value.pin,
                     categoryId = currentCategoryId,
+                    hexColorCode = _state.value.hexColorCode,
                     createdAt = currentTimeMillis
                 )
                 handleTask(task = newTask)
@@ -147,8 +160,8 @@ class TaskEditorViewModel @Inject constructor(
             val taskId = taskIdStorage.getId()
             if (taskId == null) {
                 withContext(Dispatchers.IO) {
-                    val d = taskRepository.create(task)
-                    taskIdStorage.setId(d)
+                    val id = taskRepository.create(task)
+                    taskIdStorage.setId(id)
                 }
                 _messageEvent.emit(TaskEditorMessageEvent.TaskCreationSuccess)
             } else {
@@ -160,6 +173,37 @@ class TaskEditorViewModel @Inject constructor(
             updateFieldChanges()
             detectFieldChanges()
         }
+    }
+
+    fun onToggleColorPickerClick() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    showDialogColorPicker = !it.showDialogColorPicker
+                )
+            }
+        }
+    }
+
+    fun onSelectColorCodeClick(previewColorCode: String) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    previewColorCode = previewColorCode
+                )
+            }
+        }
+    }
+
+    fun onSaveColorClick() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    hexColorCode = it.previewColorCode
+                )
+            }
+        }
+        detectFieldChanges()
     }
 
 }

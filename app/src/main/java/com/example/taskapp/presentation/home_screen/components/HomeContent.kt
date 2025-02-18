@@ -75,6 +75,7 @@ fun HomeContent(
                         title = it.title,
                         description = it.description,
                         pinned = it.isActive,
+                        hexColorCode = it.hexColorCode,
                         formatTime = { formatTime(it.createdAt) },
                         formatDate = { formatDate(it.createdAt) },
                         onTaskSelectClick = { onTaskSelectClick(it.id) }
@@ -92,6 +93,7 @@ fun HomeContent(
                         title = it.title,
                         description = it.description,
                         pinned = it.isActive,
+                        hexColorCode = it.hexColorCode,
                         formatTime = { formatTime(it.createdAt) },
                         formatDate = { formatDate(it.createdAt) },
                         onTaskSelectClick = { onTaskSelectClick(it.id) }
