@@ -1,4 +1,4 @@
-package com.example.taskapp.presentation.categories_screen.contents
+package com.example.taskapp.presentation.task_editor_screen.contents
 
 import android.graphics.Color.parseColor
 import androidx.compose.foundation.layout.Arrangement
@@ -26,13 +26,11 @@ import com.example.taskapp.domain.constants.ColorItems
 import com.example.taskapp.ui.theme.LocalDimen
 
 @Composable
-fun CategoriesColorPicker(
+fun TaskEditorColorPicker(
     hexColorCode: String,
     onSelectColorClick: (String) -> Unit,
-    onBackClick: () -> Unit,
-    handleCategory: () -> Unit,
-    clearCategoryTitle: () -> Unit,
-    onDismissClick: () -> Unit
+    onToggleColorPicker: () -> Unit,
+    onSaveColorClick: () -> Unit
 ) {
     AlertDialog(
         icon = {
@@ -64,40 +62,38 @@ fun CategoriesColorPicker(
             }
         },
         onDismissRequest = {
-            clearCategoryTitle()
-            onDismissClick()
+            onToggleColorPicker()
         },
         confirmButton = {
             TextButton(
                 onClick = {
-                    handleCategory()
+                    onToggleColorPicker()
+                    onSaveColorClick()
                 }
             ) {
-                Text(stringResource(id = R.string.create_text))
+                Text(stringResource(id = R.string.save_text))
             }
         },
         dismissButton = {
             TextButton(
                 onClick = {
-                    clearCategoryTitle()
-                    onBackClick()
+                    onToggleColorPicker()
                 }
             ) {
-                Text(stringResource(id = R.string.back_text))
+                Text(stringResource(id = R.string.dismiss_text))
             }
         }
     )
 }
 
+
 @Composable
-@Preview(showBackground = true)
-fun CategoriesCreateColorPickerPreview() {
-    CategoriesColorPicker(
-        hexColorCode = "#dfaf7e",
+@Preview
+fun TaskEditorColorPickerPreview() {
+    TaskEditorColorPicker(
+        hexColorCode = "",
         onSelectColorClick = {},
-        onBackClick = {},
-        handleCategory = {},
-        clearCategoryTitle = {},
-        onDismissClick = {}
+        onToggleColorPicker = {},
+        onSaveColorClick = {}
     )
 }

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.R
 import com.example.taskapp.presentation.navigation.model.Screens
+import com.example.taskapp.presentation.task_editor_screen.contents.TaskEditorColorPicker
 import com.example.taskapp.presentation.task_editor_screen.contents.TaskEditorCustomTextField
 import com.example.taskapp.presentation.task_editor_screen.contents.TaskEditorTopBar
 import com.example.taskapp.ui.theme.LocalDimen
@@ -21,9 +22,12 @@ fun TaskEditorContent(
     onEditTaskClick: () -> Unit,
     onToggleDropDawnMenuClick: () -> Unit,
     onTogglePinTaskClick: () -> Unit,
+    onToggleColorPickerClick: () -> Unit,
+    onSaveColorClick: () -> Unit,
     onSetTaskTitle: (String) -> Unit,
     onSetTaskDescription: (String) -> Unit,
-    onHomeScreenNavigationClick: (Screens) -> Unit
+    onHomeScreenNavigationClick: (Screens) -> Unit,
+    onSelectColorClick: (String) -> Unit
 ) {
     Scaffold(topBar = {
         TaskEditorTopBar(
@@ -34,7 +38,8 @@ fun TaskEditorContent(
             onTogglePinTaskClick = onTogglePinTaskClick,
             onToggleDropDawnMenuClick = onToggleDropDawnMenuClick,
             onHomeScreenNavigationClick = onHomeScreenNavigationClick,
-            onEditTaskClick = onEditTaskClick
+            onEditTaskClick = onEditTaskClick,
+            onEditColorClick = onToggleColorPickerClick
         )
     }) { innerPadding ->
         Column(
@@ -47,16 +52,24 @@ fun TaskEditorContent(
             TaskEditorCustomTextField(
                 value = state.title,
                 onValueChange = { newTitle -> onSetTaskTitle(newTitle) },
-                labelId = R.string.enter_title_text,
+                placeholderId = R.string.enter_title_text,
                 fontSize = LocalDimen.current.taskEditorTaskTitleSize,
                 singleLine = true
             )
             TaskEditorCustomTextField(
                 value = state.description,
                 onValueChange = { newDescription -> onSetTaskDescription(newDescription) },
-                labelId = R.string.enter_description_text,
+                placeholderId = R.string.enter_description_text,
                 fontSize = LocalDimen.current.taskEditorTaskDescriptionSize,
                 singleLine = false
+            )
+        }
+        if (state.showDialogColorPicker) {
+            TaskEditorColorPicker(
+                hexColorCode = state.previewColorCode,
+                onSelectColorClick = onSelectColorClick,
+                onToggleColorPicker = onToggleColorPickerClick,
+                onSaveColorClick = onSaveColorClick
             )
         }
 
@@ -73,7 +86,10 @@ fun TaskEditorContentPreview() {
         onSetTaskTitle = {},
         onEditTaskClick = {},
         onToggleDropDawnMenuClick = {},
-        onTogglePinTaskClick = {}
+        onTogglePinTaskClick = {},
+        onToggleColorPickerClick = {},
+        onSelectColorClick = {},
+        onSaveColorClick = {}
     )
 }
 

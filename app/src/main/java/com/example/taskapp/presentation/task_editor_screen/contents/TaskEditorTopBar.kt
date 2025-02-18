@@ -28,7 +28,8 @@ fun TaskEditorTopBar(
     onToggleDropDawnMenuClick: () -> Unit,
     onTogglePinTaskClick: () -> Unit,
     onDeleteTaskClick: () -> Unit,
-    onEditTaskClick: () -> Unit
+    onEditTaskClick: () -> Unit,
+    onEditColorClick: () -> Unit
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -64,10 +65,9 @@ fun TaskEditorTopBar(
                 pin = pin,
                 onToggleDropDawnMenuClick = onToggleDropDawnMenuClick,
                 onTogglePinTaskClick = onTogglePinTaskClick,
-                onDeleteTaskClick = onDeleteTaskClick
-            ) {
-
-            }
+                onDeleteTaskClick = onDeleteTaskClick,
+                onEditColorClick = onEditColorClick
+            )
         }
 
     )
@@ -85,6 +85,7 @@ fun TaskEditorTopBarPreview() {
         onToggleDropDawnMenuClick = {},
         onTogglePinTaskClick = {},
         onDeleteTaskClick = {},
-        onEditTaskClick = {}
+        onEditTaskClick = {},
+        onEditColorClick = {}
     )
 }

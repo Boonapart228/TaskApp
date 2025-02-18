@@ -16,7 +16,7 @@ import com.example.taskapp.ui.theme.LocalDimen
 @Composable
 fun TaskEditorCustomTextField(
     value: String,
-    labelId: Int,
+    placeholderId: Int,
     singleLine: Boolean,
     fontSize: TextUnit,
     onValueChange: (String) -> Unit
@@ -27,7 +27,7 @@ fun TaskEditorCustomTextField(
             .fillMaxWidth()
             .padding(LocalDimen.current.taskEditorTextFieldPaddingAll),
 
-        label = { Text(text = stringResource(id = labelId)) },
+        placeholder = { Text(text = stringResource(id = placeholderId)) },
         textStyle = TextStyle(fontSize = fontSize),
         singleLine = singleLine,
         colors = TextFieldDefaults.colors(

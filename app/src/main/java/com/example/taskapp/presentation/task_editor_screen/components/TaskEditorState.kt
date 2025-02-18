@@ -5,8 +5,12 @@ data class TaskEditorState(
     val title: String = "",
     val oldTitle: String = "",
     val oldDescription: String = "",
+    val hexColorCode: String = "",
+    val previewColorCode: String = "",
+    val oldHexColorCode: String = "",
     val expanded: Boolean = false,
     val pin: Boolean = false,
     val oldPin: Boolean = false,
-    val fieldsChanged: Boolean = false
+    val fieldsChanged: Boolean = false,
+    val showDialogColorPicker: Boolean = false,
 )

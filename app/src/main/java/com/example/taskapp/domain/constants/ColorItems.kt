@@ -1,6 +1,6 @@
-package com.example.taskapp.presentation.categories_screen.model
+package com.example.taskapp.domain.constants
 
-enum class CategoriesColorItems(val hexColorCode: String) {
+enum class ColorItems(val hexColorCode: String) {
     CADET_BLUE("#b2bacd"),
     PALE_GREEN("#a8cbb5"),
     PALE_TURQUOISE("#b2dad2"),
