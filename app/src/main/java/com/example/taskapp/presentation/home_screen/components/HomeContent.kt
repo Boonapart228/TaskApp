@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.R
-import com.example.taskapp.domain.constants.ColorItems
 import com.example.taskapp.presentation.bottom_bar.BottomBar
 import com.example.taskapp.presentation.home_screen.contents.HomeListBar
 import com.example.taskapp.presentation.home_screen.contents.HomeTaskDetails
