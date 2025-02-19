@@ -13,4 +13,5 @@ data class TaskEditorState(
     val oldPin: Boolean = false,
     val fieldsChanged: Boolean = false,
     val showDialogColorPicker: Boolean = false,
+    val showDialogDeleteTask: Boolean = false,
 )

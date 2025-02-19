@@ -49,6 +49,24 @@ fun TaskEditorScreen(
                     )
                         .show()
                 }
+
+                TaskEditorMessageEvent.CannotDeleteNonExistentTask -> {
+                    Toast.makeText(
+                        context,
+                        R.string.failed_delete_text,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+
+                TaskEditorMessageEvent.TaskDeletionSuccess -> {
+                    Toast.makeText(
+                        context,
+                        R.string.success_delete_text,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
             }
         }
     }
@@ -62,6 +80,8 @@ fun TaskEditorScreen(
         onTogglePinTaskClick = viewModel::onTogglePinTaskClick,
         onToggleColorPickerClick = viewModel::onToggleColorPickerClick,
         onSelectColorClick = viewModel::onSelectColorCodeClick,
-        onSaveColorClick = viewModel::onSaveColorClick
+        onSaveColorClick = viewModel::onSaveColorClick,
+        onToggleDeleteTaskClick = viewModel::onToggleDeleteTaskClick,
+        onDeleteTask = viewModel::onDeleteTask
     )
 }
