@@ -13,6 +13,7 @@ import com.example.taskapp.R
 import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.presentation.task_editor_screen.contents.TaskEditorColorPicker
 import com.example.taskapp.presentation.task_editor_screen.contents.TaskEditorCustomTextField
+import com.example.taskapp.presentation.task_editor_screen.contents.TaskEditorDeleteDialog
 import com.example.taskapp.presentation.task_editor_screen.contents.TaskEditorTopBar
 import com.example.taskapp.ui.theme.LocalDimen
 
@@ -24,6 +25,8 @@ fun TaskEditorContent(
     onTogglePinTaskClick: () -> Unit,
     onToggleColorPickerClick: () -> Unit,
     onSaveColorClick: () -> Unit,
+    onToggleDeleteTaskClick: () -> Unit,
+    onDeleteTask: () -> Unit,
     onSetTaskTitle: (String) -> Unit,
     onSetTaskDescription: (String) -> Unit,
     onHomeScreenNavigationClick: (Screens) -> Unit,
@@ -34,7 +37,7 @@ fun TaskEditorContent(
             expanded = state.expanded,
             pin = state.pin,
             fieldsChanged = state.fieldsChanged,
-            onDeleteTaskClick = {},
+            onDeleteTaskClick = onToggleDeleteTaskClick,
             onTogglePinTaskClick = onTogglePinTaskClick,
             onToggleDropDawnMenuClick = onToggleDropDawnMenuClick,
             onHomeScreenNavigationClick = onHomeScreenNavigationClick,
@@ -72,6 +75,13 @@ fun TaskEditorContent(
                 onSaveColorClick = onSaveColorClick
             )
         }
+        if (state.showDialogDeleteTask) {
+            TaskEditorDeleteDialog(onDismissRequest = onToggleDeleteTaskClick,
+                onConfirmation = {
+                    onToggleDeleteTaskClick()
+                    onDeleteTask()
+                })
+        }
 
     }
 }
@@ -89,7 +99,9 @@ fun TaskEditorContentPreview() {
         onTogglePinTaskClick = {},
         onToggleColorPickerClick = {},
         onSelectColorClick = {},
-        onSaveColorClick = {}
+        onSaveColorClick = {},
+        onToggleDeleteTaskClick = {},
+        onDeleteTask = {}
     )
 }
 

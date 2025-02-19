@@ -6,6 +6,7 @@ import com.example.taskapp.domain.model.database.dao.TaskDao
 import com.example.taskapp.domain.model.database.toTask
 import com.example.taskapp.domain.model.database.toTaskEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
 class TaskRepositoryImpl(
@@ -28,5 +29,7 @@ class TaskRepositoryImpl(
             .map { list -> list.map { it.toTask() } }
 
     override fun getCurrentTaskById(taskId: Long): Flow<Task> =
-        taskDao.getCurrentTaskById(taskId = taskId).map { it.toTask() }
+        taskDao.getCurrentTaskById(taskId = taskId)
+            .filterNotNull()
+            .map { it.toTask() }
 }

@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -206,4 +207,29 @@ class TaskEditorViewModel @Inject constructor(
         detectFieldChanges()
     }
 
+    fun onToggleDeleteTaskClick() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    showDialogDeleteTask = !it.showDialogDeleteTask
+                )
+            }
+        }
+    }
+
+    fun onDeleteTask() {
+        viewModelScope.launch {
+            val taskId = taskIdStorage.getId()
+            if (taskId != null) {
+                withContext(Dispatchers.IO) {
+                    val id = taskRepository.getCurrentTaskById(taskId).first()
+                    taskRepository.delete(task = id.copy(id = taskId))
+                }
+                _messageEvent.emit(TaskEditorMessageEvent.TaskDeletionSuccess)
+                onHomeScreenNavigationClick(Screens.HOME_SCREEN)
+            } else {
+                _messageEvent.emit(TaskEditorMessageEvent.CannotDeleteNonExistentTask)
+            }
+        }
+    }
 }
