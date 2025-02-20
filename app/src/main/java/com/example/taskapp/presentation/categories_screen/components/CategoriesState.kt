@@ -14,5 +14,6 @@ data class CategoriesState(
     val categories: List<Category> = listOf(),
     val currentCategory: Category? = null,
     val hexColorCode: String = ColorItems.entries.random().hexColorCode,
-    val categoryOperation: CategoryOperation = CategoryOperation.CREATE
+    val categoryOperation: CategoryOperation = CategoryOperation.CREATE,
+    val showDialogDeleteCategory: Boolean = false,
 )

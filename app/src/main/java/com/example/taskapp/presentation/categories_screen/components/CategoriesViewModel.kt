@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.CategoryRepository
+import com.example.taskapp.domain.constants.ColorItems
 import com.example.taskapp.domain.model.Category
 import com.example.taskapp.presentation.categories_screen.model.CategoryOperation
 import com.example.taskapp.presentation.navigation.model.Screens
@@ -30,6 +31,9 @@ class CategoriesViewModel @Inject constructor(
     private val _event = MutableSharedFlow<CategoriesNavigationEvent>()
     val event = _event.asSharedFlow()
 
+    private val _messageEvent = MutableSharedFlow<CategoriesMessageEvent>()
+    val messageEvent = _messageEvent.asSharedFlow()
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             categoryRepository.getAllCategories().collect { categories ->
@@ -42,8 +46,9 @@ class CategoriesViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update {
                 it.copy(
+                    hexColorCode = ColorItems.entries.random().hexColorCode,
                     showDialogCategory = !it.showDialogCategory,
-                    categoryOperation = CategoryOperation.CREATE
+                    categoryOperation = CategoryOperation.CREATE,
                 )
             }
         }
@@ -108,14 +113,18 @@ class CategoriesViewModel @Inject constructor(
             _state.update {
                 it.copy(showDialogColorPicker = false)
             }
-            when (_state.value.categoryOperation) {
-                CategoryOperation.CREATE -> {
-                    createCategory()
-                }
+            if (_state.value.categoryTitle.isNotBlank()) {
+                when (_state.value.categoryOperation) {
+                    CategoryOperation.CREATE -> {
+                        createCategory()
+                    }
 
-                CategoryOperation.EDIT -> {
-                    updateCategory()
+                    CategoryOperation.EDIT -> {
+                        updateCategory()
+                    }
                 }
+            } else {
+                _messageEvent.emit(CategoriesMessageEvent.CategoryTitleCannotBeEmpty)
             }
         }
     }
@@ -130,20 +139,10 @@ class CategoriesViewModel @Inject constructor(
                 withContext(Dispatchers.IO) {
                     categoryRepository.updateCategory(category)
                 }
-            }
-            _state.update {
-                it.copy(
-                    categoryTitle = ""
-                )
+                _messageEvent.emit(CategoriesMessageEvent.CategoryUpdateSuccess)
             }
         }
-    }
-
-    fun onDeleteCategoryClick(category: Category) {
-        viewModelScope.launch(Dispatchers.IO) {
-            categoryRepository.deleteCategory(category)
-        }
-
+        clearCategoryTitle()
     }
 
     private fun createCategory() {
@@ -156,12 +155,9 @@ class CategoriesViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 categoryRepository.createCategory(category)
             }
-            _state.update {
-                it.copy(
-                    categoryTitle = ""
-                )
-            }
+            _messageEvent.emit(CategoriesMessageEvent.CategoryCreationSuccess)
         }
+        clearCategoryTitle()
     }
 
     fun clearCategoryTitle() {
@@ -204,4 +200,46 @@ class CategoriesViewModel @Inject constructor(
             Screens.TASK_EDITOR_SCREEN -> {}
         }
     }
+
+    fun onDeleteCategoryClick() {
+        val currentCategory = _state.value.currentCategory
+        currentCategory?.let { category ->
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    categoryRepository.deleteCategory(category)
+                }
+                resetCurrentCategoryIfDeleted(category.id)
+                _state.update { it.copy(currentCategory = null) }
+                _messageEvent.emit(CategoriesMessageEvent.CategoryDeletionSuccess)
+            }
+        }
+    }
+
+    private fun resetCurrentCategoryIfDeleted(categoryId: Long) {
+        viewModelScope.launch {
+            val id = withContext(Dispatchers.IO) { categoryIdStorage.getId() }
+            if (categoryId == id) {
+                withContext(Dispatchers.IO) { categoryIdStorage.setId(null) }
+            }
+        }
+    }
+
+    fun onToggleDeleteCategoryClick() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    showDialogDeleteCategory = !it.showDialogDeleteCategory
+                )
+            }
+        }
+    }
+
+    fun setCurrentCategory(category: Category?) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(currentCategory = category)
+            }
+        }
+    }
+
 }
