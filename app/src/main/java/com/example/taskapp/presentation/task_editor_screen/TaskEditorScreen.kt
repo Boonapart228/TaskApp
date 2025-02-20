@@ -35,7 +35,7 @@ fun TaskEditorScreen(
                 TaskEditorMessageEvent.TaskCreationSuccess -> {
                     Toast.makeText(
                         context,
-                        R.string.success_create_text,
+                        R.string.task_success_create_text,
                         Toast.LENGTH_SHORT
                     )
                         .show()
@@ -44,7 +44,7 @@ fun TaskEditorScreen(
                 TaskEditorMessageEvent.TaskUpdateSuccess -> {
                     Toast.makeText(
                         context,
-                        R.string.success_update_text,
+                        R.string.task_success_update_text,
                         Toast.LENGTH_SHORT
                     )
                         .show()
@@ -53,7 +53,7 @@ fun TaskEditorScreen(
                 TaskEditorMessageEvent.CannotDeleteNonExistentTask -> {
                     Toast.makeText(
                         context,
-                        R.string.failed_delete_text,
+                        R.string.task_failed_delete_text,
                         Toast.LENGTH_SHORT
                     )
                         .show()
@@ -62,7 +62,7 @@ fun TaskEditorScreen(
                 TaskEditorMessageEvent.TaskDeletionSuccess -> {
                     Toast.makeText(
                         context,
-                        R.string.success_delete_text,
+                        R.string.task_success_delete_text,
                         Toast.LENGTH_SHORT
                     )
                         .show()

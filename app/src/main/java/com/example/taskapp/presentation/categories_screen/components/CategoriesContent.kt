@@ -14,6 +14,7 @@ import com.example.taskapp.domain.model.Category
 import com.example.taskapp.presentation.bottom_bar.BottomBar
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesAddButton
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesColorPicker
+import com.example.taskapp.presentation.categories_screen.contents.CategoriesDeleteDialog
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesDialog
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesDetails
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesListBar
@@ -29,14 +30,16 @@ fun CategoriesContent(
     onCategoryTitleChange: (String) -> Unit,
     handleCategory: () -> Unit,
     clearCategoryTitle: () -> Unit,
-    onDeleteCategoryClick: (Category) -> Unit,
+    onDeleteCategoryClick: () -> Unit,
     onEditCategoryClick: (Category) -> Unit,
     onToggleDialogEditClick: () -> Unit,
+    onToggleDeleteCategoryClick: () -> Unit,
     onCategorySelectClick: (Long) -> Unit,
     onSelectColorClick: (String) -> Unit,
     onConfirmClick: () -> Unit,
     onDismissClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    setCurrentCategory: (Category) -> Unit
 ) {
     Scaffold(topBar = { CategoriesTopBar() },
         bottomBar = {
@@ -63,7 +66,10 @@ fun CategoriesContent(
                         categoriesTitle = category.title,
                         sizeNote = category.id.toInt(),
                         hexColorCode = category.hexColorCode,
-                        onDeleteCategory = { onDeleteCategoryClick(category) },
+                        onDeleteCategory = {
+                            onToggleDeleteCategoryClick()
+                            setCurrentCategory(category)
+                        },
                         onEditCategory = {
                             onToggleDialogEditClick()
                             onEditCategoryClick(category)
@@ -91,6 +97,15 @@ fun CategoriesContent(
                     onDismissClick = onDismissClick
                 )
             }
+            if (state.showDialogDeleteCategory) {
+                CategoriesDeleteDialog(
+                    onDismissRequest = { onToggleDeleteCategoryClick() },
+                    onConfirmation = {
+                        onDeleteCategoryClick()
+                        onToggleDeleteCategoryClick()
+                    }
+                )
+            }
         }
 
     }
@@ -114,6 +129,8 @@ fun CategoriesContentPreview() {
         onSelectColorClick = {},
         onConfirmClick = {},
         onDismissClick = {},
-        onBackClick = {}
+        onBackClick = {},
+        onToggleDeleteCategoryClick = {},
+        setCurrentCategory = {}
     )
 }

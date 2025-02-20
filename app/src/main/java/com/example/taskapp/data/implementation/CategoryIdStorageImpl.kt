@@ -22,9 +22,13 @@ class CategoryIdStorageImpl(
         return preferences[CATEGORY_ID]
     }
 
-    override suspend fun setId(id: Long) {
+    override suspend fun setId(id: Long?) {
         context.categoryIdStorage.edit { idPreference ->
-            idPreference[CATEGORY_ID] = id
+            if (id == null) {
+                idPreference.remove(CATEGORY_ID)
+            } else {
+                idPreference[CATEGORY_ID] = id
+            }
         }
     }
 }
