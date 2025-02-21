@@ -56,7 +56,7 @@ fun CategoriesDetails(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(LocalDimen.current.categoriesColumnPaddingAll)
+                    .padding(LocalDimen.current.categoriesColumnPaddingVertical)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.file_ui),

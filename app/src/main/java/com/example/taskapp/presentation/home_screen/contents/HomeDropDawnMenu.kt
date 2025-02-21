@@ -3,6 +3,7 @@ package com.example.taskapp.presentation.home_screen.contents
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.example.taskapp.R
 import com.example.taskapp.presentation.home_screen.model.SortParameter
 import com.example.taskapp.ui.theme.LocalDimen
+import com.example.taskapp.ui.theme.LocalProperty
 
 @Composable
 fun HomeDropDawnMenu(
@@ -34,17 +36,40 @@ fun HomeDropDawnMenu(
     selectedSortParameter: SortParameter,
     modifier: Modifier = Modifier
 ) {
-    Box {
+    Box(
+        modifier = Modifier
+            .height(LocalDimen.current.homeBoxHeight)
+            .offset(x = LocalProperty.current.offSetByXRow.dp)
+    ) {
         TextButton(
             onClick = onToggleMenuClick,
-            modifier = Modifier.offset(y = (-12.dp), x = 10.dp)
-        ) {
-            Text(
-                text = stringResource(id = R.string.sort_by_text),
-                fontSize = LocalDimen.current.textCategoriesSortType,
-                fontWeight = FontWeight.Medium,
-                color = Color.Gray
+            modifier = Modifier.offset(
+                y = LocalProperty.current.offSetByYTextButton.dp,
+                x = LocalProperty.current.offSetByXTextButton.dp
             )
+        ) {
+            Row {
+                Text(
+                    text = stringResource(id = R.string.sort_by_text),
+                    fontSize = LocalDimen.current.textCategoriesSortType,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Gray
+                )
+                Icon(
+                    painter = when (selectedSortParameter) {
+                        SortParameter.TITLE -> {
+                            painterResource(id = R.drawable.sort_by_title_ui)
+                        }
+
+                        SortParameter.DATE -> {
+                            painterResource(id = R.drawable.sort_by_date_ui)
+                        }
+                    },
+                    contentDescription = null,
+                    tint = Color.Gray,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
         }
         DropdownMenu(
             expanded = expanded,
@@ -55,12 +80,12 @@ fun HomeDropDawnMenu(
                     text = {
                         Text(
                             text = stringResource(id = item.textId),
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(LocalProperty.current.tenPercent)
                         )
                     },
                     leadingIcon = {
                         Row {
-                            Box(modifier = Modifier.size(24.dp)) {
+                            Box(modifier = Modifier.size(LocalDimen.current.homeBoxSize)) {
                                 if (selectedSortParameter == item) {
                                     Icon(
                                         imageVector = Icons.Default.Check,
@@ -68,7 +93,7 @@ fun HomeDropDawnMenu(
                                     )
                                 }
                             }
-                            Spacer(modifier = Modifier.width(4.dp))
+                            Spacer(modifier = Modifier.width(LocalDimen.current.homeSpacerWidth))
                             Icon(
                                 painter = painterResource(id = item.iconId),
                                 contentDescription = null

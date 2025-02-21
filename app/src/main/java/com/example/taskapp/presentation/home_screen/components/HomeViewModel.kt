@@ -65,7 +65,7 @@ class HomeViewModel @Inject constructor(
                 taskRepository.getInActiveTasks(
                     categoryId = currentCategoryId,
                     sortBy = _state.value.unpinnedSortParameter.parameter,
-                    sortDirection = _state.value.unpinnedSortDirection
+                    sortDirection = _state.value.unpinnedSortDirection.direction
                 ).collect { inActiveTasks ->
                     _state.update { it.copy(inActiveTasks = inActiveTasks) }
                 }
@@ -80,7 +80,7 @@ class HomeViewModel @Inject constructor(
                 taskRepository.getActiveTasks(
                     categoryId = currentCategoryId,
                     sortBy = _state.value.pinnedSortParameter.parameter,
-                    sortDirection = _state.value.pinnedSortDirection
+                    sortDirection = _state.value.pinnedSortDirection.direction
                 )
                     .collect { activeTasks ->
                         _state.update { it.copy(activeTasks = activeTasks) }
@@ -142,7 +142,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    pinnedSortDirection = sortDirection.direction
+                    pinnedSortDirection = sortDirection
                 )
             }
         }
@@ -174,7 +174,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    unpinnedSortDirection = sortDirection.direction
+                    unpinnedSortDirection = sortDirection
                 )
             }
         }

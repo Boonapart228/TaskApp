@@ -48,7 +48,10 @@ fun HomeTaskDetails(
             modifier = Modifier
                 .padding(
                     horizontal = LocalDimen.current.homeDetailsCardHorizontalPadding,
-                    vertical = LocalDimen.current.homeDetailsCardVerticalPadding
+                )
+                .padding(
+                    bottom = LocalDimen.current.homeDetailsCardVerticalPadding,
+                    top = if (pinned) LocalDimen.current.homeDetailsPinnedCardVerticalPadding else LocalDimen.current.homeDetailsUnpinnedCardVerticalPadding
                 )
                 .clickable { onTaskSelectClick() },
             colors = CardDefaults.cardColors(containerColor = Color(parseColor(hexColorCode))),
@@ -59,12 +62,16 @@ fun HomeTaskDetails(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(LocalDimen.current.categoriesColumnPaddingAll)
+                    .padding(
+                        vertical = LocalDimen.current.categoriesColumnPaddingVertical,
+                        horizontal = LocalDimen.current.categoriesColumnPaddingHorizontal
+                    )
             ) {
                 Text(
                     text = title, fontSize = LocalDimen.current.categoriesTextSize,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start,
+                    color = Color.Black,
                     maxLines = 1,
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -73,6 +80,7 @@ fun HomeTaskDetails(
                         text = description,
                         fontSize = LocalDimen.current.categoriesTextSizeSmall,
                         fontWeight = FontWeight.Normal,
+                        color = Color.Black,
                         maxLines = 3,
                         minLines = 3,
                         modifier = Modifier
@@ -88,21 +96,28 @@ fun HomeTaskDetails(
                         Icon(
                             painter = painterResource(id = R.drawable.time_ui),
                             contentDescription = null,
-                            Modifier.size(LocalDimen.current.homeDetailsIconSize)
+                            tint = Color.Black,
+                            modifier = Modifier.size(LocalDimen.current.homeDetailsIconSize)
                         )
                         Text(
                             text = formatTime(), textAlign = TextAlign.Center,
-                            fontSize = LocalDimen.current.homeDetailsDataTextSize
+                            fontSize = LocalDimen.current.homeDetailsDataTextSize,
+                            color = Color.Black
                         )
-                        Text(text = "|", textAlign = TextAlign.Center)
+                        Text(
+                            text = "|", textAlign = TextAlign.Center,
+                            color = Color.Black
+                        )
                         Icon(
                             imageVector = Icons.Default.DateRange, contentDescription = null,
-                            Modifier.size(LocalDimen.current.homeDetailsIconSize)
+                            tint = Color.Black,
+                            modifier = Modifier.size(LocalDimen.current.homeDetailsIconSize)
                         )
                         Text(
                             text = formatDate(),
                             textAlign = TextAlign.Center,
-                            fontSize = LocalDimen.current.homeDetailsDataTextSize
+                            fontSize = LocalDimen.current.homeDetailsDataTextSize,
+                            color = Color.Black
                         )
                     }
                 }
