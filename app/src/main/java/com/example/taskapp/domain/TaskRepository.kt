@@ -11,8 +11,18 @@ interface TaskRepository {
 
     suspend fun delete(task: Task)
 
-    fun getCurrentTasksById(categoryId: Long): Flow<List<Task>>
-
     fun getCurrentTaskById(taskId: Long): Flow<Task>
+
+    fun getActiveTasks(
+        categoryId: Long,
+        sortBy: String,
+        sortDirection: String
+    ): Flow<List<Task>>
+
+    fun getInActiveTasks(
+        categoryId: Long,
+        sortBy: String,
+        sortDirection: String
+    ): Flow<List<Task>>
 
 }

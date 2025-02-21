@@ -21,12 +21,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.R
+import com.example.taskapp.presentation.home_screen.model.SortParameter
 import com.example.taskapp.ui.theme.LocalDimen
 import com.example.taskapp.ui.theme.LocalProperty
 
 @Composable
 fun HomeListBar(
     textId: Int,
+    expanded: Boolean,
+    selectedSortParameter: SortParameter,
+    onAscendingSortClick: () -> Unit,
+    onDescendingSortClick: () -> Unit,
+    onSortByTitleClick: () -> Unit,
+    onSortByDateClick: () -> Unit,
+    onToggleMenuClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -42,10 +50,12 @@ fun HomeListBar(
                 .fillMaxWidth()
                 .weight(LocalProperty.current.ninetyPercent)
         )
-        Text(
-            stringResource(id = R.string.sort_by_text),
-            fontSize = LocalDimen.current.textCategoriesSortType,
-            fontWeight = FontWeight.Medium
+        HomeDropDawnMenu(
+            onToggleMenuClick = onToggleMenuClick,
+            onSortByTitleClick = onSortByTitleClick,
+            onSortByDateClick = onSortByDateClick,
+            selectedSortParameter = selectedSortParameter,
+            expanded = expanded
         )
         Spacer(modifier = Modifier.padding(horizontal = LocalDimen.current.categoriesSpacerHorizontalPadding))
         Column(
@@ -53,7 +63,7 @@ fun HomeListBar(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = onAscendingSortClick,
                 modifier = Modifier.size(LocalDimen.current.categoriesIconButtonSize)
             ) {
                 Icon(
@@ -68,7 +78,7 @@ fun HomeListBar(
                 )
             }
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = onDescendingSortClick,
                 modifier = Modifier.size(LocalDimen.current.categoriesIconButtonSize)
             ) {
                 Icon(
@@ -89,5 +99,12 @@ fun HomeListBar(
 @Composable
 @Preview(showBackground = true)
 fun HomeListBarBarPreview() {
-    HomeListBar(R.string.list_notes_text)
+    HomeListBar(R.string.list_notes_text,
+        expanded = false,
+        selectedSortParameter = SortParameter.DATE,
+        onDescendingSortClick = {},
+        onAscendingSortClick = {},
+        onSortByDateClick = {},
+        onSortByTitleClick = {},
+        onToggleMenuClick = {})
 }

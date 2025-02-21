@@ -7,6 +7,8 @@ import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.DateTimeFormatter
 import com.example.taskapp.domain.TaskIdStorage
 import com.example.taskapp.domain.TaskRepository
+import com.example.taskapp.presentation.home_screen.model.SortDirection
+import com.example.taskapp.presentation.home_screen.model.SortParameter
 import com.example.taskapp.presentation.navigation.model.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -38,19 +40,51 @@ class HomeViewModel @Inject constructor(
     val messageEvent = _messageEvent.asSharedFlow()
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            val currentCategoryId = categoryIdStorage.getId()
-            if (currentCategoryId != null) {
-                taskRepository.getCurrentTasksById(currentCategoryId).collect { tasks ->
-                    _state.update { it.copy(tasks = tasks) }
-                }
-            }
-        }
+        getActiveTasks()
+
+        getInActiveTasks()
+
+        getGridColumns()
+    }
+
+    private fun getGridColumns() {
         viewModelScope.launch(Dispatchers.IO) {
             _state.update {
                 it.copy(
                     gridColumns = appSettings.getGridColumns()
                 )
+            }
+        }
+    }
+
+
+    private fun getInActiveTasks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentCategoryId = categoryIdStorage.getId()
+            if (currentCategoryId != null) {
+                taskRepository.getInActiveTasks(
+                    categoryId = currentCategoryId,
+                    sortBy = _state.value.unpinnedSortParameter.parameter,
+                    sortDirection = _state.value.unpinnedSortDirection
+                ).collect { inActiveTasks ->
+                    _state.update { it.copy(inActiveTasks = inActiveTasks) }
+                }
+            }
+        }
+    }
+
+    private fun getActiveTasks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentCategoryId = categoryIdStorage.getId()
+            if (currentCategoryId != null) {
+                taskRepository.getActiveTasks(
+                    categoryId = currentCategoryId,
+                    sortBy = _state.value.pinnedSortParameter.parameter,
+                    sortDirection = _state.value.pinnedSortDirection
+                )
+                    .collect { activeTasks ->
+                        _state.update { it.copy(activeTasks = activeTasks) }
+                    }
             }
         }
     }
@@ -101,6 +135,70 @@ class HomeViewModel @Inject constructor(
             Screens.HOME_SCREEN -> {}
             Screens.CATEGORIES_SCREEN -> viewModelScope.launch { _event.emit(HomeNavigationEvent.NavigationToCategories) }
             Screens.TASK_EDITOR_SCREEN -> viewModelScope.launch { _event.emit(HomeNavigationEvent.NavigationToTaskEditor) }
+        }
+    }
+
+    fun onPinnedDirectionChange(sortDirection: SortDirection) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    pinnedSortDirection = sortDirection.direction
+                )
+            }
+        }
+        getActiveTasks()
+    }
+
+    fun onPinnedSortParameterChange(sortParameter: SortParameter) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    pinnedSortParameter = sortParameter
+                )
+            }
+        }
+        getActiveTasks()
+    }
+
+    fun onTogglePinnedMenuClick() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    showPinnedSortDialog = !it.showPinnedSortDialog
+                )
+            }
+        }
+    }
+
+    fun onUnPinnedDirectionChange(sortDirection: SortDirection) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    unpinnedSortDirection = sortDirection.direction
+                )
+            }
+        }
+        getInActiveTasks()
+    }
+
+    fun onUnPinnedSortParameterChange(sortParameter: SortParameter) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    unpinnedSortParameter = sortParameter
+                )
+            }
+        }
+        getInActiveTasks()
+    }
+
+    fun onToggleUnPinnedMenuClick() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    showUnpinnedSortDialog = !it.showUnpinnedSortDialog
+                )
+            }
         }
     }
 }

@@ -53,6 +53,12 @@ fun HomeScreen(
         formatTime = viewModel::formatTime,
         onChangeGridColumnsClick = viewModel::onChangeGridColumnsClick,
         onTaskSelectClick = viewModel::onTaskSelectClick,
-        onNavigateToTaskEditorClick = viewModel::onNavigateToTaskEditorClick
+        onNavigateToTaskEditorClick = viewModel::onNavigateToTaskEditorClick,
+        onPinnedDirectionChange = viewModel::onPinnedDirectionChange,
+        onPinnedSortParameterChange = viewModel::onPinnedSortParameterChange,
+        onTogglePinnedMenuClick = viewModel::onTogglePinnedMenuClick,
+        onUnPinnedDirectionChange = viewModel::onUnPinnedDirectionChange,
+        onUnPinnedSortParameterChange = viewModel::onUnPinnedSortParameterChange,
+        onToggleUnPinnedMenuClick = viewModel::onToggleUnPinnedMenuClick
     )
 }
