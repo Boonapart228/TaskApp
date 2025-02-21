@@ -16,11 +16,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.taskapp.R
+import com.example.taskapp.presentation.home_screen.model.SortDirection
 import com.example.taskapp.presentation.home_screen.model.SortParameter
 import com.example.taskapp.ui.theme.LocalDimen
 import com.example.taskapp.ui.theme.LocalProperty
@@ -30,6 +33,7 @@ fun HomeListBar(
     textId: Int,
     expanded: Boolean,
     selectedSortParameter: SortParameter,
+    selectedSortDirection: SortDirection,
     onAscendingSortClick: () -> Unit,
     onDescendingSortClick: () -> Unit,
     onSortByTitleClick: () -> Unit,
@@ -63,33 +67,37 @@ fun HomeListBar(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             IconButton(
-                onClick = onAscendingSortClick,
-                modifier = Modifier.size(LocalDimen.current.categoriesIconButtonSize)
+                onClick = onDescendingSortClick,
+                modifier = Modifier
+                    .size(LocalDimen.current.iconSortButtonSize)
+                    .offset(y = LocalProperty.current.offSetByYAscendingIconButton.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = null,
+                    tint = if (selectedSortDirection == SortDirection.DESCENDING) Color.Green else Color.Red,
                     modifier = Modifier
-                        .size(LocalDimen.current.categoriesIconSize)
                         .graphicsLayer(
                             rotationZ = LocalProperty.current.rotation270
                         )
-                        .offset(x = (-LocalDimen.current.categoriesIconOffset))
+
                 )
             }
             IconButton(
-                onClick = onDescendingSortClick,
-                modifier = Modifier.size(LocalDimen.current.categoriesIconButtonSize)
+                onClick = onAscendingSortClick,
+                modifier = Modifier
+                    .size(LocalDimen.current.iconSortButtonSize)
+                    .offset(y = LocalProperty.current.offSetByYDescendingIconButton.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = null,
+                    tint = if (selectedSortDirection == SortDirection.ASCENDING) Color.Green else Color.Red,
                     modifier = Modifier
-                        .size(LocalDimen.current.categoriesIconSize)
                         .graphicsLayer(
                             rotationZ = LocalProperty.current.rotation90
                         )
-                        .offset(x = (-LocalDimen.current.categoriesIconOffset))
+                        .offset(x = LocalProperty.current.offSetByXDescendingIcon.dp)
                 )
             }
         }
@@ -106,5 +114,6 @@ fun HomeListBarBarPreview() {
         onAscendingSortClick = {},
         onSortByDateClick = {},
         onSortByTitleClick = {},
-        onToggleMenuClick = {})
+        onToggleMenuClick = {},
+        selectedSortDirection = SortDirection.ASCENDING)
 }
