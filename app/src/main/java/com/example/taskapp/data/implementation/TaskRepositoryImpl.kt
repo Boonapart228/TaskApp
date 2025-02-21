@@ -24,12 +24,31 @@ class TaskRepositoryImpl(
         taskDao.update(taskEntity = task.toTaskEntity())
     }
 
-    override fun getCurrentTasksById(categoryId: Long): Flow<List<Task>> =
-        taskDao.getCurrentTasksById(categoryId = categoryId)
-            .map { list -> list.map { it.toTask() } }
-
     override fun getCurrentTaskById(taskId: Long): Flow<Task> =
         taskDao.getCurrentTaskById(taskId = taskId)
             .filterNotNull()
             .map { it.toTask() }
+
+    override fun getActiveTasks(
+        categoryId: Long,
+        sortBy: String,
+        sortDirection: String
+    ): Flow<List<Task>> =
+        taskDao.getActiveTasks(
+            categoryId = categoryId,
+            sortBy = sortBy,
+            sortDirection = sortDirection
+        ).map { list -> list.map { it.toTask() } }
+
+    override fun getInActiveTasks(
+        categoryId: Long,
+        sortBy: String,
+        sortDirection: String
+    ): Flow<List<Task>> =
+        taskDao.getInActiveTasks(
+            categoryId = categoryId,
+            sortBy = sortBy,
+            sortDirection = sortDirection
+        ).map { list -> list.map { it.toTask() } }
+
 }

@@ -23,6 +23,8 @@ import com.example.taskapp.presentation.bottom_bar.BottomBar
 import com.example.taskapp.presentation.home_screen.contents.HomeListBar
 import com.example.taskapp.presentation.home_screen.contents.HomeTaskDetails
 import com.example.taskapp.presentation.home_screen.contents.HomeTopBar
+import com.example.taskapp.presentation.home_screen.model.SortDirection
+import com.example.taskapp.presentation.home_screen.model.SortParameter
 import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.ui.theme.LocalDimen
 
@@ -32,10 +34,16 @@ fun HomeContent(
     state: HomeState,
     onNavigationClick: (Screens) -> Unit,
     onChangeGridColumnsClick: () -> Unit,
+    onTogglePinnedMenuClick: () -> Unit,
+    onToggleUnPinnedMenuClick: () -> Unit,
+    onNavigateToTaskEditorClick: () -> Unit,
     formatTime: (Long) -> String,
     formatDate: (Long) -> String,
     onTaskSelectClick: (Long) -> Unit,
-    onNavigateToTaskEditorClick: () -> Unit
+    onPinnedDirectionChange: (SortDirection) -> Unit,
+    onPinnedSortParameterChange: (SortParameter) -> Unit,
+    onUnPinnedDirectionChange: (SortDirection) -> Unit,
+    onUnPinnedSortParameterChange: (SortParameter) -> Unit
 ) {
     Scaffold(topBar = {
         HomeTopBar(
@@ -64,13 +72,22 @@ fun HomeContent(
                 .padding(innerPadding)
                 .padding(top = LocalDimen.current.homeColumnPaddingTop)
         ) {
-            HomeListBar(textId = R.string.pinned_notes_text)
+            HomeListBar(
+                textId = R.string.pinned_notes_text,
+                expanded = state.showPinnedSortDialog,
+                selectedSortParameter = state.pinnedSortParameter,
+                onAscendingSortClick = { onPinnedDirectionChange(SortDirection.ASCENDING) },
+                onDescendingSortClick = { onPinnedDirectionChange(SortDirection.DESCENDING) },
+                onSortByDateClick = { onPinnedSortParameterChange(SortParameter.DATE) },
+                onSortByTitleClick = { onPinnedSortParameterChange(SortParameter.TITLE) },
+                onToggleMenuClick = onTogglePinnedMenuClick
+            )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(state.gridColumns),
                 contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding),
                 modifier = Modifier.height(LocalDimen.current.lazyVerticalGridHeight)
             ) {
-                items(state.tasks.filter { it.isActive }) {
+                items(state.activeTasks) {
                     HomeTaskDetails(
                         title = it.title,
                         description = it.description,
@@ -83,12 +100,20 @@ fun HomeContent(
                 }
             }
             Spacer(modifier = Modifier.padding(top = LocalDimen.current.homeSpacerPaddingTop))
-            HomeListBar(textId = R.string.list_notes_text)
+            HomeListBar(
+                textId = R.string.list_notes_text,
+                expanded = state.showUnpinnedSortDialog,
+                selectedSortParameter = state.unpinnedSortParameter,
+                onAscendingSortClick = { onUnPinnedDirectionChange(SortDirection.ASCENDING) },
+                onDescendingSortClick = { onUnPinnedDirectionChange(SortDirection.DESCENDING) },
+                onSortByDateClick = { onUnPinnedSortParameterChange(SortParameter.DATE) },
+                onSortByTitleClick = { onUnPinnedSortParameterChange(SortParameter.TITLE) },
+                onToggleMenuClick = { onToggleUnPinnedMenuClick() })
             LazyVerticalGrid(
                 columns = GridCells.Fixed(state.gridColumns),
                 contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding)
             ) {
-                items(state.tasks.filter { !it.isActive }) {
+                items(state.inActiveTasks) {
                     HomeTaskDetails(
                         title = it.title,
                         description = it.description,
@@ -115,5 +140,11 @@ fun HomeContentPreview() {
         formatDate = { "" },
         onChangeGridColumnsClick = {},
         onTaskSelectClick = {},
-        onNavigateToTaskEditorClick = {})
+        onNavigateToTaskEditorClick = {},
+        onPinnedDirectionChange = {},
+        onTogglePinnedMenuClick = {},
+        onPinnedSortParameterChange = {},
+        onToggleUnPinnedMenuClick = {},
+        onUnPinnedDirectionChange = {},
+        onUnPinnedSortParameterChange = {})
 }

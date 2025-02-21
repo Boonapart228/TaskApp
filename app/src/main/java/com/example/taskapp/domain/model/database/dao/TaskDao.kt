@@ -19,10 +19,54 @@ interface TaskDao {
     @Delete
     suspend fun delete(taskEntity: TaskEntity)
 
-    @Query("SELECT * FROM task_table WHERE categoryId = :categoryId")
-    fun getCurrentTasksById(categoryId: Long): Flow<List<TaskEntity>>
-
     @Query("SELECT * FROM task_table WHERE id = :taskId")
     fun getCurrentTaskById(taskId: Long): Flow<TaskEntity>
 
+
+    @Query(
+        "SELECT * FROM task_table " +
+                "WHERE categoryId = :categoryId AND isActive = 1 " +
+                "ORDER BY " +
+                "CASE WHEN :sortDirection = 'ASC' THEN " +
+                "(CASE :sortBy " +
+                "WHEN 'title' THEN LOWER(title) " +
+                "WHEN 'date' Then createdAt " +
+                "ELSE NULL END) " +
+                "END ASC, " +
+                "CASE WHEN :sortDirection = 'DESC' THEN " +
+                "(CASE :sortBy " +
+                "WHEN 'title' THEN LOWER(title) " +
+                "WHEN 'date' Then createdAt " +
+                "ELSE NULL END) " +
+                "END DESC"
+    )
+    fun getActiveTasks(
+        categoryId: Long,
+        sortBy: String,
+        sortDirection: String
+    ): Flow<List<TaskEntity>>
+
+
+    @Query(
+        "SELECT * FROM task_table " +
+                "WHERE categoryId = :categoryId AND isActive = 0 " +
+                "ORDER BY " +
+                "CASE WHEN :sortDirection = 'ASC' THEN " +
+                "(CASE :sortBy " +
+                "WHEN 'title' THEN LOWER(title) " +
+                "WHEN 'date' Then createdAt " +
+                "ELSE NULL END) " +
+                "END ASC, " +
+                "CASE WHEN :sortDirection = 'DESC' THEN " +
+                "(CASE :sortBy " +
+                "WHEN 'title' THEN LOWER(title) " +
+                "WHEN 'date' Then createdAt " +
+                "ELSE NULL END) " +
+                "END DESC"
+    )
+    fun getInActiveTasks(
+        categoryId: Long,
+        sortBy: String,
+        sortDirection: String
+    ): Flow<List<TaskEntity>>
 }

@@ -40,5 +40,7 @@
     <string name="category_title_empty_text">Category title cannot be empty</string>
     <string name="choose_category_text">Choose category</string>
     <string name="choose_color_text">Choose color</string>
+    <string name="sort_by_title_text">Title</string>
+    <string name="sort_by_date_text">Date</string>
     <string name="empty_text" />
 </resources>
