@@ -3,8 +3,8 @@ package com.example.taskapp.data.implementation
 import com.example.taskapp.domain.TaskRepository
 import com.example.taskapp.domain.model.Task
 import com.example.taskapp.domain.model.database.dao.TaskDao
-import com.example.taskapp.domain.model.database.toTask
-import com.example.taskapp.domain.model.database.toTaskEntity
+import com.example.taskapp.domain.model.database.entity.toTask
+import com.example.taskapp.domain.model.database.entity.toTaskEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map

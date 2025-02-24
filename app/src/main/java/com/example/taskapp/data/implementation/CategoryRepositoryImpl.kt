@@ -3,8 +3,8 @@ package com.example.taskapp.data.implementation
 import com.example.taskapp.domain.CategoryRepository
 import com.example.taskapp.domain.model.Category
 import com.example.taskapp.domain.model.database.dao.CategoryDao
-import com.example.taskapp.domain.model.database.toCategory
-import com.example.taskapp.domain.model.database.toCategoryEntity
+import com.example.taskapp.domain.model.database.entity.toCategory
+import com.example.taskapp.domain.model.database.entity.toCategoryEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

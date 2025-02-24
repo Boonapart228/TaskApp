@@ -1,4 +1,4 @@
-package com.example.taskapp.domain.model.database
+package com.example.taskapp.domain.model.database.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -12,7 +12,7 @@ import com.example.taskapp.domain.model.Task
             entity = CategoryEntity::class,
             parentColumns = ["id"],
             childColumns = ["categoryId"],
-            onDelete = ForeignKey.CASCADE // Якщо видалимо категорію, її завдання теж видаляться
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )
