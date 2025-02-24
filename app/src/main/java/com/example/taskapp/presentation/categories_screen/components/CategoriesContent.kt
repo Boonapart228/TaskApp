@@ -10,13 +10,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.taskapp.domain.model.Category
 import com.example.taskapp.presentation.bottom_bar.BottomBar
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesAddButton
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesColorPicker
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesDeleteDialog
-import com.example.taskapp.presentation.categories_screen.contents.CategoriesDialog
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesDetails
+import com.example.taskapp.presentation.categories_screen.contents.CategoriesDialog
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesListBar
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesTopBar
 import com.example.taskapp.presentation.navigation.model.Screens
@@ -31,7 +30,7 @@ fun CategoriesContent(
     handleCategory: () -> Unit,
     clearCategoryTitle: () -> Unit,
     onDeleteCategoryClick: () -> Unit,
-    onEditCategoryClick: (Category) -> Unit,
+    onEditCategoryClick: (Long) -> Unit,
     onToggleDialogEditClick: () -> Unit,
     onToggleDeleteCategoryClick: () -> Unit,
     onCategorySelectClick: (Long) -> Unit,
@@ -39,7 +38,7 @@ fun CategoriesContent(
     onConfirmClick: () -> Unit,
     onDismissClick: () -> Unit,
     onBackClick: () -> Unit,
-    setCurrentCategory: (Category) -> Unit
+    setCurrentCategory: (Long) -> Unit
 ) {
     Scaffold(topBar = { CategoriesTopBar() },
         bottomBar = {
@@ -63,18 +62,20 @@ fun CategoriesContent(
                 ) {
                 items(state.categories) { category ->
                     CategoriesDetails(
-                        categoriesTitle = category.title,
-                        sizeNote = category.id.toInt(),
-                        hexColorCode = category.hexColorCode,
+                        categoriesTitle = category.categoryTitle,
+                        sizeNote = category.taskCount,
+                        hexColorCode = category.categoryHexColorCode,
                         onDeleteCategory = {
                             onToggleDeleteCategoryClick()
-                            setCurrentCategory(category)
+                            setCurrentCategory(category.categoryId)
                         },
                         onEditCategory = {
                             onToggleDialogEditClick()
-                            onEditCategoryClick(category)
+                            onEditCategoryClick(category.categoryId)
                         },
-                        onCategorySelectClick = { onCategorySelectClick(category.id) }
+                        onCategorySelectClick = {
+                            onCategorySelectClick(category.categoryId)
+                        }
                     )
                 }
             }
