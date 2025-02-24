@@ -5,7 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.taskapp.domain.model.database.CategoryEntity
+import com.example.taskapp.domain.model.database.entity.CategoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
