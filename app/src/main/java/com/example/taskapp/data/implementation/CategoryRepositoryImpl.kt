@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.map
 
 class CategoryRepositoryImpl(private val categoryDao: CategoryDao) : CategoryRepository {
 
-    override  fun getAllCategories(): Flow<List<Category>> =
+    override fun getAllCategories(): Flow<List<Category>> =
         categoryDao.getAllCategories().map { list -> list.map { it.toCategory() } }
 
     override suspend fun createCategory(category: Category) =
@@ -21,4 +21,7 @@ class CategoryRepositoryImpl(private val categoryDao: CategoryDao) : CategoryRep
 
     override suspend fun updateCategory(category: Category) =
         categoryDao.update(category.toCategoryEntity())
+
+    override fun getCategoryById(categoryId: Long): Category? =
+        categoryDao.getCategoryById(categoryId = categoryId)?.toCategory()
 }

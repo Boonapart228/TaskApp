@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.CategoryRepository
+import com.example.taskapp.domain.CategoryTaskRepository
 import com.example.taskapp.domain.constants.ColorItems
 import com.example.taskapp.domain.model.Category
 import com.example.taskapp.presentation.categories_screen.model.CategoryOperation
@@ -22,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
+    private val categoryTaskRepository: CategoryTaskRepository,
     private val categoryIdStorage: CategoryIdStorage
 ) : ViewModel() {
 
@@ -36,7 +38,7 @@ class CategoriesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            categoryRepository.getAllCategories().collect { categories ->
+            categoryTaskRepository.getCategoryTaskCounts().collect { categories ->
                 _state.update { it.copy(categories = categories) }
             }
         }
@@ -96,14 +98,19 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    fun onEditCategoryClick(category: Category) {
+    fun onEditCategoryClick(categoryId: Long) {
         viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    categoryTitle = category.title,
-                    hexColorCode = category.hexColorCode,
-                    currentCategory = category
-                )
+            val category = withContext(Dispatchers.IO) {
+                categoryRepository.getCategoryById(categoryId)
+            }
+            if (category != null) {
+                _state.update {
+                    it.copy(
+                        categoryTitle = category.title,
+                        hexColorCode = category.hexColorCode,
+                        currentCategory = category
+                    )
+                }
             }
         }
     }
@@ -234,12 +241,16 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
-    fun setCurrentCategory(category: Category?) {
+    fun setCurrentCategory(categoryId: Long) {
         viewModelScope.launch {
-            _state.update {
-                it.copy(currentCategory = category)
+            val category = withContext(Dispatchers.IO) {
+                categoryRepository.getCategoryById(categoryId)
+            }
+            if (category != null) {
+                _state.update {
+                    it.copy(currentCategory = category)
+                }
             }
         }
     }
-
 }
