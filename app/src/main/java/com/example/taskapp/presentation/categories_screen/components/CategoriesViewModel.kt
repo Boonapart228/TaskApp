@@ -214,6 +214,7 @@ class CategoriesViewModel @Inject constructor(
             Screens.HOME_SCREEN -> viewModelScope.launch { _event.emit(CategoriesNavigationEvent.NavigationToHome) }
             Screens.CATEGORIES_SCREEN -> {}
             Screens.TASK_EDITOR_SCREEN -> {}
+            Screens.SETTING_SCREEN -> {}
         }
     }
 

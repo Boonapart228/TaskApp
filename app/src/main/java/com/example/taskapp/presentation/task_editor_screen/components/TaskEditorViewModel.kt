@@ -93,6 +93,7 @@ class TaskEditorViewModel @Inject constructor(
 
             Screens.CATEGORIES_SCREEN -> {}
             Screens.TASK_EDITOR_SCREEN -> {}
+            Screens.SETTING_SCREEN -> {}
         }
     }
 

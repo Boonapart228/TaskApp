@@ -38,7 +38,8 @@ import com.example.taskapp.ui.theme.LocalProperty
 
 @Composable
 fun HomeTopBar(
-    onChangeGridColumnsClick: () -> Unit
+    onChangeGridColumnsClick: () -> Unit,
+    onNavigateToSettingScreen: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -76,7 +77,7 @@ fun HomeTopBar(
                 )
             }
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = onNavigateToSettingScreen,
                 modifier = Modifier.weight(LocalProperty.current.tenPercent)
             ) {
                 Icon(
@@ -143,7 +144,8 @@ fun SegmentedControl() {
 fun HomeTopBarPreview() {
     AppTheme(dynamicColor = false) {
         HomeTopBar(
-            onChangeGridColumnsClick = {}
+            onChangeGridColumnsClick = {},
+            onNavigateToSettingScreen = {}
         )
     }
 }

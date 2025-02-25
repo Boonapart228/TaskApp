@@ -9,6 +9,7 @@ val LocalProperty = compositionLocalOf {
 data class Property(
     val tenPercent: Float = 1f,
     val eightyPercent: Float = 8f,
+    val twentyPercent : Float = 2f,
     val rotation270: Float = 270f,
     val rotation90: Float = 90f,
     val ninetyPercent: Float = 9f,
