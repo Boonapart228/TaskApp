@@ -73,5 +73,6 @@ data class Dimensions(
     val iconSortButtonSize: Dp = 16.dp,
     val homeBoxHeight: Dp = 40.dp,
     val homeBoxSize: Dp = 24.dp,
-    val homeSpacerWidth: Dp = 4.dp
+    val homeSpacerWidth: Dp = 4.dp,
+    val selectedIconSize : Dp = 20.dp
 )

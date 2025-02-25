@@ -23,8 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskapp.R
-import com.example.taskapp.presentation.home_screen.model.SortDirection
-import com.example.taskapp.presentation.home_screen.model.SortParameter
+import com.example.taskapp.domain.constants.SortDirection
+import com.example.taskapp.presentation.home_screen.model.HomeSortParameter
 import com.example.taskapp.ui.theme.LocalDimen
 import com.example.taskapp.ui.theme.LocalProperty
 
@@ -32,7 +32,7 @@ import com.example.taskapp.ui.theme.LocalProperty
 fun HomeListBar(
     textId: Int,
     expanded: Boolean,
-    selectedSortParameter: SortParameter,
+    selectedHomeSortParameter: HomeSortParameter,
     selectedSortDirection: SortDirection,
     onAscendingSortClick: () -> Unit,
     onDescendingSortClick: () -> Unit,
@@ -58,7 +58,7 @@ fun HomeListBar(
             onToggleMenuClick = onToggleMenuClick,
             onSortByTitleClick = onSortByTitleClick,
             onSortByDateClick = onSortByDateClick,
-            selectedSortParameter = selectedSortParameter,
+            selectedHomeSortParameter = selectedHomeSortParameter,
             expanded = expanded
         )
         Spacer(modifier = Modifier.padding(horizontal = LocalDimen.current.categoriesSpacerHorizontalPadding))
@@ -67,7 +67,7 @@ fun HomeListBar(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             IconButton(
-                onClick = onDescendingSortClick,
+                onClick = onAscendingSortClick,
                 modifier = Modifier
                     .size(LocalDimen.current.iconSortButtonSize)
                     .offset(y = LocalProperty.current.offSetByYAscendingIconButton.dp)
@@ -75,7 +75,7 @@ fun HomeListBar(
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = null,
-                    tint = if (selectedSortDirection == SortDirection.DESCENDING) Color.Green else Color.Red,
+                    tint = if (selectedSortDirection == SortDirection.ASCENDING) Color.Green else Color.Red,
                     modifier = Modifier
                         .graphicsLayer(
                             rotationZ = LocalProperty.current.rotation270
@@ -84,7 +84,7 @@ fun HomeListBar(
                 )
             }
             IconButton(
-                onClick = onAscendingSortClick,
+                onClick = onDescendingSortClick,
                 modifier = Modifier
                     .size(LocalDimen.current.iconSortButtonSize)
                     .offset(y = LocalProperty.current.offSetByYDescendingIconButton.dp)
@@ -92,7 +92,7 @@ fun HomeListBar(
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = null,
-                    tint = if (selectedSortDirection == SortDirection.ASCENDING) Color.Green else Color.Red,
+                    tint = if (selectedSortDirection == SortDirection.DESCENDING) Color.Green else Color.Red,
                     modifier = Modifier
                         .graphicsLayer(
                             rotationZ = LocalProperty.current.rotation90
@@ -109,7 +109,7 @@ fun HomeListBar(
 fun HomeListBarBarPreview() {
     HomeListBar(R.string.list_notes_text,
         expanded = false,
-        selectedSortParameter = SortParameter.DATE,
+        selectedHomeSortParameter = HomeSortParameter.DATE,
         onDescendingSortClick = {},
         onAscendingSortClick = {},
         onSortByDateClick = {},

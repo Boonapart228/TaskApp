@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.taskapp.R
 import com.example.taskapp.presentation.bottom_bar.BottomBar
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesAddButton
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesColorPicker
@@ -18,6 +19,8 @@ import com.example.taskapp.presentation.categories_screen.contents.CategoriesDet
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesDialog
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesListBar
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesTopBar
+import com.example.taskapp.presentation.categories_screen.model.CategorySortParameter
+import com.example.taskapp.domain.constants.SortDirection
 import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.ui.theme.LocalDimen
 
@@ -38,7 +41,10 @@ fun CategoriesContent(
     onConfirmClick: () -> Unit,
     onDismissClick: () -> Unit,
     onBackClick: () -> Unit,
-    setCurrentCategory: (Long) -> Unit
+    setCurrentCategory: (Long) -> Unit,
+    onCategoryDirectionChange: (SortDirection) -> Unit,
+    onCategorySortParameterChange: (CategorySortParameter) -> Unit,
+    onToggleCategoryMenuClick: () -> Unit
 ) {
     Scaffold(topBar = { CategoriesTopBar() },
         bottomBar = {
@@ -51,7 +57,17 @@ fun CategoriesContent(
             CategoriesAddButton(
                 onToggleDialogClick = onToggleDialogCreateClick
             )
-            CategoriesListBar()
+            CategoriesListBar(
+                textId = R.string.categories_list_text,
+                expanded = state.showDialogCategorySort,
+                selectedSortParameter = state.categorySortParameter,
+                selectedSortDirection = state.categorySortDirection,
+                onAscendingSortClick = { onCategoryDirectionChange(SortDirection.ASCENDING) },
+                onDescendingSortClick = { onCategoryDirectionChange(SortDirection.DESCENDING) },
+                onSortByNoteCountClick = { onCategorySortParameterChange(CategorySortParameter.NOTE) },
+                onSortByTitleClick = { onCategorySortParameterChange(CategorySortParameter.TITLE) },
+                onToggleMenuClick = { onToggleCategoryMenuClick() }
+            )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(
@@ -132,6 +148,9 @@ fun CategoriesContentPreview() {
         onDismissClick = {},
         onBackClick = {},
         onToggleDeleteCategoryClick = {},
-        setCurrentCategory = {}
+        setCurrentCategory = {},
+        onCategoryDirectionChange = {},
+        onToggleCategoryMenuClick = {},
+        onCategorySortParameterChange = {}
     )
 }

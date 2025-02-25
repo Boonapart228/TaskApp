@@ -9,7 +9,13 @@ import kotlinx.coroutines.flow.map
 
 class CategoryTaskRepositoryImpl(private val categoryTaskDao: CategoryTaskDao) :
     CategoryTaskRepository {
-    override fun getCategoryTaskCounts(): Flow<List<CategoryTaskManager>> =
-        categoryTaskDao.getCategoryTaskCounts()
+    override fun getCategoryTaskCounts(
+        sortBy: String,
+        sortDirection: String
+    ): Flow<List<CategoryTaskManager>> =
+        categoryTaskDao.getCategoryTaskCounts(
+            sortBy = sortBy,
+            sortDirection = sortDirection
+        )
             .map { list -> list.map { it.toCategoryTaskManager() } }
 }

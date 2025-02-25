@@ -7,8 +7,8 @@ import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.DateTimeFormatter
 import com.example.taskapp.domain.TaskIdStorage
 import com.example.taskapp.domain.TaskRepository
-import com.example.taskapp.presentation.home_screen.model.SortDirection
-import com.example.taskapp.presentation.home_screen.model.SortParameter
+import com.example.taskapp.domain.constants.SortDirection
+import com.example.taskapp.presentation.home_screen.model.HomeSortParameter
 import com.example.taskapp.presentation.navigation.model.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -64,7 +64,7 @@ class HomeViewModel @Inject constructor(
             if (currentCategoryId != null) {
                 taskRepository.getInActiveTasks(
                     categoryId = currentCategoryId,
-                    sortBy = _state.value.unpinnedSortParameter.parameter,
+                    sortBy = _state.value.unpinnedHomeSortParameter.parameter,
                     sortDirection = _state.value.unpinnedSortDirection.direction
                 ).collect { inActiveTasks ->
                     _state.update { it.copy(inActiveTasks = inActiveTasks) }
@@ -79,7 +79,7 @@ class HomeViewModel @Inject constructor(
             if (currentCategoryId != null) {
                 taskRepository.getActiveTasks(
                     categoryId = currentCategoryId,
-                    sortBy = _state.value.pinnedSortParameter.parameter,
+                    sortBy = _state.value.pinnedHomeSortParameter.parameter,
                     sortDirection = _state.value.pinnedSortDirection.direction
                 )
                     .collect { activeTasks ->
@@ -149,11 +149,11 @@ class HomeViewModel @Inject constructor(
         getActiveTasks()
     }
 
-    fun onPinnedSortParameterChange(sortParameter: SortParameter) {
+    fun onPinnedSortParameterChange(homeSortParameter: HomeSortParameter) {
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    pinnedSortParameter = sortParameter
+                    pinnedHomeSortParameter = homeSortParameter
                 )
             }
         }
@@ -181,11 +181,11 @@ class HomeViewModel @Inject constructor(
         getInActiveTasks()
     }
 
-    fun onUnPinnedSortParameterChange(sortParameter: SortParameter) {
+    fun onUnPinnedSortParameterChange(homeSortParameter: HomeSortParameter) {
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    unpinnedSortParameter = sortParameter
+                    unpinnedHomeSortParameter = homeSortParameter
                 )
             }
         }

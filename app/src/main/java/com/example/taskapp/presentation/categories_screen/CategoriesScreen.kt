@@ -87,6 +87,9 @@ fun CategoriesScreen(
         onDismissClick = viewModel::onDismissClick,
         onBackClick = viewModel::onBackClick,
         onToggleDeleteCategoryClick = viewModel::onToggleDeleteCategoryClick,
-        setCurrentCategory = viewModel::setCurrentCategory
+        setCurrentCategory = viewModel::setCurrentCategory,
+        onCategoryDirectionChange = viewModel::onCategoryDirectionChange,
+        onCategorySortParameterChange = viewModel::onCategorySortParameterChange,
+        onToggleCategoryMenuClick = viewModel::onToggleCategoryMenuClick
     )
 }

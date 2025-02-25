@@ -23,8 +23,8 @@ import com.example.taskapp.presentation.bottom_bar.BottomBar
 import com.example.taskapp.presentation.home_screen.contents.HomeListBar
 import com.example.taskapp.presentation.home_screen.contents.HomeTaskDetails
 import com.example.taskapp.presentation.home_screen.contents.HomeTopBar
-import com.example.taskapp.presentation.home_screen.model.SortDirection
-import com.example.taskapp.presentation.home_screen.model.SortParameter
+import com.example.taskapp.domain.constants.SortDirection
+import com.example.taskapp.presentation.home_screen.model.HomeSortParameter
 import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.ui.theme.LocalDimen
 
@@ -41,9 +41,9 @@ fun HomeContent(
     formatDate: (Long) -> String,
     onTaskSelectClick: (Long) -> Unit,
     onPinnedDirectionChange: (SortDirection) -> Unit,
-    onPinnedSortParameterChange: (SortParameter) -> Unit,
+    onPinnedSortParameterChange: (HomeSortParameter) -> Unit,
     onUnPinnedDirectionChange: (SortDirection) -> Unit,
-    onUnPinnedSortParameterChange: (SortParameter) -> Unit
+    onUnPinnedSortParameterChange: (HomeSortParameter) -> Unit
 ) {
     Scaffold(topBar = {
         HomeTopBar(
@@ -75,12 +75,12 @@ fun HomeContent(
             HomeListBar(
                 textId = R.string.pinned_notes_text,
                 expanded = state.showPinnedSortDialog,
-                selectedSortParameter = state.pinnedSortParameter,
+                selectedHomeSortParameter = state.pinnedHomeSortParameter,
                 selectedSortDirection = state.pinnedSortDirection,
                 onAscendingSortClick = { onPinnedDirectionChange(SortDirection.ASCENDING) },
                 onDescendingSortClick = { onPinnedDirectionChange(SortDirection.DESCENDING) },
-                onSortByDateClick = { onPinnedSortParameterChange(SortParameter.DATE) },
-                onSortByTitleClick = { onPinnedSortParameterChange(SortParameter.TITLE) },
+                onSortByDateClick = { onPinnedSortParameterChange(HomeSortParameter.DATE) },
+                onSortByTitleClick = { onPinnedSortParameterChange(HomeSortParameter.TITLE) },
                 onToggleMenuClick = onTogglePinnedMenuClick
             )
             LazyVerticalGrid(
@@ -104,12 +104,12 @@ fun HomeContent(
             HomeListBar(
                 textId = R.string.list_notes_text,
                 expanded = state.showUnpinnedSortDialog,
-                selectedSortParameter = state.unpinnedSortParameter,
+                selectedHomeSortParameter = state.unpinnedHomeSortParameter,
                 selectedSortDirection = state.unpinnedSortDirection,
                 onAscendingSortClick = { onUnPinnedDirectionChange(SortDirection.ASCENDING) },
                 onDescendingSortClick = { onUnPinnedDirectionChange(SortDirection.DESCENDING) },
-                onSortByDateClick = { onUnPinnedSortParameterChange(SortParameter.DATE) },
-                onSortByTitleClick = { onUnPinnedSortParameterChange(SortParameter.TITLE) },
+                onSortByDateClick = { onUnPinnedSortParameterChange(HomeSortParameter.DATE) },
+                onSortByTitleClick = { onUnPinnedSortParameterChange(HomeSortParameter.TITLE) },
                 onToggleMenuClick = { onToggleUnPinnedMenuClick() })
             LazyVerticalGrid(
                 columns = GridCells.Fixed(state.gridColumns),
