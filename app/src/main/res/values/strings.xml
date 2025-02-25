@@ -42,5 +42,6 @@
     <string name="choose_color_text">Choose color</string>
     <string name="sort_by_title_text">Title</string>
     <string name="sort_by_date_text">Date</string>
+    <string name="sort_by_note_text">Note</string>
     <string name="empty_text" />
 </resources>

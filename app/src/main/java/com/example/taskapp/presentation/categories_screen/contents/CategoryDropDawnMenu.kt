@@ -1,4 +1,4 @@
-package com.example.taskapp.presentation.home_screen.contents
+package com.example.taskapp.presentation.categories_screen.contents
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -23,17 +23,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskapp.R
+import com.example.taskapp.presentation.categories_screen.model.CategorySortParameter
+import com.example.taskapp.presentation.home_screen.contents.HomeDropDawnMenu
 import com.example.taskapp.presentation.home_screen.model.HomeSortParameter
 import com.example.taskapp.ui.theme.LocalDimen
 import com.example.taskapp.ui.theme.LocalProperty
 
 @Composable
-fun HomeDropDawnMenu(
+fun CategoryDropDawnMenu(
     onToggleMenuClick: () -> Unit,
     onSortByTitleClick: () -> Unit,
-    onSortByDateClick: () -> Unit,
+    onSortByNoteCountClick: () -> Unit,
     expanded: Boolean,
-    selectedHomeSortParameter: HomeSortParameter,
+    selectedSortParameter: CategorySortParameter,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -56,12 +58,12 @@ fun HomeDropDawnMenu(
                     color = Color.Gray
                 )
                 Icon(
-                    painter = when (selectedHomeSortParameter) {
-                        HomeSortParameter.TITLE -> {
+                    painter = when (selectedSortParameter) {
+                        CategorySortParameter.TITLE -> {
                             painterResource(id = R.drawable.sort_by_title_ui)
                         }
 
-                        HomeSortParameter.DATE -> {
+                        CategorySortParameter.NOTE -> {
                             painterResource(id = R.drawable.sort_by_date_ui)
                         }
                     },
@@ -75,7 +77,7 @@ fun HomeDropDawnMenu(
             expanded = expanded,
             onDismissRequest = onToggleMenuClick
         ) {
-            HomeSortParameter.entries.forEach { item ->
+            CategorySortParameter.entries.forEach { item ->
                 DropdownMenuItem(
                     text = {
                         Text(
@@ -86,7 +88,7 @@ fun HomeDropDawnMenu(
                     leadingIcon = {
                         Row {
                             Box(modifier = Modifier.size(LocalDimen.current.homeBoxSize)) {
-                                if (selectedHomeSortParameter == item) {
+                                if (selectedSortParameter == item) {
                                     Icon(
                                         imageVector = Icons.Default.Check,
                                         contentDescription = null
@@ -102,12 +104,12 @@ fun HomeDropDawnMenu(
                     },
                     onClick = {
                         when (item) {
-                            HomeSortParameter.TITLE -> {
+                            CategorySortParameter.TITLE -> {
                                 onSortByTitleClick()
                             }
 
-                            HomeSortParameter.DATE -> {
-                                onSortByDateClick()
+                            CategorySortParameter.NOTE -> {
+                                onSortByNoteCountClick()
                             }
                         }
                         onToggleMenuClick()

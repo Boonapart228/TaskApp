@@ -8,6 +8,8 @@ import com.example.taskapp.domain.CategoryTaskRepository
 import com.example.taskapp.domain.constants.ColorItems
 import com.example.taskapp.domain.model.Category
 import com.example.taskapp.presentation.categories_screen.model.CategoryOperation
+import com.example.taskapp.presentation.categories_screen.model.CategorySortParameter
+import com.example.taskapp.domain.constants.SortDirection
 import com.example.taskapp.presentation.navigation.model.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -37,8 +39,15 @@ class CategoriesViewModel @Inject constructor(
     val messageEvent = _messageEvent.asSharedFlow()
 
     init {
+        getCategories()
+    }
+
+    private fun getCategories() {
         viewModelScope.launch(Dispatchers.IO) {
-            categoryTaskRepository.getCategoryTaskCounts().collect { categories ->
+            categoryTaskRepository.getCategoryTaskCounts(
+                sortBy = _state.value.categorySortParameter.parameter,
+                sortDirection = _state.value.categorySortDirection.direction
+            ).collect { categories ->
                 _state.update { it.copy(categories = categories) }
             }
         }
@@ -253,4 +262,33 @@ class CategoriesViewModel @Inject constructor(
             }
         }
     }
+
+    fun onCategoryDirectionChange(sortDirection: SortDirection) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(categorySortDirection = sortDirection)
+            }
+        }
+        getCategories()
+    }
+
+    fun onCategorySortParameterChange(categorySortParameter: CategorySortParameter) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    categorySortParameter = categorySortParameter
+                )
+            }
+        }
+        getCategories()
+    }
+
+    fun onToggleCategoryMenuClick() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(showDialogCategorySort = !it.showDialogCategorySort)
+            }
+        }
+    }
+
 }
