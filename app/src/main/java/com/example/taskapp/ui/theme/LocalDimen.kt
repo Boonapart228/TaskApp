@@ -74,5 +74,7 @@ data class Dimensions(
     val homeBoxHeight: Dp = 40.dp,
     val homeBoxSize: Dp = 24.dp,
     val homeSpacerWidth: Dp = 4.dp,
-    val selectedIconSize : Dp = 20.dp
+    val selectedIconSize: Dp = 20.dp,
+    val settingsTextSize: TextUnit = 20.sp,
+    val settingsRowPaddingAll: Dp = 12.dp
 )

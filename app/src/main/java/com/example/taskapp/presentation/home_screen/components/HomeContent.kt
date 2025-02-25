@@ -47,7 +47,8 @@ fun HomeContent(
 ) {
     Scaffold(topBar = {
         HomeTopBar(
-            onChangeGridColumnsClick = onChangeGridColumnsClick
+            onChangeGridColumnsClick = onChangeGridColumnsClick,
+            onNavigateToSettingScreen = { onNavigationClick(Screens.SETTING_SCREEN) }
         )
     },
         bottomBar = {

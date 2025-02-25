@@ -12,6 +12,8 @@ import com.example.taskapp.presentation.categories_screen.components.CategoriesV
 import com.example.taskapp.presentation.home_screen.HomeScreen
 import com.example.taskapp.presentation.home_screen.components.HomeViewModel
 import com.example.taskapp.presentation.navigation.model.Screens
+import com.example.taskapp.presentation.setting_screen.SettingScreen
+import com.example.taskapp.presentation.setting_screen.components.SettingViewModel
 import com.example.taskapp.presentation.task_editor_screen.TaskEditorScreen
 import com.example.taskapp.presentation.task_editor_screen.components.TaskEditorViewModel
 
@@ -32,7 +34,8 @@ private fun NavigationHost(navHostController: NavHostController) {
             HomeScreen(
                 viewModel = viewModel,
                 navigateToCategories = { navHostController.navigate(Screens.CATEGORIES_SCREEN.route) },
-                navigationToTaskEditor = { navHostController.navigate(Screens.TASK_EDITOR_SCREEN.route) }
+                navigationToTaskEditor = { navHostController.navigate(Screens.TASK_EDITOR_SCREEN.route) },
+                navigateToSettings = { navHostController.navigate(Screens.SETTING_SCREEN.route) }
             )
         }
         composable(route = Screens.CATEGORIES_SCREEN.route) {
@@ -45,6 +48,11 @@ private fun NavigationHost(navHostController: NavHostController) {
         composable(route = Screens.TASK_EDITOR_SCREEN.route) {
             val viewModel: TaskEditorViewModel = hiltViewModel()
             TaskEditorScreen(viewModel = viewModel,
+                navigationToHomeScreen = { navHostController.navigate(Screens.HOME_SCREEN.route) })
+        }
+        composable(route = Screens.SETTING_SCREEN.route) {
+            val viewModel: SettingViewModel = hiltViewModel()
+            SettingScreen(viewModel = viewModel,
                 navigationToHomeScreen = { navHostController.navigate(Screens.HOME_SCREEN.route) })
         }
     }

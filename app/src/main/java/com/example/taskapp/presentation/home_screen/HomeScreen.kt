@@ -19,6 +19,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     navigateToCategories: () -> Unit,
     navigationToTaskEditor: () -> Unit,
+    navigateToSettings: () -> Unit,
     viewModel: HomeViewModel
 ) {
     val state by viewModel.state.collectAsState()
@@ -26,8 +27,17 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         viewModel.event.collect {
             when (it) {
-                HomeNavigationEvent.NavigationToCategories -> navigateToCategories()
-                HomeNavigationEvent.NavigationToTaskEditor -> navigationToTaskEditor()
+                HomeNavigationEvent.NavigationToCategories -> {
+                    navigateToCategories()
+                }
+
+                HomeNavigationEvent.NavigationToTaskEditor -> {
+                    navigationToTaskEditor()
+                }
+
+                HomeNavigationEvent.NavigationToSettings -> {
+                    navigateToSettings()
+                }
             }
         }
     }
