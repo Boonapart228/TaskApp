@@ -1,6 +1,7 @@
 package com.example.taskapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -16,15 +17,28 @@ import com.example.taskapp.presentation.setting_screen.SettingScreen
 import com.example.taskapp.presentation.setting_screen.components.SettingViewModel
 import com.example.taskapp.presentation.task_editor_screen.TaskEditorScreen
 import com.example.taskapp.presentation.task_editor_screen.components.TaskEditorViewModel
+import com.example.taskapp.ui.theme.AppTheme
 
 @Composable
 fun Navigation(modifier: Modifier = Modifier) {
     val navHostController = rememberNavController()
-    NavigationHost(navHostController = navHostController)
+    val settingViewModel: SettingViewModel = hiltViewModel()
+    AppTheme(
+        dynamicColor = false,
+        darkTheme = settingViewModel.state.collectAsState().value.darkTheme
+    ) {
+        NavigationHost(
+            navHostController = navHostController,
+            settingViewModel = settingViewModel
+        )
+    }
 }
 
 @Composable
-private fun NavigationHost(navHostController: NavHostController) {
+private fun NavigationHost(
+    navHostController: NavHostController,
+    settingViewModel: SettingViewModel
+) {
     NavHost(
         navController = navHostController,
         startDestination = Screens.HOME_SCREEN.route
@@ -51,8 +65,7 @@ private fun NavigationHost(navHostController: NavHostController) {
                 navigationToHomeScreen = { navHostController.navigate(Screens.HOME_SCREEN.route) })
         }
         composable(route = Screens.SETTING_SCREEN.route) {
-            val viewModel: SettingViewModel = hiltViewModel()
-            SettingScreen(viewModel = viewModel,
+            SettingScreen(viewModel = settingViewModel,
                 navigationToHomeScreen = { navHostController.navigate(Screens.HOME_SCREEN.route) })
         }
     }

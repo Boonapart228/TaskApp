@@ -2,6 +2,7 @@ package com.example.taskapp.presentation.setting_screen.components
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.taskapp.domain.AppSettings
 import com.example.taskapp.presentation.navigation.model.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,12 +14,20 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingViewModel @Inject constructor() : ViewModel() {
+class SettingViewModel @Inject constructor(private val appSettings: AppSettings) : ViewModel() {
     private val _state = MutableStateFlow(SettingState())
     val state = _state.asStateFlow()
 
     private val _event = MutableSharedFlow<SettingNavigationEvent>()
     val event = _event.asSharedFlow()
+
+    init {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(darkTheme = appSettings.getAppTheme())
+            }
+        }
+    }
 
     fun onChangeAppThemeClick() {
         viewModelScope.launch {
@@ -27,6 +36,7 @@ class SettingViewModel @Inject constructor() : ViewModel() {
                     darkTheme = !it.darkTheme
                 )
             }
+            appSettings.setAppTheme(_state.value.darkTheme)
         }
     }
 
