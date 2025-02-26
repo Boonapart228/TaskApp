@@ -11,8 +11,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.presentation.bottom_bar.model.BottomBarItems
+import com.example.taskapp.presentation.navigation.model.Screens
 
 @Composable
 fun BottomBar(
@@ -38,6 +38,7 @@ fun BottomBar(
                         )
                     },
                     colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = MaterialTheme.colorScheme.primaryContainer,
                         selectedIconColor = MaterialTheme.colorScheme.background,
                         unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )

@@ -39,7 +39,8 @@ fun TaskEditorTopBar(
             Text(
                 stringResource(id = R.string.task_editor_title),
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colorScheme.background
             )
         },
 
@@ -47,7 +48,8 @@ fun TaskEditorTopBar(
             IconButton(onClick = { onHomeScreenNavigationClick(Screens.HOME_SCREEN) }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.background
                 )
             }
         },
@@ -56,7 +58,8 @@ fun TaskEditorTopBar(
                 IconButton(onClick = { onEditTaskClick() }) {
                     Icon(
                         imageVector = Icons.Default.Done,
-                        contentDescription = null
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.background
                     )
                 }
             }

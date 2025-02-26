@@ -40,7 +40,7 @@ fun CategoriesAddButton(
         ),
         shape = RoundedCornerShape(LocalDimen.current.cardShape),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         )
     ) {
         Row(
@@ -52,7 +52,7 @@ fun CategoriesAddButton(
                 Icon(
                     imageVector = Icons.Default.AddCircle,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.primaryContainer,
                     modifier = Modifier.size(LocalDimen.current.iconMediumSize)
                 )
             }
