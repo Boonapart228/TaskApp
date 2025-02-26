@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +26,8 @@ import com.example.taskapp.domain.constants.SortDirection
 import com.example.taskapp.presentation.home_screen.model.HomeSortParameter
 import com.example.taskapp.ui.theme.LocalDimen
 import com.example.taskapp.ui.theme.LocalProperty
+import com.example.taskapp.ui.theme.pastelGreen
+import com.example.taskapp.ui.theme.pastelRed
 
 @Composable
 fun HomeListBar(
@@ -75,7 +76,7 @@ fun HomeListBar(
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = null,
-                    tint = if (selectedSortDirection == SortDirection.ASCENDING) Color.Green else Color.Red,
+                    tint = if (selectedSortDirection == SortDirection.ASCENDING) pastelGreen else pastelRed,
                     modifier = Modifier
                         .graphicsLayer(
                             rotationZ = LocalProperty.current.rotation270
@@ -92,7 +93,7 @@ fun HomeListBar(
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = null,
-                    tint = if (selectedSortDirection == SortDirection.DESCENDING) Color.Green else Color.Red,
+                    tint = if (selectedSortDirection == SortDirection.DESCENDING) pastelGreen else pastelRed,
                     modifier = Modifier
                         .graphicsLayer(
                             rotationZ = LocalProperty.current.rotation90
