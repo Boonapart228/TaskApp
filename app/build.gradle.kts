@@ -53,6 +53,9 @@ android {
 }
 
 dependencies {
+    //AppCompat
+    implementation(libs.androidx.appcompat)
+
     //DataStore
     implementation("androidx.datastore:datastore-preferences:1.1.2")
 

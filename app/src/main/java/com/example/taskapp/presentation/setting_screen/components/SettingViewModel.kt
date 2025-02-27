@@ -1,9 +1,12 @@
 package com.example.taskapp.presentation.setting_screen.components
 
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.taskapp.domain.AppSettings
 import com.example.taskapp.presentation.navigation.model.Screens
+import com.example.taskapp.presentation.setting_screen.models.Language
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +27,10 @@ class SettingViewModel @Inject constructor(private val appSettings: AppSettings)
     init {
         viewModelScope.launch {
             _state.update {
-                it.copy(darkTheme = appSettings.getAppTheme())
+                it.copy(
+                    darkTheme = appSettings.getAppTheme(),
+                    languageCode = appSettings.getLanguageCode()
+                )
             }
         }
     }
@@ -52,4 +58,29 @@ class SettingViewModel @Inject constructor(private val appSettings: AppSettings)
         }
     }
 
+    fun onToggleLanguageMenu() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    expandedLanguageMenu = !it.expandedLanguageMenu
+                )
+            }
+        }
+    }
+
+    fun setLanguage(language: Language) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    languageCode = language.languageCode
+                )
+            }
+            AppCompatDelegate.setApplicationLocales(
+                LocaleListCompat.forLanguageTags(
+                    language.languageCode
+                )
+            )
+            appSettings.setLanguageCode(language.languageCode)
+        }
+    }
 }

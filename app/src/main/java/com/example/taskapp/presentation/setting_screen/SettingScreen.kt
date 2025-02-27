@@ -26,6 +26,8 @@ fun SettingScreen(
     SettingContent(
         state = state,
         onChangeAppThemeClick = viewModel::onChangeAppThemeClick,
+        onToggleLanguageMenu = viewModel::onToggleLanguageMenu,
+        setLanguage = viewModel::setLanguage,
         onNavigationClick = viewModel::onNavigationClick
     )
 }
