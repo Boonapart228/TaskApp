@@ -5,4 +5,6 @@ interface AppSettings {
     suspend fun getGridColumns(): Int
     suspend fun setAppTheme(darkTheme: Boolean)
     suspend fun getAppTheme(): Boolean
+    suspend fun setLanguageCode(languageCode : String)
+    suspend fun getLanguageCode(): String
 }

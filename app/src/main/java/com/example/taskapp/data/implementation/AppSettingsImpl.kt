@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.taskapp.domain.AppSettings
 import kotlinx.coroutines.flow.first
@@ -17,6 +18,7 @@ class AppSettingsImpl(
 ) : AppSettings {
     private val GRID_COLUMNS = intPreferencesKey("grid_columns")
     private val APP_THEME = booleanPreferencesKey("app_theme")
+    private val LANGUAGE_CODE = stringPreferencesKey("language_code")
 
     override suspend fun getGridColumns(): Int {
         val preferences = context.dataStore.data.first()
@@ -39,4 +41,18 @@ class AppSettingsImpl(
         val preferences = context.dataStore.data.first()
         return preferences[APP_THEME] ?: false
     }
+
+    override suspend fun setLanguageCode(languageCode: String) {
+        context.dataStore.edit { language ->
+            language[LANGUAGE_CODE] = languageCode
+        }
+
+    }
+
+    override suspend fun getLanguageCode(): String {
+        val languageCode = context.dataStore.data.first()
+        return languageCode[LANGUAGE_CODE] ?: "en"
+    }
+
+
 }
