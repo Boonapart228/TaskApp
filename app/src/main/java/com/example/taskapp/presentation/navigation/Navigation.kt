@@ -1,7 +1,6 @@
 package com.example.taskapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -17,21 +16,15 @@ import com.example.taskapp.presentation.setting_screen.SettingScreen
 import com.example.taskapp.presentation.setting_screen.components.SettingViewModel
 import com.example.taskapp.presentation.task_editor_screen.TaskEditorScreen
 import com.example.taskapp.presentation.task_editor_screen.components.TaskEditorViewModel
-import com.example.taskapp.ui.theme.AppTheme
 
 @Composable
 fun Navigation(modifier: Modifier = Modifier) {
     val navHostController = rememberNavController()
     val settingViewModel: SettingViewModel = hiltViewModel()
-    AppTheme(
-        dynamicColor = false,
-        darkTheme = settingViewModel.state.collectAsState().value.darkTheme
-    ) {
-        NavigationHost(
-            navHostController = navHostController,
-            settingViewModel = settingViewModel
-        )
-    }
+    NavigationHost(
+        navHostController = navHostController,
+        settingViewModel = settingViewModel
+    )
 }
 
 @Composable
