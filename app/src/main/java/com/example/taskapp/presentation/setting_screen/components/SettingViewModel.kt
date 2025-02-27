@@ -32,17 +32,26 @@ class SettingViewModel @Inject constructor(private val appSettings: AppSettings)
                     languageCode = appSettings.getLanguageCode()
                 )
             }
+            switchTheme(_state.value.darkTheme)
         }
+    }
+
+    private fun switchTheme(isDark: Boolean) {
+        AppCompatDelegate.setDefaultNightMode(
+            if (isDark) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        )
     }
 
     fun onChangeAppThemeClick() {
         viewModelScope.launch {
+            val newDarkThemeState = !_state.value.darkTheme
             _state.update {
-                it.copy(
-                    darkTheme = !it.darkTheme
-                )
+                it.copy(darkTheme = newDarkThemeState)
             }
-            appSettings.setAppTheme(_state.value.darkTheme)
+
+            appSettings.setAppTheme(newDarkThemeState)
+
+            switchTheme(newDarkThemeState)
         }
     }
 
