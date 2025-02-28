@@ -88,7 +88,7 @@ fun CategoriesListBar(
                 onClick = onDescendingSortClick,
                 modifier = Modifier
                     .size(LocalDimen.current.iconSortButtonSize)
-                    .offset(y = LocalProperty.current.offSetByYDescendingIconButton.dp)
+                    .offset(y = LocalProperty.current.offSetByYCategoryDescendingIconButton.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
