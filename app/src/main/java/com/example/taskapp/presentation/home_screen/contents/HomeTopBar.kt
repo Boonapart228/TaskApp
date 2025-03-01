@@ -1,6 +1,7 @@
 package com.example.taskapp.presentation.home_screen.contents
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,19 +20,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.R
+import com.example.taskapp.presentation.home_screen.model.NotesFilterType
 import com.example.taskapp.ui.theme.AppTheme
 import com.example.taskapp.ui.theme.LocalDimen
 import com.example.taskapp.ui.theme.LocalProperty
@@ -40,6 +39,8 @@ import com.example.taskapp.ui.theme.LocalProperty
 fun HomeTopBar(
     onChangeGridColumnsClick: () -> Unit,
     onNavigateToSettingScreen: () -> Unit,
+    notesFilterType: NotesFilterType,
+    onChangeNoteFilterType: (NotesFilterType) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -91,7 +92,10 @@ fun HomeTopBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            SegmentedControl()
+            SegmentedControl(
+                notesFilterType = notesFilterType,
+                setNoteFilterType = onChangeNoteFilterType
+            )
             IconButton(
                 onClick = onChangeGridColumnsClick,
                 modifier = Modifier.offset(x = LocalDimen.current.iconButtonTopBarOffsetByX)
@@ -107,9 +111,10 @@ fun HomeTopBar(
 }
 
 @Composable
-fun SegmentedControl() {
-    var isSelected by remember { mutableStateOf(true) }
-
+fun SegmentedControl(
+    notesFilterType: NotesFilterType,
+    setNoteFilterType: (NotesFilterType) -> Unit
+) {
     Row(
         modifier = Modifier
             .padding(LocalDimen.current.rowTopBarPaddingAll)
@@ -117,19 +122,28 @@ fun SegmentedControl() {
             .padding(LocalDimen.current.rowTopBarPaddingAll),
         horizontalArrangement = Arrangement.Center
     ) {
-        listOf(true to R.string.all_notes, false to R.string.resent).forEach { (state, textId) ->
+        NotesFilterType.entries.forEach {
             TextButton(
-                onClick = { isSelected = state },
+                onClick = { setNoteFilterType(it) },
                 colors = ButtonDefaults.textButtonColors(
-                    containerColor = if (isSelected == state) MaterialTheme.colorScheme.background else Color.Transparent,
-                    contentColor = if (isSelected == state) MaterialTheme.colorScheme.primaryContainer else Color.White
+                    containerColor = if (notesFilterType == it) MaterialTheme.colorScheme.background else Color.Transparent,
+                    contentColor = if (notesFilterType == it) MaterialTheme.colorScheme.primaryContainer else Color.White
                 ),
                 shape = RoundedCornerShape(LocalDimen.current.rowTopBarShape),
                 modifier = Modifier
-                    .height(LocalDimen.current.textButtonTopBarHeight),
+                    .height(LocalDimen.current.textButtonTopBarHeight)
+                    .pointerInput(Unit) {
+                        detectHorizontalDragGestures { _, dragAmount ->
+                            if (dragAmount > 0) {
+                                setNoteFilterType(NotesFilterType.RECENT)
+                            } else if (dragAmount < 0) {
+                                setNoteFilterType(NotesFilterType.ALL)
+                            }
+                        }
+                    },
             ) {
                 Text(
-                    text = stringResource(id = textId),
+                    text = stringResource(id = it.textId),
                     fontSize = LocalDimen.current.textTopBar,
                     modifier = Modifier.padding(horizontal = LocalDimen.current.textTopBarHorizontalPadding),
                 )
@@ -138,14 +152,15 @@ fun SegmentedControl() {
     }
 }
 
-
 @Composable
 @Preview(showBackground = true)
 fun HomeTopBarPreview() {
     AppTheme(dynamicColor = false) {
         HomeTopBar(
+            notesFilterType = NotesFilterType.ALL,
             onChangeGridColumnsClick = {},
-            onNavigateToSettingScreen = {}
+            onNavigateToSettingScreen = {},
+            onChangeNoteFilterType = {}
         )
     }
 }

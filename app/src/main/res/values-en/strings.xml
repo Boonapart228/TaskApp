@@ -4,7 +4,7 @@
     <string name="categories_title">Categories</string>
     <string name="settings_title">Settings</string>
     <string name="all_notes">All Notes</string>
-    <string name="resent">Resent</string>
+    <string name="recent">Resent</string>
     <string name="home_bottom_bar_text">Home</string>
     <string name="categories_bottom_bar_text">Categories</string>
     <string name="create_categories_text">Create Categories</string>

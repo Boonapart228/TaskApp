@@ -69,6 +69,7 @@ fun HomeScreen(
         onTogglePinnedMenuClick = viewModel::onTogglePinnedMenuClick,
         onUnPinnedDirectionChange = viewModel::onUnPinnedDirectionChange,
         onUnPinnedSortParameterChange = viewModel::onUnPinnedSortParameterChange,
-        onToggleUnPinnedMenuClick = viewModel::onToggleUnPinnedMenuClick
+        onToggleUnPinnedMenuClick = viewModel::onToggleUnPinnedMenuClick,
+        onChangeNoteFilterType = viewModel::onChangeNoteFilterType
     )
 }

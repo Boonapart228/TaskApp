@@ -9,6 +9,7 @@ import com.example.taskapp.domain.TaskIdStorage
 import com.example.taskapp.domain.TaskRepository
 import com.example.taskapp.domain.constants.SortDirection
 import com.example.taskapp.presentation.home_screen.model.HomeSortParameter
+import com.example.taskapp.presentation.home_screen.model.NotesFilterType
 import com.example.taskapp.presentation.navigation.model.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -40,35 +41,34 @@ class HomeViewModel @Inject constructor(
     val messageEvent = _messageEvent.asSharedFlow()
 
     init {
-        getActiveTasks()
+        handleActiveTasks()
 
-        getInActiveTasks()
+        handleInActiveTasks()
 
         getGridColumns()
     }
 
-    private fun getGridColumns() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _state.update {
-                it.copy(
-                    gridColumns = appSettings.getGridColumns()
-                )
+
+    private fun handleActiveTasks() {
+        when (_state.value.notesFilterType) {
+            NotesFilterType.ALL -> {
+                getActiveTasks()
+            }
+
+            NotesFilterType.RECENT -> {
+                getActiveRecentTasks()
             }
         }
     }
 
+    private fun handleInActiveTasks() {
+        when (_state.value.notesFilterType) {
+            NotesFilterType.ALL -> {
+                getInActiveTasks()
+            }
 
-    private fun getInActiveTasks() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val currentCategoryId = categoryIdStorage.getId()
-            if (currentCategoryId != null) {
-                taskRepository.getInActiveTasks(
-                    categoryId = currentCategoryId,
-                    sortBy = _state.value.unpinnedHomeSortParameter.parameter,
-                    sortDirection = _state.value.unpinnedSortDirection.direction
-                ).collect { inActiveTasks ->
-                    _state.update { it.copy(inActiveTasks = inActiveTasks) }
-                }
+            NotesFilterType.RECENT -> {
+                getInActiveRecentTasks()
             }
         }
     }
@@ -85,6 +85,65 @@ class HomeViewModel @Inject constructor(
                     .collect { activeTasks ->
                         _state.update { it.copy(activeTasks = activeTasks) }
                     }
+            }
+        }
+    }
+
+    private fun getActiveRecentTasks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            taskRepository.getActiveRecentTasks(
+                sortBy = _state.value.pinnedHomeSortParameter.parameter,
+                sortDirection = _state.value.pinnedSortDirection.direction
+            ).collect { activeTasks ->
+                _state.update { it.copy(activeTasks = activeTasks) }
+            }
+        }
+    }
+
+
+    private fun getGridColumns() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.update {
+                it.copy(
+                    gridColumns = appSettings.getGridColumns()
+                )
+            }
+        }
+    }
+
+    fun onChangeNoteFilterType(notesFilterType: NotesFilterType) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(notesFilterType = notesFilterType)
+            }
+        }
+        handleActiveTasks()
+        handleInActiveTasks()
+    }
+
+
+    private fun getInActiveRecentTasks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            taskRepository.getInActiveRecentTasks(
+                sortBy = _state.value.unpinnedHomeSortParameter.parameter,
+                sortDirection = _state.value.unpinnedSortDirection.direction
+            ).collect { inActiveTasks ->
+                _state.update { it.copy(inActiveTasks = inActiveTasks) }
+            }
+        }
+    }
+
+    private fun getInActiveTasks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentCategoryId = categoryIdStorage.getId()
+            if (currentCategoryId != null) {
+                taskRepository.getInActiveTasks(
+                    categoryId = currentCategoryId,
+                    sortBy = _state.value.unpinnedHomeSortParameter.parameter,
+                    sortDirection = _state.value.unpinnedSortDirection.direction
+                ).collect { inActiveTasks ->
+                    _state.update { it.copy(inActiveTasks = inActiveTasks) }
+                }
             }
         }
     }
@@ -147,7 +206,7 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
-        getActiveTasks()
+        handleActiveTasks()
     }
 
     fun onPinnedSortParameterChange(homeSortParameter: HomeSortParameter) {
@@ -158,7 +217,7 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
-        getActiveTasks()
+        handleActiveTasks()
     }
 
     fun onTogglePinnedMenuClick() {
@@ -179,7 +238,7 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
-        getInActiveTasks()
+        handleInActiveTasks()
     }
 
     fun onUnPinnedSortParameterChange(homeSortParameter: HomeSortParameter) {
@@ -190,7 +249,7 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
-        getInActiveTasks()
+        handleInActiveTasks()
     }
 
     fun onToggleUnPinnedMenuClick() {

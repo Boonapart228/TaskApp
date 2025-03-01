@@ -25,6 +25,7 @@ import com.example.taskapp.presentation.home_screen.contents.HomeTaskDetails
 import com.example.taskapp.presentation.home_screen.contents.HomeTopBar
 import com.example.taskapp.domain.constants.SortDirection
 import com.example.taskapp.presentation.home_screen.model.HomeSortParameter
+import com.example.taskapp.presentation.home_screen.model.NotesFilterType
 import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.ui.theme.LocalDimen
 
@@ -43,12 +44,15 @@ fun HomeContent(
     onPinnedDirectionChange: (SortDirection) -> Unit,
     onPinnedSortParameterChange: (HomeSortParameter) -> Unit,
     onUnPinnedDirectionChange: (SortDirection) -> Unit,
-    onUnPinnedSortParameterChange: (HomeSortParameter) -> Unit
+    onUnPinnedSortParameterChange: (HomeSortParameter) -> Unit,
+    onChangeNoteFilterType: (NotesFilterType) -> Unit
 ) {
     Scaffold(topBar = {
         HomeTopBar(
+            notesFilterType = state.notesFilterType,
             onChangeGridColumnsClick = onChangeGridColumnsClick,
-            onNavigateToSettingScreen = { onNavigationClick(Screens.SETTING_SCREEN) }
+            onNavigateToSettingScreen = { onNavigationClick(Screens.SETTING_SCREEN) },
+            onChangeNoteFilterType = onChangeNoteFilterType
         )
     },
         bottomBar = {
@@ -149,5 +153,6 @@ fun HomeContentPreview() {
         onPinnedSortParameterChange = {},
         onToggleUnPinnedMenuClick = {},
         onUnPinnedDirectionChange = {},
-        onUnPinnedSortParameterChange = {})
+        onUnPinnedSortParameterChange = {},
+        onChangeNoteFilterType = {})
 }

@@ -57,6 +57,20 @@ class TaskEditorViewModel @Inject constructor(
                 }
             }
         }
+        updateLastOpenAt()
+    }
+
+    private fun updateLastOpenAt() {
+        viewModelScope.launch {
+            val taskId = taskIdStorage.getId()
+            if (taskId != null) {
+                val currentTimeMillis = Calendar.getInstance().timeInMillis
+                withContext(Dispatchers.IO) {
+                    val task = taskRepository.getCurrentTaskById(taskId = taskId).first()
+                    taskRepository.update(task.copy(lastActiveAt = currentTimeMillis))
+                }
+            }
+        }
     }
 
     private fun randomHexColorCode() {
@@ -150,7 +164,8 @@ class TaskEditorViewModel @Inject constructor(
                     isActive = _state.value.pin,
                     categoryId = currentCategoryId,
                     hexColorCode = _state.value.hexColorCode,
-                    createdAt = currentTimeMillis
+                    createdAt = currentTimeMillis,
+                    lastActiveAt = currentTimeMillis
                 )
                 handleTask(task = newTask)
             }
