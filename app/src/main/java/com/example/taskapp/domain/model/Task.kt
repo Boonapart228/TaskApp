@@ -7,5 +7,6 @@ data class Task(
     var description: String,
     var isActive: Boolean,
     val hexColorCode: String,
-    val createdAt: Long = System.currentTimeMillis()
+    val createdAt: Long = System.currentTimeMillis(),
+    val lastActiveAt: Long
 )

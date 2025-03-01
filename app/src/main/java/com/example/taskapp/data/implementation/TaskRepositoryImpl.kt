@@ -51,4 +51,22 @@ class TaskRepositoryImpl(
             sortDirection = sortDirection
         ).map { list -> list.map { it.toTask() } }
 
+    override fun getInActiveRecentTasks(
+        sortBy: String,
+        sortDirection: String
+    ): Flow<List<Task>> =
+        taskDao.getInActiveRecentTasks(
+            sortBy = sortBy,
+            sortDirection = sortDirection
+        ).map { list -> list.map { it.toTask() } }
+
+    override fun getActiveRecentTasks(
+        sortBy: String,
+        sortDirection: String
+    ): Flow<List<Task>> =
+        taskDao.getActiveRecentTasks(
+            sortBy = sortBy,
+            sortDirection = sortDirection
+        ).map { list -> list.map { it.toTask() } }
+
 }

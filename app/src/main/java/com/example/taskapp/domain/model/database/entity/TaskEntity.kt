@@ -24,7 +24,8 @@ data class TaskEntity(
     var description: String,
     var isActive: Boolean,
     val hexColorCode: String,
-    val createdAt: Long = System.currentTimeMillis()
+    val createdAt: Long = System.currentTimeMillis(),
+    val lastActiveAt: Long
 )
 
 fun TaskEntity.toTask() = Task(
@@ -34,7 +35,8 @@ fun TaskEntity.toTask() = Task(
     description = description,
     isActive = isActive,
     hexColorCode = hexColorCode,
-    createdAt = createdAt
+    createdAt = createdAt,
+    lastActiveAt = lastActiveAt
 )
 
 fun Task.toTaskEntity() = TaskEntity(
@@ -44,5 +46,6 @@ fun Task.toTaskEntity() = TaskEntity(
     description = description,
     isActive = isActive,
     hexColorCode = hexColorCode,
-    createdAt = createdAt
+    createdAt = createdAt,
+    lastActiveAt = lastActiveAt
 )

@@ -3,6 +3,7 @@ package com.example.taskapp.presentation.home_screen.components
 import com.example.taskapp.domain.model.Task
 import com.example.taskapp.domain.constants.SortDirection
 import com.example.taskapp.presentation.home_screen.model.HomeSortParameter
+import com.example.taskapp.presentation.home_screen.model.NotesFilterType
 import com.example.taskapp.presentation.navigation.model.Screens
 
 data class HomeState(
@@ -15,5 +16,6 @@ data class HomeState(
     val unpinnedHomeSortParameter: HomeSortParameter = HomeSortParameter.TITLE,
     val showPinnedSortDialog: Boolean = false,
     val showUnpinnedSortDialog: Boolean = false,
-    val gridColumns: Int = 2
+    val gridColumns: Int = 2,
+    val notesFilterType: NotesFilterType = NotesFilterType.ALL
 )

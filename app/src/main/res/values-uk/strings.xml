@@ -4,7 +4,7 @@
     <string name="categories_title">Категорії</string>
     <string name="settings_title">Налаштування</string>
     <string name="all_notes">Усі нотатки</string>
-    <string name="resent">Недавні</string>
+    <string name="recent">Недавні</string>
     <string name="home_bottom_bar_text">Головна</string>
     <string name="categories_bottom_bar_text">Категорії</string>
     <string name="create_categories_text">Створити категорію</string>
