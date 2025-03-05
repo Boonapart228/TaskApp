@@ -23,6 +23,7 @@
     <string name="edit_text">Edit</string>
     <string name="delete_text">Delete</string>
     <string name="update_text">Update</string>
+    <string name="search_text">Search…</string>
     <string name="list_notes_text">List Notes</string>
     <string name="pinned_notes_text">Pinned</string>
     <string name="task_editor_title">Task Editor</string>

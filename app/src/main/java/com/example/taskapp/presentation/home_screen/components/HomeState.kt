@@ -17,5 +17,7 @@ data class HomeState(
     val showPinnedSortDialog: Boolean = false,
     val showUnpinnedSortDialog: Boolean = false,
     val gridColumns: Int = 2,
-    val notesFilterType: NotesFilterType = NotesFilterType.ALL
+    val notesFilterType: NotesFilterType = NotesFilterType.ALL,
+    val searchTitle: String = "",
+    val showSearchBar : Boolean = false
 )

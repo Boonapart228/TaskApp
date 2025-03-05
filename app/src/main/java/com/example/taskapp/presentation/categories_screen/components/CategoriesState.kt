@@ -21,5 +21,7 @@ data class CategoriesState(
     val showDialogDeleteCategory: Boolean = false,
     val showDialogCategorySort: Boolean = false,
     val categorySortParameter: CategorySortParameter = CategorySortParameter.TITLE,
-    val categorySortDirection: SortDirection = SortDirection.ASCENDING
+    val categorySortDirection: SortDirection = SortDirection.ASCENDING,
+    val searchTitle: String = "",
+    val showSearchBar : Boolean = false
 )

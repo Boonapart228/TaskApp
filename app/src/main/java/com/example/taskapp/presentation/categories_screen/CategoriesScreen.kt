@@ -90,6 +90,8 @@ fun CategoriesScreen(
         setCurrentCategory = viewModel::setCurrentCategory,
         onCategoryDirectionChange = viewModel::onCategoryDirectionChange,
         onCategorySortParameterChange = viewModel::onCategorySortParameterChange,
-        onToggleCategoryMenuClick = viewModel::onToggleCategoryMenuClick
+        onToggleCategoryMenuClick = viewModel::onToggleCategoryMenuClick,
+        onToggleSearchBar = viewModel::onToggleSearchBar,
+        onSetSearchTitle = viewModel::onSetSearchTitle
     )
 }

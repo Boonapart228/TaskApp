@@ -23,6 +23,7 @@
     <string name="edit_text">Редагувати</string>
     <string name="delete_text">Видалити</string>
     <string name="update_text">Оновити</string>
+    <string name="search_text">Пошук…</string>
     <string name="list_notes_text">Список нотаток</string>
     <string name="pinned_notes_text">Закріплені</string>
     <string name="task_editor_title">Редактор завдань</string>

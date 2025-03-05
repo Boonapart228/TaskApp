@@ -76,5 +76,14 @@ data class Dimensions(
     val homeSpacerWidth: Dp = 4.dp,
     val selectedIconSize: Dp = 20.dp,
     val settingsTextSize: TextUnit = 20.sp,
-    val settingsRowPaddingAll: Dp = 12.dp
+    val settingsRowPaddingAll: Dp = 12.dp,
+    val basicTextFieldHeight: Dp = 36.dp,
+    val basicTextFieldBorderWidth: Dp = 1.dp,
+    val basicTextFieldHorizontalPadding: Dp = 12.dp,
+    val basicTextFieldVerticalPadding: Dp = 6.dp,
+    val basicTextFieldFontSize: TextUnit = 14.sp,
+    val searchBarRowHorizontalPadding: Dp = 2.dp,
+    val searchBarSpacerWidth: Dp = 8.dp,
+    val basicTextFieldPlaceHolderFontSize: TextUnit = 14.sp
+
 )
