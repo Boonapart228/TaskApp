@@ -44,9 +44,18 @@ fun CategoriesContent(
     setCurrentCategory: (Long) -> Unit,
     onCategoryDirectionChange: (SortDirection) -> Unit,
     onCategorySortParameterChange: (CategorySortParameter) -> Unit,
-    onToggleCategoryMenuClick: () -> Unit
+    onToggleCategoryMenuClick: () -> Unit,
+    onSetSearchTitle: (String) -> Unit,
+    onToggleSearchBar: () -> Unit
 ) {
-    Scaffold(topBar = { CategoriesTopBar() },
+    Scaffold(topBar = {
+        CategoriesTopBar(
+            searchTitle = state.searchTitle,
+            showSearchBar = state.showSearchBar,
+            onSetSearchTitle = onSetSearchTitle,
+            onToggleSearchBar = onToggleSearchBar
+        )
+    },
         bottomBar = {
             BottomBar(
                 onClick = onBottomBarNavigationClick,
@@ -76,7 +85,7 @@ fun CategoriesContent(
                 ),
 
                 ) {
-                items(state.categories) { category ->
+                items(state.categories.filter { it.categoryTitle.contains(state.searchTitle) }) { category ->
                     CategoriesDetails(
                         categoriesTitle = category.categoryTitle,
                         sizeNote = category.taskCount,
@@ -151,6 +160,8 @@ fun CategoriesContentPreview() {
         setCurrentCategory = {},
         onCategoryDirectionChange = {},
         onToggleCategoryMenuClick = {},
-        onCategorySortParameterChange = {}
+        onCategorySortParameterChange = {},
+        onSetSearchTitle = {},
+        onToggleSearchBar = {}
     )
 }

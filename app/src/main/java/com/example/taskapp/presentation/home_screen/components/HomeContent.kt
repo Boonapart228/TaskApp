@@ -38,6 +38,8 @@ fun HomeContent(
     onTogglePinnedMenuClick: () -> Unit,
     onToggleUnPinnedMenuClick: () -> Unit,
     onNavigateToTaskEditorClick: () -> Unit,
+    onToggleSearchBar: () -> Unit,
+    onSetSearchTitle: (String) -> Unit,
     formatTime: (Long) -> String,
     formatDate: (Long) -> String,
     onTaskSelectClick: (Long) -> Unit,
@@ -49,10 +51,14 @@ fun HomeContent(
 ) {
     Scaffold(topBar = {
         HomeTopBar(
+            showSearchBar = state.showSearchBar,
+            searchTitle = state.searchTitle,
             notesFilterType = state.notesFilterType,
             onChangeGridColumnsClick = onChangeGridColumnsClick,
             onNavigateToSettingScreen = { onNavigationClick(Screens.SETTING_SCREEN) },
-            onChangeNoteFilterType = onChangeNoteFilterType
+            onChangeNoteFilterType = onChangeNoteFilterType,
+            onToggleSearchBar = onToggleSearchBar,
+            onSetSearchTitle = onSetSearchTitle
         )
     },
         bottomBar = {
@@ -93,7 +99,7 @@ fun HomeContent(
                 contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding),
                 modifier = Modifier.height(LocalDimen.current.lazyVerticalGridHeight)
             ) {
-                items(state.activeTasks) {
+                items(state.activeTasks.filter { it.title.contains(state.searchTitle) }) {
                     HomeTaskDetails(
                         title = it.title,
                         description = it.description,
@@ -120,7 +126,7 @@ fun HomeContent(
                 columns = GridCells.Fixed(state.gridColumns),
                 contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding)
             ) {
-                items(state.inActiveTasks) {
+                items(state.inActiveTasks.filter { it.title.contains(state.searchTitle) }) {
                     HomeTaskDetails(
                         title = it.title,
                         description = it.description,
@@ -154,5 +160,7 @@ fun HomeContentPreview() {
         onToggleUnPinnedMenuClick = {},
         onUnPinnedDirectionChange = {},
         onUnPinnedSortParameterChange = {},
-        onChangeNoteFilterType = {})
+        onChangeNoteFilterType = {},
+        onToggleSearchBar = {},
+        onSetSearchTitle = {})
 }

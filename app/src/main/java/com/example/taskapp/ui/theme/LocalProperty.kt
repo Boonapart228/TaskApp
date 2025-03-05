@@ -21,5 +21,6 @@ data class Property(
     val offSetByYTextButton: Int = -10,
     val offSetByXRow: Int = 20,
     val offSetByXTextButton: Int = -10,
-    val offSetByYCategoryDescendingIconButton: Int = -7
+    val offSetByYCategoryDescendingIconButton: Int = -7,
+    val offSetByXSearchBarIconButton : Int = 10,
 )

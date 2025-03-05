@@ -70,6 +70,8 @@ fun HomeScreen(
         onUnPinnedDirectionChange = viewModel::onUnPinnedDirectionChange,
         onUnPinnedSortParameterChange = viewModel::onUnPinnedSortParameterChange,
         onToggleUnPinnedMenuClick = viewModel::onToggleUnPinnedMenuClick,
-        onChangeNoteFilterType = viewModel::onChangeNoteFilterType
+        onChangeNoteFilterType = viewModel::onChangeNoteFilterType,
+        onToggleSearchBar = viewModel::onToggleSearchBar,
+        onSetSearchTitle = viewModel::onSetSearchTitle
     )
 }

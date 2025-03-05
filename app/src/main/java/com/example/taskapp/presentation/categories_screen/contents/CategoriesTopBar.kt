@@ -1,5 +1,8 @@
 package com.example.taskapp.presentation.categories_screen.contents
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,33 +21,65 @@ import com.example.taskapp.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoriesTopBar() {
-    TopAppBar(
-        title = {
-            Text(
-                stringResource(id = R.string.categories_title),
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.background
-            )
-        },
-        actions = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    imageVector = Icons.Default.Search, contentDescription = null,
-                    tint = MaterialTheme.colorScheme.background
+fun CategoriesTopBar(
+    showSearchBar: Boolean,
+    searchTitle: String,
+    onToggleSearchBar: () -> Unit,
+    onSetSearchTitle: (String) -> Unit
+) {
+    AnimatedVisibility(
+        visible = !showSearchBar,
+        enter = slideInVertically(),
+        exit = slideOutVertically()
+    ) {
+        TopAppBar(
+            title = {
+                Text(
+                    stringResource(id = R.string.categories_title),
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.background
                 )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            },
+            actions = {
+                IconButton(onClick = onToggleSearchBar) {
+                    Icon(
+                        imageVector = Icons.Default.Search, contentDescription = null,
+                        tint = MaterialTheme.colorScheme.background
+                    )
+                }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer
+            )
         )
-    )
+    }
+    AnimatedVisibility(
+        visible = showSearchBar,
+        enter = slideInVertically(),
+        exit = slideOutVertically()
+    ) {
+        TopAppBar(
+            title = {
+                CategoriesSearchBar(
+                    searchTitle = searchTitle,
+                    onToggleSearchBar = onToggleSearchBar,
+                    onSetSearchTitle = onSetSearchTitle
+                )
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer
+            )
+        )
+    }
 }
 
 @Preview
 @Composable
 fun CategoriesTopBarPreview() {
     AppTheme(dynamicColor = false) {
-        CategoriesTopBar()
+        CategoriesTopBar(showSearchBar = false,
+            searchTitle = "",
+            onToggleSearchBar = {},
+            onSetSearchTitle = {})
     }
 }

@@ -261,4 +261,25 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
+    fun onToggleSearchBar() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    showSearchBar = !it.showSearchBar,
+                    searchTitle = ""
+                )
+            }
+        }
+    }
+
+    fun onSetSearchTitle(searchTitle: String) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    searchTitle = searchTitle
+                )
+            }
+        }
+    }
 }
