@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.CategoryRepository
 import com.example.taskapp.domain.CategoryTaskRepository
+import com.example.taskapp.domain.TitleFormatter
 import com.example.taskapp.domain.constants.ColorItems
 import com.example.taskapp.domain.model.Category
 import com.example.taskapp.presentation.categories_screen.model.CategoryOperation
@@ -26,7 +27,8 @@ import javax.inject.Inject
 class CategoriesViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val categoryTaskRepository: CategoryTaskRepository,
-    private val categoryIdStorage: CategoryIdStorage
+    private val categoryIdStorage: CategoryIdStorage,
+    private val titleFormatter: TitleFormatter
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CategoriesState())
@@ -141,6 +143,7 @@ class CategoriesViewModel @Inject constructor(
                 }
             } else {
                 _messageEvent.emit(CategoriesMessageEvent.CategoryTitleCannotBeEmpty)
+                clearCategoryTitle()
             }
         }
     }
@@ -148,7 +151,7 @@ class CategoriesViewModel @Inject constructor(
     private fun updateCategory() {
         viewModelScope.launch {
             val category = _state.value.currentCategory?.copy(
-                title = _state.value.categoryTitle,
+                title = titleFormatter.getCorrectTitle(_state.value.categoryTitle),
                 hexColorCode = _state.value.hexColorCode
             )
             if (category != null) {
@@ -163,7 +166,7 @@ class CategoriesViewModel @Inject constructor(
 
     private fun createCategory() {
         val category = Category(
-            title = _state.value.categoryTitle,
+            title = titleFormatter.getCorrectTitle(_state.value.categoryTitle),
             id = 0L,
             hexColorCode = _state.value.hexColorCode
         )
