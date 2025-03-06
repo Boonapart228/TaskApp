@@ -67,6 +67,15 @@ fun TaskEditorScreen(
                     )
                         .show()
                 }
+
+                TaskEditorMessageEvent.TaskTitleCannotBeEmpty -> {
+                    Toast.makeText(
+                        context,
+                        R.string.task_title_cannot_be_empty_text,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
             }
         }
     }

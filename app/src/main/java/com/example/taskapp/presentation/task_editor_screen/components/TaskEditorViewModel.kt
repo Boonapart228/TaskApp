@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.TaskIdStorage
 import com.example.taskapp.domain.TaskRepository
+import com.example.taskapp.domain.TitleFormatter
 import com.example.taskapp.domain.constants.ColorItems
 import com.example.taskapp.domain.model.Task
 import com.example.taskapp.presentation.navigation.model.Screens
@@ -25,7 +26,8 @@ import javax.inject.Inject
 class TaskEditorViewModel @Inject constructor(
     private val taskRepository: TaskRepository,
     private val categoryIdStorage: CategoryIdStorage,
-    private val taskIdStorage: TaskIdStorage
+    private val taskIdStorage: TaskIdStorage,
+    private val titleFormatter: TitleFormatter
 ) : ViewModel() {
     private val _event = MutableSharedFlow<TaskEditorNavigationEvent>()
     val event = _event.asSharedFlow()
@@ -89,7 +91,11 @@ class TaskEditorViewModel @Inject constructor(
     private fun detectFieldChanges() {
         _state.update {
             it.copy(
-                fieldsChanged = it.title != it.oldTitle || it.description != it.oldDescription || it.pin != it.oldPin || it.hexColorCode != it.oldHexColorCode
+                fieldsChanged = it.title != it.oldTitle ||
+                        it.description != it.oldDescription
+                        || it.pin != it.oldPin
+                        || it.hexColorCode
+                        != it.oldHexColorCode
             )
         }
     }
@@ -97,7 +103,8 @@ class TaskEditorViewModel @Inject constructor(
     private fun updateFieldChanges() {
         _state.update {
             it.copy(
-                oldTitle = it.title,
+                title = titleFormatter.getCorrectTitle(_state.value.title),
+                oldTitle = titleFormatter.getCorrectTitle(_state.value.title),
                 oldDescription = it.description,
                 oldPin = it.pin,
                 oldHexColorCode = it.hexColorCode
@@ -165,7 +172,7 @@ class TaskEditorViewModel @Inject constructor(
             if (currentCategoryId != null) {
                 val newTask = Task(
                     id = 0L,
-                    title = _state.value.title,
+                    title = titleFormatter.getCorrectTitle(_state.value.title),
                     description = _state.value.description,
                     isActive = _state.value.pin,
                     categoryId = _state.value.categoryId ?: currentCategoryId,
@@ -180,6 +187,10 @@ class TaskEditorViewModel @Inject constructor(
 
     private fun handleTask(task: Task) {
         viewModelScope.launch {
+            if (_state.value.title.isBlank()) {
+                _messageEvent.emit(TaskEditorMessageEvent.TaskTitleCannotBeEmpty)
+                return@launch
+            }
             val taskId = taskIdStorage.getId()
             if (taskId == null) {
                 withContext(Dispatchers.IO) {

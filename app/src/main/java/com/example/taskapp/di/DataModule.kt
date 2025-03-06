@@ -9,6 +9,7 @@ import com.example.taskapp.data.implementation.CategoryTaskRepositoryImpl
 import com.example.taskapp.data.implementation.DateTimeFormatterImpl
 import com.example.taskapp.data.implementation.TaskIdStorageImpl
 import com.example.taskapp.data.implementation.TaskRepositoryImpl
+import com.example.taskapp.data.implementation.TitleFormatterImpl
 import com.example.taskapp.domain.AppSettings
 import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.CategoryRepository
@@ -16,6 +17,7 @@ import com.example.taskapp.domain.CategoryTaskRepository
 import com.example.taskapp.domain.DateTimeFormatter
 import com.example.taskapp.domain.TaskIdStorage
 import com.example.taskapp.domain.TaskRepository
+import com.example.taskapp.domain.TitleFormatter
 import com.example.taskapp.domain.model.database.AppDataBase
 import com.example.taskapp.domain.model.database.dao.CategoryDao
 import com.example.taskapp.domain.model.database.dao.CategoryTaskDao
@@ -93,5 +95,10 @@ class DataModule {
     @Provides
     fun provideCategoryTaskRepository(categoryTaskDao: CategoryTaskDao): CategoryTaskRepository {
         return CategoryTaskRepositoryImpl(categoryTaskDao)
+    }
+
+    @Provides
+    fun provideTitleFormatter(): TitleFormatter {
+        return TitleFormatterImpl()
     }
 }
