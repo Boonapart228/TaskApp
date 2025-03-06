@@ -8,6 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.R
 import com.example.taskapp.presentation.navigation.model.Screens
@@ -32,6 +33,8 @@ fun TaskEditorContent(
     onHomeScreenNavigationClick: (Screens) -> Unit,
     onSelectColorClick: (String) -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     Scaffold(topBar = {
         TaskEditorTopBar(
             expanded = state.expanded,
@@ -40,7 +43,10 @@ fun TaskEditorContent(
             onDeleteTaskClick = onToggleDeleteTaskClick,
             onTogglePinTaskClick = onTogglePinTaskClick,
             onToggleDropDawnMenuClick = onToggleDropDawnMenuClick,
-            onHomeScreenNavigationClick = onHomeScreenNavigationClick,
+            onHomeScreenNavigationClick = {
+                keyboardController?.hide()
+                onHomeScreenNavigationClick(Screens.HOME_SCREEN)
+            },
             onEditTaskClick = onEditTaskClick,
             onEditColorClick = onToggleColorPickerClick
         )

@@ -35,6 +35,7 @@
     <string name="task_success_create_text">Task successfully created</string>
     <string name="task_success_update_text">Task successfully updated</string>
     <string name="task_success_delete_text">Task successfully deleted</string>
+    <string name="task_title_cannot_be_empty_text">Task title cannot be empty</string>
     <string name="task_failed_delete_text">Cannot delete: Task not found</string>
     <string name="category_success_create_text">Category successfully created</string>
     <string name="category_success_update_text">Category successfully updated</string>

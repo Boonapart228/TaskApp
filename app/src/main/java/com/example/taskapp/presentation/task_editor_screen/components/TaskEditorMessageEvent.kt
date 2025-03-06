@@ -5,4 +5,5 @@ sealed class TaskEditorMessageEvent {
     data object TaskUpdateSuccess : TaskEditorMessageEvent()
     data object CannotDeleteNonExistentTask : TaskEditorMessageEvent()
     data object TaskDeletionSuccess : TaskEditorMessageEvent()
+    data object TaskTitleCannotBeEmpty : TaskEditorMessageEvent()
 }

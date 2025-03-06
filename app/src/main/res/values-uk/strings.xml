@@ -35,6 +35,7 @@
     <string name="task_success_create_text">Завдання успішно створено</string>
     <string name="task_success_update_text">Завдання успішно оновлено</string>
     <string name="task_success_delete_text">Завдання успішно видалено</string>
+    <string name="task_title_cannot_be_empty_text">Заголовок завдання не може бути порожнім</string>
     <string name="task_failed_delete_text">Не вдалося видалити: завдання не знайдено</string>
     <string name="category_success_create_text">Категорію успішно створено</string>
     <string name="category_success_update_text">Категорію успішно оновлено</string>
