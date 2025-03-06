@@ -14,4 +14,5 @@ data class TaskEditorState(
     val fieldsChanged: Boolean = false,
     val showDialogColorPicker: Boolean = false,
     val showDialogDeleteTask: Boolean = false,
+    val categoryId: Long? = null
 )
