@@ -73,7 +73,8 @@ interface TaskDao {
     @Query(
         "SELECT * FROM (" +
                 "SELECT * FROM task_table " +
-                " WHERE isActive = 0 " +
+                "WHERE isActive = 0 " +
+                "AND (:noteFilter = 'all' OR categoryId = :currentCategoryId) " +
                 "ORDER BY lastActiveAt DESC " +
                 "LIMIT 10 " +
                 ") AS limited_tasks " +
@@ -92,6 +93,8 @@ interface TaskDao {
                 "END DESC"
     )
     fun getInActiveRecentTasks(
+        noteFilter: String,
+        currentCategoryId: Long,
         sortBy: String,
         sortDirection: String
     ): Flow<List<TaskEntity>>
@@ -100,7 +103,8 @@ interface TaskDao {
     @Query(
         "SELECT * FROM (" +
                 "SELECT * FROM task_table " +
-                " WHERE isActive = 1 " +
+                "WHERE isActive = 1 " +
+                "AND (:noteFilter = 'all' OR categoryId = :currentCategoryId) " +
                 "ORDER BY lastActiveAt DESC " +
                 "LIMIT 10 " +
                 ") AS limited_tasks " +
@@ -119,6 +123,8 @@ interface TaskDao {
                 "END DESC"
     )
     fun getActiveRecentTasks(
+        noteFilter: String,
+        currentCategoryId: Long,
         sortBy: String,
         sortDirection: String
     ): Flow<List<TaskEntity>>

@@ -10,9 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.presentation.setting_screen.contents.SettingLanguage
+import com.example.taskapp.presentation.setting_screen.contents.SettingRecentNote
 import com.example.taskapp.presentation.setting_screen.contents.SettingTopBar
 import com.example.taskapp.presentation.setting_screen.contents.ThemeSwitcher
 import com.example.taskapp.presentation.setting_screen.models.Language
+import com.example.taskapp.presentation.setting_screen.models.RecentNoteFilter
 import com.example.taskapp.ui.theme.AppTheme
 
 @Composable
@@ -20,7 +22,9 @@ fun SettingContent(
     state: SettingState,
     onChangeAppThemeClick: () -> Unit,
     onToggleLanguageMenu: () -> Unit,
+    onToggleRecentNoteMenu: () -> Unit,
     setLanguage: (Language) -> Unit,
+    setRecentNoteFilter: (RecentNoteFilter) -> Unit,
     onNavigationClick: (Screens) -> Unit
 ) {
     Scaffold(topBar = { SettingTopBar(onNavigateBack = { onNavigationClick(Screens.HOME_SCREEN) }) }) { innerPadding ->
@@ -37,9 +41,15 @@ fun SettingContent(
                 setLanguage = setLanguage,
                 modifier = Modifier.fillMaxWidth()
             )
+            HorizontalDivider()
+            SettingRecentNote(
+                expandedRecentNoteMenu = state.expandedRecentNoteMenu,
+                recentNoteFilter = state.recentNoteFilterTextId,
+                onToggleRecentNoteMenu = onToggleRecentNoteMenu,
+                setRecentNoteFilter = setRecentNoteFilter
+            )
         }
     }
-
 }
 
 @Composable
@@ -51,6 +61,8 @@ fun SettingContentPreview() {
             onChangeAppThemeClick = {},
             onNavigationClick = {},
             onToggleLanguageMenu = {},
-            setLanguage = {})
+            setLanguage = {},
+            onToggleRecentNoteMenu = {},
+            setRecentNoteFilter = {})
     }
 }

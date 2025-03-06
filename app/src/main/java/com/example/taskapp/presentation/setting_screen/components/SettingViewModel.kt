@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.taskapp.domain.AppSettings
 import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.presentation.setting_screen.models.Language
+import com.example.taskapp.presentation.setting_screen.models.RecentNoteFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +30,8 @@ class SettingViewModel @Inject constructor(private val appSettings: AppSettings)
             _state.update {
                 it.copy(
                     darkTheme = appSettings.getAppTheme(),
-                    languageCode = appSettings.getLanguageCode()
+                    languageCode = appSettings.getLanguageCode(),
+                    recentNoteFilterTextId = appSettings.getRecentNoteFilter().textId
                 )
             }
             switchTheme(_state.value.darkTheme)
@@ -92,4 +94,26 @@ class SettingViewModel @Inject constructor(private val appSettings: AppSettings)
             appSettings.setLanguageCode(language.languageCode)
         }
     }
+
+    fun onToggleRecentNoteMenu() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    expandedRecentNoteMenu = !it.expandedRecentNoteMenu
+                )
+            }
+        }
+    }
+
+    fun setRecentNoteFilter(recentNoteFilter: RecentNoteFilter) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    recentNoteFilterTextId = recentNoteFilter.textId
+                )
+            }
+            appSettings.setRecentNoteFilter(recentNoteFilter)
+        }
+    }
+
 }

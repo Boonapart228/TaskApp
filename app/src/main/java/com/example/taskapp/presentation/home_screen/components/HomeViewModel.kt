@@ -91,11 +91,17 @@ class HomeViewModel @Inject constructor(
 
     private fun getActiveRecentTasks() {
         viewModelScope.launch(Dispatchers.IO) {
-            taskRepository.getActiveRecentTasks(
-                sortBy = _state.value.pinnedHomeSortParameter.parameter,
-                sortDirection = _state.value.pinnedSortDirection.direction
-            ).collect { activeTasks ->
-                _state.update { it.copy(activeTasks = activeTasks) }
+            val currentCategoryId = categoryIdStorage.getId()
+            val noteFilter = appSettings.getRecentNoteFilter().type
+            if (currentCategoryId != null) {
+                taskRepository.getActiveRecentTasks(
+                    noteFilter = noteFilter,
+                    currentCategoryId = currentCategoryId,
+                    sortBy = _state.value.pinnedHomeSortParameter.parameter,
+                    sortDirection = _state.value.pinnedSortDirection.direction
+                ).collect { activeTasks ->
+                    _state.update { it.copy(activeTasks = activeTasks) }
+                }
             }
         }
     }
@@ -124,11 +130,17 @@ class HomeViewModel @Inject constructor(
 
     private fun getInActiveRecentTasks() {
         viewModelScope.launch(Dispatchers.IO) {
-            taskRepository.getInActiveRecentTasks(
-                sortBy = _state.value.unpinnedHomeSortParameter.parameter,
-                sortDirection = _state.value.unpinnedSortDirection.direction
-            ).collect { inActiveTasks ->
-                _state.update { it.copy(inActiveTasks = inActiveTasks) }
+            val currentCategoryId = categoryIdStorage.getId()
+            val noteFilter = appSettings.getRecentNoteFilter().type
+            if (currentCategoryId != null) {
+                taskRepository.getInActiveRecentTasks(
+                    noteFilter = noteFilter,
+                    currentCategoryId = currentCategoryId,
+                    sortBy = _state.value.unpinnedHomeSortParameter.parameter,
+                    sortDirection = _state.value.unpinnedSortDirection.direction
+                ).collect { inActiveTasks ->
+                    _state.update { it.copy(inActiveTasks = inActiveTasks) }
+                }
             }
         }
     }

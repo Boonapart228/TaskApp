@@ -26,11 +26,15 @@ interface TaskRepository {
     ): Flow<List<Task>>
 
     fun getInActiveRecentTasks(
+        noteFilter: String,
+        currentCategoryId: Long,
         sortBy: String,
         sortDirection: String
     ): Flow<List<Task>>
 
     fun getActiveRecentTasks(
+        noteFilter: String,
+        currentCategoryId: Long,
         sortBy: String,
         sortDirection: String
     ): Flow<List<Task>>

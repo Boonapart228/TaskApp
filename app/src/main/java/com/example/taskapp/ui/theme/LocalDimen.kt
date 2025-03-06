@@ -84,6 +84,7 @@ data class Dimensions(
     val basicTextFieldFontSize: TextUnit = 14.sp,
     val searchBarRowHorizontalPadding: Dp = 2.dp,
     val searchBarSpacerWidth: Dp = 8.dp,
-    val basicTextFieldPlaceHolderFontSize: TextUnit = 14.sp
+    val basicTextFieldPlaceHolderFontSize: TextUnit = 14.sp,
+    val textFieldWidth : Dp = 100.dp
 
 )

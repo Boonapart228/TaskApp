@@ -22,17 +22,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.R
-import com.example.taskapp.presentation.setting_screen.models.Language
+import com.example.taskapp.presentation.setting_screen.models.RecentNoteFilter
 import com.example.taskapp.ui.theme.LocalDimen
 import com.example.taskapp.ui.theme.LocalProperty
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingLanguage(
-    expandedLanguageMenu: Boolean,
-    languageCode: String,
-    onToggleLanguageMenu: () -> Unit,
-    setLanguage: (Language) -> Unit,
+fun SettingRecentNote(
+    expandedRecentNoteMenu: Boolean,
+    recentNoteFilter: Int,
+    onToggleRecentNoteMenu: () -> Unit,
+    setRecentNoteFilter: (RecentNoteFilter) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -41,20 +41,20 @@ fun SettingLanguage(
         modifier = Modifier.padding(LocalDimen.current.settingsRowPaddingAll)
     ) {
         Text(
-            text = stringResource(id = R.string.select_language),
+            text = stringResource(id = R.string.select_recent_note_filter),
             fontSize = LocalDimen.current.settingsTextSize,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(LocalProperty.current.tenPercent)
         )
         ExposedDropdownMenuBox(
-            expanded = expandedLanguageMenu,
-            onExpandedChange = { onToggleLanguageMenu() }
+            expanded = expandedRecentNoteMenu,
+            onExpandedChange = { onToggleRecentNoteMenu() }
         )
         {
             TextField(
                 readOnly = true,
-                value = languageCode,
+                value = stringResource(id = recentNoteFilter),
                 onValueChange = {},
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -68,25 +68,25 @@ fun SettingLanguage(
                 modifier = Modifier
                     .width(LocalDimen.current.textFieldWidth)
                     .menuAnchor()
-                    .clickable { onToggleLanguageMenu() }
+                    .clickable { onToggleRecentNoteMenu() }
             )
             ExposedDropdownMenu(
-                expanded = expandedLanguageMenu,
-                onDismissRequest = { onToggleLanguageMenu() }) {
-                Language.entries.forEach { element ->
+                expanded = expandedRecentNoteMenu,
+                onDismissRequest = { onToggleRecentNoteMenu() }) {
+                RecentNoteFilter.entries.forEach { element ->
                     DropdownMenuItem(
                         text = {
                             Text(
-                                text = element.languageCode,
+                                text = stringResource(id = element.textId),
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Center
                             )
                         },
                         onClick = {
-                            onToggleLanguageMenu()
-                            setLanguage(element)
+                            onToggleRecentNoteMenu()
+                            setRecentNoteFilter(element)
                         })
-                    if (element != Language.entries.last()) {
+                    if (element != RecentNoteFilter.entries.last()) {
                         HorizontalDivider()
                     }
                 }
@@ -96,15 +96,14 @@ fun SettingLanguage(
 
 }
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
 @Composable
-fun SettingLanguagePreview() {
-    SettingLanguage(
-        languageCode = "",
-        expandedLanguageMenu = false,
-        onToggleLanguageMenu = { },
-        setLanguage = {})
+@Preview
+fun SettingRecentTaskPreview() {
+    SettingRecentNote(
+        expandedRecentNoteMenu = false,
+        recentNoteFilter = R.string.all_note_filter,
+        onToggleRecentNoteMenu = {},
+        setRecentNoteFilter = {},
+    )
 }
+

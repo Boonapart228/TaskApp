@@ -46,5 +46,8 @@
     <string name="sort_by_date_text">За датою</string>
     <string name="sort_by_note_text">За нотаткою</string>
     <string name="select_language">Виберіть мову</string>
+    <string name="select_recent_note_filter">Фільтр для останніх нотаток</string>
+    <string name="all_note_filter">Всі</string>
+    <string name="current_note_filter">Поточні</string>
     <string name="switch_theme_text">Змінити тему</string>
 </resources>
