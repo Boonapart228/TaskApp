@@ -79,7 +79,6 @@ fun CategoriesColorPicker(
         dismissButton = {
             TextButton(
                 onClick = {
-                    clearCategoryTitle()
                     onBackClick()
                 }
             ) {

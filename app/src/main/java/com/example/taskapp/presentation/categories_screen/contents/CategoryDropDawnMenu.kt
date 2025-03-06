@@ -64,7 +64,7 @@ fun CategoryDropDawnMenu(
                         }
 
                         CategorySortParameter.NOTE -> {
-                            painterResource(id = R.drawable.sort_by_date_ui)
+                            painterResource(id = R.drawable.sort_by_note)
                         }
                     },
                     contentDescription = null,
