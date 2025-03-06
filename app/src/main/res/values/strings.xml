@@ -48,6 +48,9 @@
     <string name="en" translatable="false">en</string>
     <string name="uk" translatable="false">uk</string>
     <string name="select_language">Choose a language</string>
+    <string name="select_recent_note_filter">Filter recent notes</string>
+    <string name="all_note_filter">All</string>
+    <string name="current_note_filter">Current</string>
     <string name="switch_theme_text">Switch Theme</string>
     <string name="empty_text" translatable="false" />
 </resources>

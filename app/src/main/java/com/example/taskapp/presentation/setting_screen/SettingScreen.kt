@@ -28,6 +28,8 @@ fun SettingScreen(
         onChangeAppThemeClick = viewModel::onChangeAppThemeClick,
         onToggleLanguageMenu = viewModel::onToggleLanguageMenu,
         setLanguage = viewModel::setLanguage,
-        onNavigationClick = viewModel::onNavigationClick
+        onNavigationClick = viewModel::onNavigationClick,
+        setRecentNoteFilter = viewModel::setRecentNoteFilter,
+        onToggleRecentNoteMenu = viewModel::onToggleRecentNoteMenu
     )
 }

@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.taskapp.domain.AppSettings
+import com.example.taskapp.presentation.setting_screen.models.RecentNoteFilter
 import kotlinx.coroutines.flow.first
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "preference_name")
@@ -19,6 +20,7 @@ class AppSettingsImpl(
     private val GRID_COLUMNS = intPreferencesKey("grid_columns")
     private val APP_THEME = booleanPreferencesKey("app_theme")
     private val LANGUAGE_CODE = stringPreferencesKey("language_code")
+    private val RECENT_FILTER = stringPreferencesKey("recent_filter")
 
     override suspend fun getGridColumns(): Int {
         val preferences = context.dataStore.data.first()
@@ -52,6 +54,18 @@ class AppSettingsImpl(
     override suspend fun getLanguageCode(): String {
         val languageCode = context.dataStore.data.first()
         return languageCode[LANGUAGE_CODE] ?: "en"
+    }
+
+    override suspend fun setRecentNoteFilter(recentNoteFilter: RecentNoteFilter) {
+        context.dataStore.edit { recentFilter ->
+            recentFilter[RECENT_FILTER] = recentNoteFilter.name
+        }
+    }
+
+    override suspend fun getRecentNoteFilter(): RecentNoteFilter {
+        val preferences = context.dataStore.data.first()
+        val typeName = preferences[RECENT_FILTER] ?: RecentNoteFilter.CURRENT.name
+        return RecentNoteFilter.valueOf(typeName)
     }
 
 

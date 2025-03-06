@@ -46,5 +46,8 @@
     <string name="sort_by_date_text">Date</string>
     <string name="sort_by_note_text">Note</string>
     <string name="select_language">Choose a language</string>
+    <string name="select_recent_note_filter">Filter recent notes</string>
+    <string name="all_note_filter">All</string>
+    <string name="current_note_filter">Current</string>
     <string name="switch_theme_text">Switch Theme</string>
 </resources>
