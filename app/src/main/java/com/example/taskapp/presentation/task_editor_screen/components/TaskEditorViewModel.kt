@@ -38,6 +38,11 @@ class TaskEditorViewModel @Inject constructor(
 
     init {
         randomHexColorCode()
+        getCurrentTask()
+        updateLastOpenAt()
+    }
+
+    private fun getCurrentTask() {
         taskIdStorage.getId()?.let {
             viewModelScope.launch {
                 taskRepository.getCurrentTaskById(taskId = it).collect { task ->
@@ -51,13 +56,14 @@ class TaskEditorViewModel @Inject constructor(
                             oldPin = task.isActive,
                             hexColorCode = task.hexColorCode,
                             oldHexColorCode = task.hexColorCode,
-                            previewColorCode = task.hexColorCode
+                            previewColorCode = task.hexColorCode,
+                            categoryId = task.categoryId
                         )
                     }
                 }
             }
+
         }
-        updateLastOpenAt()
     }
 
     private fun updateLastOpenAt() {
@@ -162,7 +168,7 @@ class TaskEditorViewModel @Inject constructor(
                     title = _state.value.title,
                     description = _state.value.description,
                     isActive = _state.value.pin,
-                    categoryId = currentCategoryId,
+                    categoryId = _state.value.categoryId ?: currentCategoryId,
                     hexColorCode = _state.value.hexColorCode,
                     createdAt = currentTimeMillis,
                     lastActiveAt = currentTimeMillis
