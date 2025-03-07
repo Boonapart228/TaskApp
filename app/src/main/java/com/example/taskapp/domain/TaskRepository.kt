@@ -38,4 +38,14 @@ interface TaskRepository {
         sortBy: String,
         sortDirection: String
     ): Flow<List<Task>>
+
+    fun getAllActiveRecentTasks(
+        sortBy: String,
+        sortDirection: String
+    ): Flow<List<Task>>
+
+    fun getAllInActiveRecentTasks(
+        sortBy: String,
+        sortDirection: String
+    ): Flow<List<Task>>
 }
