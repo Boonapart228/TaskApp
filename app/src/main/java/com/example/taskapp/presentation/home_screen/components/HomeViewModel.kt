@@ -85,6 +85,8 @@ class HomeViewModel @Inject constructor(
                     .collect { activeTasks ->
                         _state.update { it.copy(activeTasks = activeTasks) }
                     }
+            } else {
+                _state.update { it.copy(activeTasks = listOf()) }
             }
         }
     }
@@ -97,6 +99,13 @@ class HomeViewModel @Inject constructor(
                 taskRepository.getActiveRecentTasks(
                     noteFilter = noteFilter,
                     currentCategoryId = currentCategoryId,
+                    sortBy = _state.value.pinnedHomeSortParameter.parameter,
+                    sortDirection = _state.value.pinnedSortDirection.direction
+                ).collect { activeTasks ->
+                    _state.update { it.copy(activeTasks = activeTasks) }
+                }
+            } else {
+                taskRepository.getAllActiveRecentTasks(
                     sortBy = _state.value.pinnedHomeSortParameter.parameter,
                     sortDirection = _state.value.pinnedSortDirection.direction
                 ).collect { activeTasks ->
@@ -141,6 +150,13 @@ class HomeViewModel @Inject constructor(
                 ).collect { inActiveTasks ->
                     _state.update { it.copy(inActiveTasks = inActiveTasks) }
                 }
+            } else {
+                taskRepository.getAllInActiveRecentTasks(
+                    sortBy = _state.value.unpinnedHomeSortParameter.parameter,
+                    sortDirection = _state.value.unpinnedSortDirection.direction
+                ).collect { inActiveTasks ->
+                    _state.update { it.copy(inActiveTasks = inActiveTasks) }
+                }
             }
         }
     }
@@ -156,6 +172,8 @@ class HomeViewModel @Inject constructor(
                 ).collect { inActiveTasks ->
                     _state.update { it.copy(inActiveTasks = inActiveTasks) }
                 }
+            } else {
+                _state.update { it.copy(inActiveTasks = listOf()) }
             }
         }
     }

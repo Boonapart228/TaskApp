@@ -128,4 +128,56 @@ interface TaskDao {
         sortBy: String,
         sortDirection: String
     ): Flow<List<TaskEntity>>
+
+    @Query(
+        "SELECT * FROM (" +
+                "SELECT * FROM task_table " +
+                "WHERE isActive = 1 " +
+                "ORDER BY lastActiveAt DESC " +
+                "LIMIT 10 " +
+                ") AS limited_tasks " +
+                "ORDER BY " +
+                "CASE WHEN :sortDirection = 'ASC' THEN " +
+                "CASE :sortBy " +
+                "WHEN 'title' THEN LOWER(title) " +
+                "WHEN 'date' THEN createdAt " +
+                "ELSE NULL END " +
+                "END ASC, " +
+                "CASE WHEN :sortDirection = 'DESC' THEN " +
+                "CASE :sortBy " +
+                "WHEN 'title' THEN LOWER(title) " +
+                "WHEN 'date' THEN createdAt " +
+                "ELSE NULL END " +
+                "END DESC"
+    )
+    fun getAllActiveRecentTasks(
+        sortBy: String,
+        sortDirection: String
+    ): Flow<List<TaskEntity>>
+
+    @Query(
+        "SELECT * FROM (" +
+                "SELECT * FROM task_table " +
+                "WHERE isActive = 0 " +
+                "ORDER BY lastActiveAt DESC " +
+                "LIMIT 10 " +
+                ") AS limited_tasks " +
+                "ORDER BY " +
+                "CASE WHEN :sortDirection = 'ASC' THEN " +
+                "CASE :sortBy " +
+                "WHEN 'title' THEN LOWER(title) " +
+                "WHEN 'date' THEN createdAt " +
+                "ELSE NULL END " +
+                "END ASC, " +
+                "CASE WHEN :sortDirection = 'DESC' THEN " +
+                "CASE :sortBy " +
+                "WHEN 'title' THEN LOWER(title) " +
+                "WHEN 'date' THEN createdAt " +
+                "ELSE NULL END " +
+                "END DESC"
+    )
+    fun getAllInActiveRecentTasks(
+        sortBy: String,
+        sortDirection: String
+    ): Flow<List<TaskEntity>>
 }
