@@ -316,4 +316,14 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 
+    fun onToggleAllLines() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    allLines = !it.allLines
+                )
+            }
+        }
+    }
+
 }

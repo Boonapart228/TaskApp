@@ -92,6 +92,7 @@ fun CategoriesScreen(
         onCategorySortParameterChange = viewModel::onCategorySortParameterChange,
         onToggleCategoryMenuClick = viewModel::onToggleCategoryMenuClick,
         onToggleSearchBar = viewModel::onToggleSearchBar,
-        onSetSearchTitle = viewModel::onSetSearchTitle
+        onSetSearchTitle = viewModel::onSetSearchTitle,
+        onToggleAllLines = viewModel::onToggleAllLines
     )
 }

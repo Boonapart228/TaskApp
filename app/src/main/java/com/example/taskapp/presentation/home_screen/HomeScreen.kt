@@ -59,19 +59,20 @@ fun HomeScreen(
     HomeContent(
         state = state,
         onNavigationClick = viewModel::onNavigationClick,
-        formatDate = viewModel::formatDate,
-        formatTime = viewModel::formatTime,
         onChangeGridColumnsClick = viewModel::onChangeGridColumnsClick,
-        onTaskSelectClick = viewModel::onTaskSelectClick,
+        onTogglePinnedMenuClick = viewModel::onTogglePinnedMenuClick,
+        onToggleUnPinnedMenuClick = viewModel::onToggleUnPinnedMenuClick,
         onNavigateToTaskEditorClick = viewModel::onNavigateToTaskEditorClick,
+        onToggleSearchBar = viewModel::onToggleSearchBar,
+        onToggleAllTitleLines = viewModel::onToggleAllLines,
+        onSetSearchTitle = viewModel::onSetSearchTitle,
+        formatTime = viewModel::formatTime,
+        formatDate = viewModel::formatDate,
+        onTaskSelectClick = viewModel::onTaskSelectClick,
         onPinnedDirectionChange = viewModel::onPinnedDirectionChange,
         onPinnedSortParameterChange = viewModel::onPinnedSortParameterChange,
-        onTogglePinnedMenuClick = viewModel::onTogglePinnedMenuClick,
         onUnPinnedDirectionChange = viewModel::onUnPinnedDirectionChange,
         onUnPinnedSortParameterChange = viewModel::onUnPinnedSortParameterChange,
-        onToggleUnPinnedMenuClick = viewModel::onToggleUnPinnedMenuClick,
-        onChangeNoteFilterType = viewModel::onChangeNoteFilterType,
-        onToggleSearchBar = viewModel::onToggleSearchBar,
-        onSetSearchTitle = viewModel::onSetSearchTitle
+        onChangeNoteFilterType = viewModel::onChangeNoteFilterType
     )
 }

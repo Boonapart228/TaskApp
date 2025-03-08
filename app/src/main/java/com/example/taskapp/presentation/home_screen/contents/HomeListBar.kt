@@ -1,5 +1,7 @@
 package com.example.taskapp.presentation.home_screen.contents
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,6 +44,16 @@ fun HomeListBar(
     onToggleMenuClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val animationAscendingColorState = animateColorAsState(
+        targetValue = if (selectedSortDirection == SortDirection.ASCENDING) pastelGreen else pastelRed,
+        tween(LocalProperty.current.colorAnimationDurationMs),
+        label = ""
+    )
+    val animationDescendingColorState = animateColorAsState(
+        targetValue = if (selectedSortDirection == SortDirection.DESCENDING) pastelGreen else pastelRed,
+        tween(LocalProperty.current.colorAnimationDurationMs),
+        label = ""
+    )
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -76,7 +88,7 @@ fun HomeListBar(
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = null,
-                    tint = if (selectedSortDirection == SortDirection.ASCENDING) pastelGreen else pastelRed,
+                    tint = animationAscendingColorState.value,
                     modifier = Modifier
                         .graphicsLayer(
                             rotationZ = LocalProperty.current.rotation270
@@ -93,7 +105,7 @@ fun HomeListBar(
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = null,
-                    tint = if (selectedSortDirection == SortDirection.DESCENDING) pastelGreen else pastelRed,
+                    tint = animationDescendingColorState.value,
                     modifier = Modifier
                         .graphicsLayer(
                             rotationZ = LocalProperty.current.rotation90
@@ -108,7 +120,8 @@ fun HomeListBar(
 @Composable
 @Preview(showBackground = true)
 fun HomeListBarBarPreview() {
-    HomeListBar(R.string.list_notes_text,
+    HomeListBar(
+        R.string.list_notes_text,
         expanded = false,
         selectedHomeSortParameter = HomeSortParameter.DATE,
         onDescendingSortClick = {},
@@ -116,5 +129,6 @@ fun HomeListBarBarPreview() {
         onSortByDateClick = {},
         onSortByTitleClick = {},
         onToggleMenuClick = {},
-        selectedSortDirection = SortDirection.ASCENDING)
+        selectedSortDirection = SortDirection.ASCENDING
+    )
 }

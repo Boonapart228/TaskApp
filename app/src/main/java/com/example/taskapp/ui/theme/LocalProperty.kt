@@ -22,5 +22,6 @@ data class Property(
     val offSetByXRow: Int = 20,
     val offSetByXTextButton: Int = -10,
     val offSetByYCategoryDescendingIconButton: Int = -7,
-    val offSetByXSearchBarIconButton : Int = 10,
+    val offSetByXSearchBarIconButton: Int = 10,
+    val colorAnimationDurationMs: Int = 400
 )

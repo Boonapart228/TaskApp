@@ -23,11 +23,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.R
 import com.example.taskapp.domain.constants.ColorItems
+import com.example.taskapp.presentation.categories_screen.model.CategoryOperation
 import com.example.taskapp.ui.theme.LocalDimen
 
 @Composable
 fun CategoriesColorPicker(
     hexColorCode: String,
+    categoryOperation: CategoryOperation,
     onSelectColorClick: (String) -> Unit,
     onBackClick: () -> Unit,
     handleCategory: () -> Unit,
@@ -73,7 +75,14 @@ fun CategoriesColorPicker(
                     handleCategory()
                 }
             ) {
-                Text(stringResource(id = R.string.create_text))
+                Text(
+                    stringResource(
+                        id = when (categoryOperation) {
+                            CategoryOperation.CREATE -> R.string.create_text
+                            CategoryOperation.EDIT -> R.string.update_text
+                        }
+                    )
+                )
             }
         },
         dismissButton = {
@@ -97,6 +106,7 @@ fun CategoriesCreateColorPickerPreview() {
         onBackClick = {},
         handleCategory = {},
         clearCategoryTitle = {},
-        onDismissClick = {}
+        onDismissClick = {},
+        categoryOperation = CategoryOperation.EDIT
     )
 }

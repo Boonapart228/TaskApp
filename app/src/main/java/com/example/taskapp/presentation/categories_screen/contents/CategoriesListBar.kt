@@ -1,5 +1,7 @@
 package com.example.taskapp.presentation.categories_screen.contents
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,6 +44,16 @@ fun CategoriesListBar(
     onToggleMenuClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val animationAscendingColorState = animateColorAsState(
+        targetValue = if (selectedSortDirection == SortDirection.ASCENDING) pastelGreen else pastelRed,
+        tween(LocalProperty.current.colorAnimationDurationMs),
+        label = ""
+    )
+    val animationDescendingColorState = animateColorAsState(
+        targetValue = if (selectedSortDirection == SortDirection.DESCENDING) pastelGreen else pastelRed,
+        tween(LocalProperty.current.colorAnimationDurationMs),
+        label = ""
+    )
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -76,7 +88,7 @@ fun CategoriesListBar(
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = null,
-                    tint = if (selectedSortDirection == SortDirection.ASCENDING) pastelGreen else pastelRed,
+                    tint = animationAscendingColorState.value,
                     modifier = Modifier
                         .graphicsLayer(
                             rotationZ = LocalProperty.current.rotation270
@@ -93,7 +105,7 @@ fun CategoriesListBar(
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = null,
-                    tint = if (selectedSortDirection == SortDirection.DESCENDING) pastelGreen else pastelRed,
+                    tint = animationDescendingColorState.value,
                     modifier = Modifier
                         .graphicsLayer(
                             rotationZ = LocalProperty.current.rotation90

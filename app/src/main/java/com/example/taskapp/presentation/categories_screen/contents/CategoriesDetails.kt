@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.R
 import com.example.taskapp.ui.theme.LocalDimen
@@ -30,9 +31,11 @@ fun CategoriesDetails(
     categoriesTitle: String,
     sizeNote: Int,
     hexColorCode: String,
+    allLines: Boolean,
     onDeleteCategory: () -> Unit,
     onEditCategory: () -> Unit,
-    onCategorySelectClick: () -> Unit
+    onCategorySelectClick: () -> Unit,
+    onToggleAllLines: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -67,7 +70,10 @@ fun CategoriesDetails(
                 Text(
                     text = categoriesTitle, fontSize = LocalDimen.current.categoriesTextSize,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    maxLines = if (allLines) Int.MAX_VALUE else 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = Color.Black,
+                    modifier = Modifier.clickable { onToggleAllLines() }
                 )
                 Row {
                     Text(
@@ -91,9 +97,11 @@ fun CategoriesDetailsPreview() {
     CategoriesDetails(
         categoriesTitle = "Category 01",
         sizeNote = 2,
+        allLines = false,
         onDeleteCategory = {},
         onEditCategory = {},
         onCategorySelectClick = {},
-        hexColorCode = "#dda5e4"
+        hexColorCode = "#dda5e4",
+        onToggleAllLines = {}
     )
 }
