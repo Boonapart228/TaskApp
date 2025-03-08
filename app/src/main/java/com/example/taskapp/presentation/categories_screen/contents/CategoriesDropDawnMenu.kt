@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,10 +23,11 @@ import com.example.taskapp.presentation.categories_screen.model.CategoriesDropDa
 @Composable
 fun CategoriesDropDawnMenu(
     onDeleteCategory: () -> Unit,
-    onEditCategory: () -> Unit
+    onEditCategory: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
-    Box {
+    Box(modifier = modifier) {
         IconButton(onClick = { expanded = !expanded }) {
             Icon(
                 Icons.Default.MoreVert, contentDescription = null,

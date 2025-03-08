@@ -1,7 +1,6 @@
 package com.example.taskapp.presentation.categories_screen.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -11,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.R
+import com.example.taskapp.domain.constants.SortDirection
 import com.example.taskapp.presentation.bottom_bar.BottomBar
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesAddButton
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesColorPicker
@@ -20,9 +20,7 @@ import com.example.taskapp.presentation.categories_screen.contents.CategoriesDia
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesListBar
 import com.example.taskapp.presentation.categories_screen.contents.CategoriesTopBar
 import com.example.taskapp.presentation.categories_screen.model.CategorySortParameter
-import com.example.taskapp.domain.constants.SortDirection
 import com.example.taskapp.presentation.navigation.model.Screens
-import com.example.taskapp.ui.theme.LocalDimen
 
 @Composable
 fun CategoriesContent(
@@ -80,11 +78,6 @@ fun CategoriesContent(
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(
-                    horizontal = LocalDimen.current.verticalGridHorizontalPadding,
-                    vertical = LocalDimen.current.verticalGridVerticalPadding
-                ),
-
                 ) {
                 items(state.categories.filter {
                     it.categoryTitle.lowercase().contains(state.searchTitle.lowercase())
