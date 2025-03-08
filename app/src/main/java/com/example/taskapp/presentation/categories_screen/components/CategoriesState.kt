@@ -23,5 +23,6 @@ data class CategoriesState(
     val categorySortParameter: CategorySortParameter = CategorySortParameter.TITLE,
     val categorySortDirection: SortDirection = SortDirection.ASCENDING,
     val searchTitle: String = "",
-    val showSearchBar : Boolean = false
+    val showSearchBar: Boolean = false,
+    val allLines: Boolean = false
 )

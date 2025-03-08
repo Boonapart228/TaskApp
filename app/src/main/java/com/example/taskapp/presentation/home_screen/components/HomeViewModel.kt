@@ -10,6 +10,7 @@ import com.example.taskapp.domain.TaskRepository
 import com.example.taskapp.domain.constants.SortDirection
 import com.example.taskapp.presentation.home_screen.model.HomeSortParameter
 import com.example.taskapp.presentation.home_screen.model.NotesFilterType
+import com.example.taskapp.presentation.home_screen.model.TaskType
 import com.example.taskapp.presentation.navigation.model.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -309,6 +310,17 @@ class HomeViewModel @Inject constructor(
                 it.copy(
                     searchTitle = searchTitle
                 )
+            }
+        }
+    }
+
+    fun onToggleAllLines(taskType: TaskType) {
+        viewModelScope.launch {
+            _state.update {
+                when (taskType) {
+                    TaskType.PINNED -> it.copy(allPinnedTitleLines = !it.allPinnedTitleLines)
+                    TaskType.UNPINNED -> it.copy(allUnpinnedTitleLines = !it.allUnpinnedTitleLines)
+                }
             }
         }
     }

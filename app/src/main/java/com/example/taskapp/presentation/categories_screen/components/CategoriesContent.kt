@@ -45,6 +45,7 @@ fun CategoriesContent(
     onCategoryDirectionChange: (SortDirection) -> Unit,
     onCategorySortParameterChange: (CategorySortParameter) -> Unit,
     onToggleCategoryMenuClick: () -> Unit,
+    onToggleAllLines: () -> Unit,
     onSetSearchTitle: (String) -> Unit,
     onToggleSearchBar: () -> Unit
 ) {
@@ -85,10 +86,13 @@ fun CategoriesContent(
                 ),
 
                 ) {
-                items(state.categories.filter { it.categoryTitle.contains(state.searchTitle) }) { category ->
+                items(state.categories.filter {
+                    it.categoryTitle.lowercase().contains(state.searchTitle.lowercase())
+                }) { category ->
                     CategoriesDetails(
                         categoriesTitle = category.categoryTitle,
                         sizeNote = category.taskCount,
+                        allLines = state.allLines,
                         hexColorCode = category.categoryHexColorCode,
                         onDeleteCategory = {
                             onToggleDeleteCategoryClick()
@@ -100,7 +104,8 @@ fun CategoriesContent(
                         },
                         onCategorySelectClick = {
                             onCategorySelectClick(category.categoryId)
-                        }
+                        },
+                        onToggleAllLines = onToggleAllLines
                     )
                 }
             }
@@ -116,6 +121,7 @@ fun CategoriesContent(
             if (state.showDialogColorPicker) {
                 CategoriesColorPicker(
                     hexColorCode = state.hexColorCode,
+                    categoryOperation = state.categoryOperation,
                     onSelectColorClick = onSelectColorClick,
                     onBackClick = onBackClick,
                     handleCategory = handleCategory,
@@ -162,6 +168,7 @@ fun CategoriesContentPreview() {
         onToggleCategoryMenuClick = {},
         onCategorySortParameterChange = {},
         onSetSearchTitle = {},
-        onToggleSearchBar = {}
+        onToggleSearchBar = {},
+        onToggleAllLines = {}
     )
 }

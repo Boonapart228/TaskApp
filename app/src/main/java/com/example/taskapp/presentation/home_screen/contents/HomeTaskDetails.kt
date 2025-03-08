@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskapp.R
@@ -37,11 +38,13 @@ fun HomeTaskDetails(
     title: String,
     description: String,
     pinned: Boolean,
+    allTitleLines: Boolean,
     hexColorCode: String,
     modifier: Modifier = Modifier,
     formatDate: () -> String,
     formatTime: () -> String,
-    onTaskSelectClick: () -> Unit
+    onTaskSelectClick: () -> Unit,
+    onToggleAllTitleLines: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
         Card(
@@ -72,8 +75,11 @@ fun HomeTaskDetails(
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start,
                     color = Color.Black,
-                    maxLines = 1,
-                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = if (allTitleLines) Int.MAX_VALUE else 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onToggleAllTitleLines() },
                 )
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Text(
@@ -146,9 +152,11 @@ fun HomeTaskDetailsPreview() {
         "Title",
         "You said you'll be with me forever\\nWith you personally, I am absolutely sincere.",
         pinned = true,
+        allTitleLines = false,
+        hexColorCode = "#dfaf7e",
         formatDate = { "" },
         formatTime = { "" },
         onTaskSelectClick = {},
-        hexColorCode = "#dfaf7e"
+        onToggleAllTitleLines = {}
     )
 }

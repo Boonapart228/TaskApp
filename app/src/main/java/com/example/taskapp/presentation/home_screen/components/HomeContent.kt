@@ -26,6 +26,7 @@ import com.example.taskapp.presentation.home_screen.contents.HomeTopBar
 import com.example.taskapp.domain.constants.SortDirection
 import com.example.taskapp.presentation.home_screen.model.HomeSortParameter
 import com.example.taskapp.presentation.home_screen.model.NotesFilterType
+import com.example.taskapp.presentation.home_screen.model.TaskType
 import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.ui.theme.LocalDimen
 
@@ -39,6 +40,7 @@ fun HomeContent(
     onToggleUnPinnedMenuClick: () -> Unit,
     onNavigateToTaskEditorClick: () -> Unit,
     onToggleSearchBar: () -> Unit,
+    onToggleAllTitleLines: (TaskType) -> Unit,
     onSetSearchTitle: (String) -> Unit,
     formatTime: (Long) -> String,
     formatDate: (Long) -> String,
@@ -99,15 +101,19 @@ fun HomeContent(
                 contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding),
                 modifier = Modifier.height(LocalDimen.current.lazyVerticalGridHeight)
             ) {
-                items(state.activeTasks.filter { it.title.contains(state.searchTitle) }) {
+                items(state.activeTasks.filter {
+                    it.title.lowercase().contains(state.searchTitle.lowercase())
+                }) {
                     HomeTaskDetails(
                         title = it.title,
                         description = it.description,
                         pinned = it.isActive,
+                        allTitleLines = state.allPinnedTitleLines,
                         hexColorCode = it.hexColorCode,
-                        formatTime = { formatTime(it.createdAt) },
                         formatDate = { formatDate(it.createdAt) },
-                        onTaskSelectClick = { onTaskSelectClick(it.id) }
+                        formatTime = { formatTime(it.createdAt) },
+                        onTaskSelectClick = { onTaskSelectClick(it.id) },
+                        onToggleAllTitleLines = { onToggleAllTitleLines(TaskType.PINNED) }
                     )
                 }
             }
@@ -126,15 +132,19 @@ fun HomeContent(
                 columns = GridCells.Fixed(state.gridColumns),
                 contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding)
             ) {
-                items(state.inActiveTasks.filter { it.title.contains(state.searchTitle) }) {
+                items(state.inActiveTasks.filter {
+                    it.title.lowercase().contains(state.searchTitle.lowercase())
+                }) {
                     HomeTaskDetails(
                         title = it.title,
                         description = it.description,
                         pinned = it.isActive,
+                        allTitleLines = state.allUnpinnedTitleLines,
                         hexColorCode = it.hexColorCode,
-                        formatTime = { formatTime(it.createdAt) },
                         formatDate = { formatDate(it.createdAt) },
-                        onTaskSelectClick = { onTaskSelectClick(it.id) }
+                        formatTime = { formatTime(it.createdAt) },
+                        onTaskSelectClick = { onTaskSelectClick(it.id) },
+                        onToggleAllTitleLines = { onToggleAllTitleLines(TaskType.UNPINNED) }
                     )
                 }
             }
@@ -149,18 +159,19 @@ fun HomeContent(
 fun HomeContentPreview() {
     HomeContent(state = HomeState(),
         onNavigationClick = {},
+        onChangeGridColumnsClick = {},
+        onTogglePinnedMenuClick = {},
+        onToggleUnPinnedMenuClick = {},
+        onNavigateToTaskEditorClick = {},
+        onToggleSearchBar = {},
+        onToggleAllTitleLines = {},
+        onSetSearchTitle = {},
         formatTime = { "" },
         formatDate = { "" },
-        onChangeGridColumnsClick = {},
         onTaskSelectClick = {},
-        onNavigateToTaskEditorClick = {},
         onPinnedDirectionChange = {},
-        onTogglePinnedMenuClick = {},
         onPinnedSortParameterChange = {},
-        onToggleUnPinnedMenuClick = {},
         onUnPinnedDirectionChange = {},
         onUnPinnedSortParameterChange = {},
-        onChangeNoteFilterType = {},
-        onToggleSearchBar = {},
-        onSetSearchTitle = {})
+        onChangeNoteFilterType = {})
 }
