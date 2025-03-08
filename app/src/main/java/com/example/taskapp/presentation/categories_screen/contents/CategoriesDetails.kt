@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,8 +24,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.taskapp.R
 import com.example.taskapp.ui.theme.LocalDimen
+import com.example.taskapp.ui.theme.LocalProperty
 
 @Composable
 fun CategoriesDetails(
@@ -41,25 +44,31 @@ fun CategoriesDetails(
         modifier = Modifier
             .padding(
                 horizontal = LocalDimen.current.categoriesCardHorizontalPadding,
-                vertical = LocalDimen.current.categoriesCardVerticalPadding
             )
+            .padding(bottom = LocalDimen.current.categoriesDetailsPaddingBottom)
             .clickable { onCategorySelectClick() },
         colors = CardDefaults.cardColors(
             containerColor = Color(parseColor(hexColorCode))
         ),
         shape = RoundedCornerShape(LocalDimen.current.categoriesCardShape)
     ) {
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = LocalDimen.current.categoriesBoxPaddingTop),
+            contentAlignment = Alignment.TopEnd,
+        ) {
             CategoriesDropDawnMenu(
                 onDeleteCategory = onDeleteCategory,
-                onEditCategory = onEditCategory
+                onEditCategory = onEditCategory,
+                modifier = Modifier.offset(y = LocalProperty.current.offSetByYCategoriesDropDawnMenu.dp)
             )
             Column(
                 verticalArrangement = Arrangement.spacedBy(LocalDimen.current.categoriesColumnSpaceBy),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(LocalDimen.current.categoriesColumnPaddingVertical)
+                    .padding(LocalDimen.current.categoriesColumnPaddingAll)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.file_ui),
@@ -73,7 +82,9 @@ fun CategoriesDetails(
                     maxLines = if (allLines) Int.MAX_VALUE else 1,
                     overflow = TextOverflow.Ellipsis,
                     color = Color.Black,
-                    modifier = Modifier.clickable { onToggleAllLines() }
+                    modifier = Modifier
+                        .clickable { onToggleAllLines() }
+                        .padding(horizontal = LocalDimen.current.categoriesDetailsPaddingHorizontal)
                 )
                 Row {
                     Text(

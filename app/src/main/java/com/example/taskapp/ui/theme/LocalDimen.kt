@@ -39,7 +39,7 @@ data class Dimensions(
     val categoriesColumnSpaceBy: Dp = 6.dp,
     val categoriesColumnPaddingVertical: Dp = 16.dp,
     val categoriesColumnPaddingHorizontal: Dp = 12.dp,
-    val categoriesIconSizeLarge: Dp = 86.dp,
+    val categoriesIconSizeLarge: Dp = 92.dp,
     val categoriesTextSize: TextUnit = 18.sp,
     val categoriesTextSizeSmall: TextUnit = 12.sp,
     val categoriesTextBottomPadding: Dp = 4.dp,
@@ -85,6 +85,10 @@ data class Dimensions(
     val searchBarRowHorizontalPadding: Dp = 2.dp,
     val searchBarSpacerWidth: Dp = 8.dp,
     val basicTextFieldPlaceHolderFontSize: TextUnit = 14.sp,
-    val textFieldWidth : Dp = 100.dp
+    val textFieldWidth: Dp = 100.dp,
+    val categoriesDetailsPaddingBottom: Dp = 18.dp,
+    val categoriesBoxPaddingTop: Dp = 10.dp,
+    val categoriesColumnPaddingAll: Dp = 4.dp,
+    val categoriesDetailsPaddingHorizontal: Dp = 8.dp
 
 )
