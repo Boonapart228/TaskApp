@@ -13,7 +13,7 @@ val LocalDimen = compositionLocalOf {
 
 data class Dimensions(
     val columnTopBarPadding: Dp = 8.dp,
-    val columnTopBarPaddingTop: Dp = 18.dp,
+    val columnTopBarPaddingTop: Dp = 24.dp,
     val columnTopBarPaddingBottom: Dp = 4.dp,
     val rowTopBarPaddingTop: Dp = 4.dp,
     val rowTopBarPaddingStart: Dp = 6.dp,
