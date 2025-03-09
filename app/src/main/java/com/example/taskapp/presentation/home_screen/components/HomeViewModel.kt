@@ -2,12 +2,20 @@ package com.example.taskapp.presentation.home_screen.components
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.taskapp.domain.AppSettings
-import com.example.taskapp.domain.CategoryIdStorage
-import com.example.taskapp.domain.DateTimeFormatter
-import com.example.taskapp.domain.TaskIdStorage
-import com.example.taskapp.domain.TaskRepository
 import com.example.taskapp.domain.constants.SortDirection
+import com.example.taskapp.domain.usecase.category_storage.GetCategoryIdUseCase
+import com.example.taskapp.domain.usecase.date_formatter.FormatDateUseCase
+import com.example.taskapp.domain.usecase.date_formatter.FormatTimeUseCase
+import com.example.taskapp.domain.usecase.settings.GetGridColumnsUseCase
+import com.example.taskapp.domain.usecase.settings.GetRecentNoteFilterUseCase
+import com.example.taskapp.domain.usecase.settings.SetGridColumnsUseCase
+import com.example.taskapp.domain.usecase.task.GetActiveRecentTasksUseCase
+import com.example.taskapp.domain.usecase.task.GetActiveTasksUseCase
+import com.example.taskapp.domain.usecase.task.GetAllActiveRecentTasksUseCase
+import com.example.taskapp.domain.usecase.task.GetAllInActiveRecentTasksUseCase
+import com.example.taskapp.domain.usecase.task.GetInActiveRecentTasksUseCase
+import com.example.taskapp.domain.usecase.task.GetInActiveTasksUseCase
+import com.example.taskapp.domain.usecase.task_storage.SetTaskIdUseCase
 import com.example.taskapp.presentation.home_screen.model.HomeSortParameter
 import com.example.taskapp.presentation.home_screen.model.NotesFilterType
 import com.example.taskapp.presentation.home_screen.model.TaskType
@@ -22,14 +30,23 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Provider
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val taskRepository: TaskRepository,
-    private val categoryIdStorage: CategoryIdStorage,
-    private val dateTimeFormatter: DateTimeFormatter,
-    private val appSettings: AppSettings,
-    private val taskIdStorage: TaskIdStorage
+    private val getCategoryIdUseCase: Provider<GetCategoryIdUseCase>,
+    private val formatDateUseCase: Provider<FormatDateUseCase>,
+    private val formatTimeUseCase: Provider<FormatTimeUseCase>,
+    private val setTaskIdUseCase: Provider<SetTaskIdUseCase>,
+    private val setGridColumnsUseCase: Provider<SetGridColumnsUseCase>,
+    private val getGridColumnsUseCase: Provider<GetGridColumnsUseCase>,
+    private val getRecentNoteFilterUseCase: Provider<GetRecentNoteFilterUseCase>,
+    private val getActiveTasksUseCase: Provider<GetActiveTasksUseCase>,
+    private val getInActiveTasksUseCase: Provider<GetInActiveTasksUseCase>,
+    private val getActiveRecentTasksUseCase: Provider<GetActiveRecentTasksUseCase>,
+    private val getInActiveRecentTasksUseCase: Provider<GetInActiveRecentTasksUseCase>,
+    private val getAllActiveRecentTasksUseCase: Provider<GetAllActiveRecentTasksUseCase>,
+    private val getAllInActiveRecentTasksUseCase: Provider<GetAllInActiveRecentTasksUseCase>
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
@@ -76,16 +93,15 @@ class HomeViewModel @Inject constructor(
 
     private fun getActiveTasks() {
         viewModelScope.launch(Dispatchers.IO) {
-            val currentCategoryId = categoryIdStorage.getId()
+            val currentCategoryId = getCategoryIdUseCase.get().execute()
             if (currentCategoryId != null) {
-                taskRepository.getActiveTasks(
+                getActiveTasksUseCase.get().execute(
                     categoryId = currentCategoryId,
                     sortBy = _state.value.pinnedHomeSortParameter.parameter,
                     sortDirection = _state.value.pinnedSortDirection.direction
-                )
-                    .collect { activeTasks ->
-                        _state.update { it.copy(activeTasks = activeTasks) }
-                    }
+                ).collect { activeTasks ->
+                    _state.update { it.copy(activeTasks = activeTasks) }
+                }
             } else {
                 _state.update { it.copy(activeTasks = listOf()) }
             }
@@ -94,10 +110,10 @@ class HomeViewModel @Inject constructor(
 
     private fun getActiveRecentTasks() {
         viewModelScope.launch(Dispatchers.IO) {
-            val currentCategoryId = categoryIdStorage.getId()
-            val noteFilter = appSettings.getRecentNoteFilter().type
+            val currentCategoryId = getCategoryIdUseCase.get().execute()
+            val noteFilter = getRecentNoteFilterUseCase.get().execute().type
             if (currentCategoryId != null) {
-                taskRepository.getActiveRecentTasks(
+                getActiveRecentTasksUseCase.get().execute(
                     noteFilter = noteFilter,
                     currentCategoryId = currentCategoryId,
                     sortBy = _state.value.pinnedHomeSortParameter.parameter,
@@ -106,7 +122,7 @@ class HomeViewModel @Inject constructor(
                     _state.update { it.copy(activeTasks = activeTasks) }
                 }
             } else {
-                taskRepository.getAllActiveRecentTasks(
+                getAllActiveRecentTasksUseCase.get().execute(
                     sortBy = _state.value.pinnedHomeSortParameter.parameter,
                     sortDirection = _state.value.pinnedSortDirection.direction
                 ).collect { activeTasks ->
@@ -121,7 +137,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _state.update {
                 it.copy(
-                    gridColumns = appSettings.getGridColumns()
+                    gridColumns = getGridColumnsUseCase.get().execute()
                 )
             }
         }
@@ -140,10 +156,11 @@ class HomeViewModel @Inject constructor(
 
     private fun getInActiveRecentTasks() {
         viewModelScope.launch(Dispatchers.IO) {
-            val currentCategoryId = categoryIdStorage.getId()
-            val noteFilter = appSettings.getRecentNoteFilter().type
+            val currentCategoryId = getCategoryIdUseCase.get().execute()
+            val noteFilter = getRecentNoteFilterUseCase.get().execute().type
+
             if (currentCategoryId != null) {
-                taskRepository.getInActiveRecentTasks(
+                getInActiveRecentTasksUseCase.get().execute(
                     noteFilter = noteFilter,
                     currentCategoryId = currentCategoryId,
                     sortBy = _state.value.unpinnedHomeSortParameter.parameter,
@@ -152,7 +169,7 @@ class HomeViewModel @Inject constructor(
                     _state.update { it.copy(inActiveTasks = inActiveTasks) }
                 }
             } else {
-                taskRepository.getAllInActiveRecentTasks(
+                getAllInActiveRecentTasksUseCase.get().execute(
                     sortBy = _state.value.unpinnedHomeSortParameter.parameter,
                     sortDirection = _state.value.unpinnedSortDirection.direction
                 ).collect { inActiveTasks ->
@@ -164,9 +181,9 @@ class HomeViewModel @Inject constructor(
 
     private fun getInActiveTasks() {
         viewModelScope.launch(Dispatchers.IO) {
-            val currentCategoryId = categoryIdStorage.getId()
+            val currentCategoryId = getCategoryIdUseCase.get().execute()
             if (currentCategoryId != null) {
-                taskRepository.getInActiveTasks(
+                getInActiveTasksUseCase.get().execute(
                     categoryId = currentCategoryId,
                     sortBy = _state.value.unpinnedHomeSortParameter.parameter,
                     sortDirection = _state.value.unpinnedSortDirection.direction
@@ -185,33 +202,33 @@ class HomeViewModel @Inject constructor(
                 it.copy(gridColumns = if (it.gridColumns == 2) 1 else 2)
             }
             withContext(Dispatchers.IO) {
-                appSettings.setGridColumns(_state.value.gridColumns)
+                setGridColumnsUseCase.get().execute(_state.value.gridColumns)
             }
         }
     }
 
     fun formatDate(timestamp: Long): String {
-        return dateTimeFormatter.formatDate(timestamp)
+        return formatDateUseCase.get().execute(timestamp)
     }
 
     fun formatTime(timestamp: Long): String {
-        return dateTimeFormatter.formatTime(timestamp)
+        return formatTimeUseCase.get().execute(timestamp)
     }
 
     fun onTaskSelectClick(id: Long) {
         viewModelScope.launch {
-            taskIdStorage.setId(id)
+            setTaskIdUseCase.get().execute(id)
             onNavigationClick(Screens.TASK_EDITOR_SCREEN)
         }
     }
 
     private fun clearTaskId() {
-        taskIdStorage.setId(null)
+        setTaskIdUseCase.get().execute(null)
     }
 
     fun onNavigateToTaskEditorClick() {
         viewModelScope.launch {
-            if (categoryIdStorage.getId() != null) {
+            if (getCategoryIdUseCase.get().execute() != null) {
                 clearTaskId()
                 onNavigationClick(Screens.TASK_EDITOR_SCREEN)
             } else {
