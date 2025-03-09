@@ -2,17 +2,19 @@ package com.example.taskapp.presentation.categories_screen.components
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.taskapp.domain.CategoryRepository
-import com.example.taskapp.domain.CategoryTaskRepository
 import com.example.taskapp.domain.constants.ColorItems
-import com.example.taskapp.domain.model.Category
-import com.example.taskapp.presentation.categories_screen.model.CategoryOperation
-import com.example.taskapp.presentation.categories_screen.model.CategorySortParameter
 import com.example.taskapp.domain.constants.SortDirection
+import com.example.taskapp.domain.model.Category
+import com.example.taskapp.domain.usecase.category.CreateCategoryUseCase
+import com.example.taskapp.domain.usecase.category.DeleteCategoryUseCase
+import com.example.taskapp.domain.usecase.category.GetCategoryByIdUseCase
+import com.example.taskapp.domain.usecase.category.UpdateCategoryUseCase
 import com.example.taskapp.domain.usecase.category_storage.GetCategoryIdUseCase
 import com.example.taskapp.domain.usecase.category_storage.SetCategoryIdUseCase
+import com.example.taskapp.domain.usecase.category_task.GetCategoryTaskCountsUseCase
 import com.example.taskapp.domain.usecase.title_formatter.GetCorrectTitleUseCase
-
+import com.example.taskapp.presentation.categories_screen.model.CategoryOperation
+import com.example.taskapp.presentation.categories_screen.model.CategorySortParameter
 import com.example.taskapp.presentation.navigation.model.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -28,11 +30,14 @@ import javax.inject.Provider
 
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
-    private val categoryRepository: CategoryRepository,
-    private val categoryTaskRepository: CategoryTaskRepository,
     private val getCorrectTitleUseCase: Provider<GetCorrectTitleUseCase>,
     private val getCategoryIdUseCase: Provider<GetCategoryIdUseCase>,
-    private val setCategoryIdUseCase: Provider<SetCategoryIdUseCase>
+    private val setCategoryIdUseCase: Provider<SetCategoryIdUseCase>,
+    private val getCategoryTaskCountsUseCase: Provider<GetCategoryTaskCountsUseCase>,
+    private val getCategoryByIdUseCase: Provider<GetCategoryByIdUseCase>,
+    private val deleteCategoryUseCase: Provider<DeleteCategoryUseCase>,
+    private val createCategoryUseCase: Provider<CreateCategoryUseCase>,
+    private val updateCategoryUseCase: Provider<UpdateCategoryUseCase>
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CategoriesState())
@@ -50,7 +55,7 @@ class CategoriesViewModel @Inject constructor(
 
     private fun getCategories() {
         viewModelScope.launch(Dispatchers.IO) {
-            categoryTaskRepository.getCategoryTaskCounts(
+            getCategoryTaskCountsUseCase.get().execute(
                 sortBy = _state.value.categorySortParameter.parameter,
                 sortDirection = _state.value.categorySortDirection.direction
             ).collect { categories ->
@@ -116,7 +121,7 @@ class CategoriesViewModel @Inject constructor(
     fun onEditCategoryClick(categoryId: Long) {
         viewModelScope.launch {
             val category = withContext(Dispatchers.IO) {
-                categoryRepository.getCategoryById(categoryId)
+                getCategoryByIdUseCase.get().execute(categoryId)
             }
             if (category != null) {
                 _state.update {
@@ -160,7 +165,7 @@ class CategoriesViewModel @Inject constructor(
             )
             if (category != null) {
                 withContext(Dispatchers.IO) {
-                    categoryRepository.updateCategory(category)
+                    updateCategoryUseCase.get().execute(category)
                 }
                 _messageEvent.emit(CategoriesMessageEvent.CategoryUpdateSuccess)
             }
@@ -176,7 +181,7 @@ class CategoriesViewModel @Inject constructor(
         )
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                categoryRepository.createCategory(category)
+                createCategoryUseCase.get().execute(category)
             }
             _messageEvent.emit(CategoriesMessageEvent.CategoryCreationSuccess)
         }
@@ -230,7 +235,7 @@ class CategoriesViewModel @Inject constructor(
         currentCategory?.let { category ->
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
-                    categoryRepository.deleteCategory(category)
+                    deleteCategoryUseCase.get().execute(category)
                 }
                 resetCurrentCategoryIfDeleted(category.id)
                 _state.update { it.copy(currentCategory = null) }
@@ -261,7 +266,7 @@ class CategoriesViewModel @Inject constructor(
     fun setCurrentCategory(categoryId: Long) {
         viewModelScope.launch {
             val category = withContext(Dispatchers.IO) {
-                categoryRepository.getCategoryById(categoryId)
+                getCategoryByIdUseCase.get().execute(categoryId)
             }
             if (category != null) {
                 _state.update {

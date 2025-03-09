@@ -22,8 +22,13 @@ import com.example.taskapp.domain.model.database.AppDataBase
 import com.example.taskapp.domain.model.database.dao.CategoryDao
 import com.example.taskapp.domain.model.database.dao.CategoryTaskDao
 import com.example.taskapp.domain.model.database.dao.TaskDao
+import com.example.taskapp.domain.usecase.category.CreateCategoryUseCase
+import com.example.taskapp.domain.usecase.category.DeleteCategoryUseCase
+import com.example.taskapp.domain.usecase.category.GetCategoryByIdUseCase
+import com.example.taskapp.domain.usecase.category.UpdateCategoryUseCase
 import com.example.taskapp.domain.usecase.category_storage.GetCategoryIdUseCase
 import com.example.taskapp.domain.usecase.category_storage.SetCategoryIdUseCase
+import com.example.taskapp.domain.usecase.category_task.GetCategoryTaskCountsUseCase
 import com.example.taskapp.domain.usecase.date_formatter.FormatDateUseCase
 import com.example.taskapp.domain.usecase.date_formatter.FormatTimeUseCase
 import com.example.taskapp.domain.usecase.settings.GetGridColumnsUseCase
@@ -190,6 +195,31 @@ class DataModule {
     @Provides
     fun provideSetCategoryIdUseCase(categoryIdStorage: CategoryIdStorage): SetCategoryIdUseCase {
         return SetCategoryIdUseCase(categoryIdStorage)
+    }
+
+    @Provides
+    fun provideGetCategoryTaskCountsUseCase(categoryTaskRepository: CategoryTaskRepository): GetCategoryTaskCountsUseCase {
+        return GetCategoryTaskCountsUseCase(categoryTaskRepository)
+    }
+
+    @Provides
+    fun provideGetCategoryByIdUseCase(categoryRepository: CategoryRepository): GetCategoryByIdUseCase {
+        return GetCategoryByIdUseCase(categoryRepository)
+    }
+
+    @Provides
+    fun provideDeleteCategoryUseCase(categoryRepository: CategoryRepository): DeleteCategoryUseCase {
+        return DeleteCategoryUseCase(categoryRepository)
+    }
+
+    @Provides
+    fun provideCreateCategoryUseCase(categoryRepository: CategoryRepository): CreateCategoryUseCase {
+        return CreateCategoryUseCase(categoryRepository)
+    }
+
+    @Provides
+    fun provideUpdateCategoryUseCase(categoryRepository: CategoryRepository): UpdateCategoryUseCase {
+        return UpdateCategoryUseCase(categoryRepository)
     }
 
 }
