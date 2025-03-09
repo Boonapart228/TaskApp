@@ -41,8 +41,7 @@ fun CategoriesListBar(
     onDescendingSortClick: () -> Unit,
     onSortByTitleClick: () -> Unit,
     onSortByNoteCountClick: () -> Unit,
-    onToggleMenuClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onToggleMenuClick: () -> Unit
 ) {
     val animationAscendingColorState = animateColorAsState(
         targetValue = if (selectedSortDirection == SortDirection.ASCENDING) pastelGreen else pastelRed,

@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.example.taskapp.R
 import com.example.taskapp.presentation.home_screen.components.HomeContent
@@ -16,7 +15,6 @@ import com.example.taskapp.presentation.home_screen.components.HomeViewModel
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
     navigateToCategories: () -> Unit,
     navigationToTaskEditor: () -> Unit,
     navigateToSettings: () -> Unit,

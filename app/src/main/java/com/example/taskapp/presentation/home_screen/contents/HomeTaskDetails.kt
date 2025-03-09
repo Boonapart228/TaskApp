@@ -40,7 +40,6 @@ fun HomeTaskDetails(
     pinned: Boolean,
     allTitleLines: Boolean,
     hexColorCode: String,
-    modifier: Modifier = Modifier,
     formatDate: () -> String,
     formatTime: () -> String,
     onTaskSelectClick: () -> Unit,

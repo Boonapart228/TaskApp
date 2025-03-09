@@ -1,7 +1,6 @@
 package com.example.taskapp.presentation.setting_screen.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
@@ -38,8 +37,7 @@ fun SettingContent(
                 languageTextId = state.languageTextId,
                 expandedLanguageMenu = state.expandedLanguageMenu,
                 onToggleLanguageMenu = onToggleLanguageMenu,
-                setLanguage = setLanguage,
-                modifier = Modifier.fillMaxWidth()
+                setLanguage = setLanguage
             )
             HorizontalDivider()
             SettingRecentNote(

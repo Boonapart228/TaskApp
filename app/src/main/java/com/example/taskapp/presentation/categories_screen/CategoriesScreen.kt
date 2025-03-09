@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.example.taskapp.R
 import com.example.taskapp.presentation.categories_screen.components.CategoriesContent
@@ -15,7 +14,6 @@ import com.example.taskapp.presentation.categories_screen.components.CategoriesV
 
 @Composable
 fun CategoriesScreen(
-    modifier: Modifier = Modifier,
     viewModel: CategoriesViewModel,
     navigateToHome: () -> Unit
 ) {
