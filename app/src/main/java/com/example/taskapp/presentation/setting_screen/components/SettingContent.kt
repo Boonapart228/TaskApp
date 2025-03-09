@@ -35,7 +35,7 @@ fun SettingContent(
             )
             HorizontalDivider()
             SettingLanguage(
-                languageCode = state.languageCode,
+                languageTextId = state.languageTextId,
                 expandedLanguageMenu = state.expandedLanguageMenu,
                 onToggleLanguageMenu = onToggleLanguageMenu,
                 setLanguage = setLanguage,

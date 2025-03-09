@@ -53,5 +53,7 @@
     <string name="all_note_filter">All</string>
     <string name="current_note_filter">Current</string>
     <string name="switch_theme_text">Switch Theme</string>
+    <string name="english_language_text" translatable="false">English</string>
+    <string name="ukrainian_language_text" translatable="false">Українська</string>
     <string name="empty_text" translatable="false" />
 </resources>

@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.taskapp.domain.AppSettings
+import com.example.taskapp.presentation.setting_screen.models.Language
 import com.example.taskapp.presentation.setting_screen.models.RecentNoteFilter
 import kotlinx.coroutines.flow.first
 
@@ -44,16 +45,17 @@ class AppSettingsImpl(
         return preferences[APP_THEME] ?: false
     }
 
-    override suspend fun setLanguageCode(languageCode: String) {
-        context.dataStore.edit { language ->
-            language[LANGUAGE_CODE] = languageCode
+    override suspend fun setLanguage(language: Language) {
+        context.dataStore.edit { languageSetting ->
+            languageSetting[LANGUAGE_CODE] = language.name
         }
 
     }
 
-    override suspend fun getLanguageCode(): String {
-        val languageCode = context.dataStore.data.first()
-        return languageCode[LANGUAGE_CODE] ?: "en"
+    override suspend fun getLanguage(): Language {
+        val preferences = context.dataStore.data.first()
+        val language = preferences[LANGUAGE_CODE] ?: Language.ENGLISH.name
+        return Language.valueOf(language)
     }
 
     override suspend fun setRecentNoteFilter(recentNoteFilter: RecentNoteFilter) {
