@@ -30,7 +30,8 @@ class SettingViewModel @Inject constructor(private val appSettings: AppSettings)
             _state.update {
                 it.copy(
                     darkTheme = appSettings.getAppTheme(),
-                    languageCode = appSettings.getLanguageCode(),
+                    languageCode = appSettings.getLanguage().languageCode,
+                    languageTextId = appSettings.getLanguage().languageTextId,
                     recentNoteFilterTextId = appSettings.getRecentNoteFilter().textId
                 )
             }
@@ -83,7 +84,8 @@ class SettingViewModel @Inject constructor(private val appSettings: AppSettings)
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    languageCode = language.languageCode
+                    languageCode = language.languageCode,
+                    languageTextId = language.languageTextId
                 )
             }
             AppCompatDelegate.setApplicationLocales(
@@ -91,7 +93,7 @@ class SettingViewModel @Inject constructor(private val appSettings: AppSettings)
                     language.languageCode
                 )
             )
-            appSettings.setLanguageCode(language.languageCode)
+            appSettings.setLanguage(language)
         }
     }
 

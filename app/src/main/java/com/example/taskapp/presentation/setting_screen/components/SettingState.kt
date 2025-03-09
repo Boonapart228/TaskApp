@@ -7,5 +7,6 @@ data class SettingState(
     val expandedLanguageMenu: Boolean = false,
     val expandedRecentNoteMenu: Boolean = false,
     val recentNoteFilterTextId: Int = R.string.all_note_filter,
-    val languageCode: String = ""
+    val languageCode: String = "",
+    val languageTextId: Int = R.string.english_language_text
 )

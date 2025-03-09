@@ -30,7 +30,7 @@ import com.example.taskapp.ui.theme.LocalProperty
 @Composable
 fun SettingLanguage(
     expandedLanguageMenu: Boolean,
-    languageCode: String,
+    languageTextId: Int,
     onToggleLanguageMenu: () -> Unit,
     setLanguage: (Language) -> Unit,
     modifier: Modifier = Modifier
@@ -54,7 +54,7 @@ fun SettingLanguage(
         {
             TextField(
                 readOnly = true,
-                value = languageCode,
+                value = stringResource(id = languageTextId),
                 onValueChange = {},
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -77,7 +77,7 @@ fun SettingLanguage(
                     DropdownMenuItem(
                         text = {
                             Text(
-                                text = element.languageCode,
+                                text = stringResource(id = element.languageTextId),
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Center
                             )
@@ -103,7 +103,7 @@ fun SettingLanguage(
 @Composable
 fun SettingLanguagePreview() {
     SettingLanguage(
-        languageCode = "",
+        languageTextId = R.string.english_language_text,
         expandedLanguageMenu = false,
         onToggleLanguageMenu = { },
         setLanguage = {})
