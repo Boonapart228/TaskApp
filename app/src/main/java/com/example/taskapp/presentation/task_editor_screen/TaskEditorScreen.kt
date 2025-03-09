@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.example.taskapp.R
 import com.example.taskapp.presentation.task_editor_screen.components.TaskEditorContent
@@ -16,8 +15,7 @@ import com.example.taskapp.presentation.task_editor_screen.components.TaskEditor
 @Composable
 fun TaskEditorScreen(
     viewModel: TaskEditorViewModel,
-    navigationToHomeScreen: () -> Unit,
-    modifier: Modifier = Modifier
+    navigationToHomeScreen: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current

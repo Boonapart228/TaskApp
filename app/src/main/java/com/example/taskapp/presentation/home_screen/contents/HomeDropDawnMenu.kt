@@ -33,8 +33,7 @@ fun HomeDropDawnMenu(
     onSortByTitleClick: () -> Unit,
     onSortByDateClick: () -> Unit,
     expanded: Boolean,
-    selectedHomeSortParameter: HomeSortParameter,
-    modifier: Modifier = Modifier
+    selectedHomeSortParameter: HomeSortParameter
 ) {
     Box(
         modifier = Modifier

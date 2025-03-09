@@ -32,8 +32,7 @@ fun SettingRecentNote(
     expandedRecentNoteMenu: Boolean,
     recentNoteFilter: Int,
     onToggleRecentNoteMenu: () -> Unit,
-    setRecentNoteFilter: (RecentNoteFilter) -> Unit,
-    modifier: Modifier = Modifier
+    setRecentNoteFilter: (RecentNoteFilter) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,

@@ -41,8 +41,7 @@ fun HomeListBar(
     onDescendingSortClick: () -> Unit,
     onSortByTitleClick: () -> Unit,
     onSortByDateClick: () -> Unit,
-    onToggleMenuClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onToggleMenuClick: () -> Unit
 ) {
     val animationAscendingColorState = animateColorAsState(
         targetValue = if (selectedSortDirection == SortDirection.ASCENDING) pastelGreen else pastelRed,

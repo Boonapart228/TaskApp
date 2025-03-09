@@ -35,8 +35,7 @@ fun CategoryDropDawnMenu(
     onSortByTitleClick: () -> Unit,
     onSortByNoteCountClick: () -> Unit,
     expanded: Boolean,
-    selectedSortParameter: CategorySortParameter,
-    modifier: Modifier = Modifier
+    selectedSortParameter: CategorySortParameter
 ) {
     Box(
         modifier = Modifier

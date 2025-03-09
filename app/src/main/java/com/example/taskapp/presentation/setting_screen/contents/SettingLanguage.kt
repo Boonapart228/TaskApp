@@ -32,8 +32,7 @@ fun SettingLanguage(
     expandedLanguageMenu: Boolean,
     languageTextId: Int,
     onToggleLanguageMenu: () -> Unit,
-    setLanguage: (Language) -> Unit,
-    modifier: Modifier = Modifier
+    setLanguage: (Language) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
