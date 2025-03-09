@@ -2,15 +2,16 @@ package com.example.taskapp.presentation.categories_screen.components
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.taskapp.domain.CategoryIdStorage
 import com.example.taskapp.domain.CategoryRepository
 import com.example.taskapp.domain.CategoryTaskRepository
-import com.example.taskapp.domain.TitleFormatter
 import com.example.taskapp.domain.constants.ColorItems
 import com.example.taskapp.domain.model.Category
 import com.example.taskapp.presentation.categories_screen.model.CategoryOperation
 import com.example.taskapp.presentation.categories_screen.model.CategorySortParameter
 import com.example.taskapp.domain.constants.SortDirection
+import com.example.taskapp.domain.usecase.category_storage.GetCategoryIdUseCase
+import com.example.taskapp.domain.usecase.category_storage.SetCategoryIdUseCase
+import com.example.taskapp.domain.usecase.title_formatter.GetCorrectTitleUseCase
 import com.example.taskapp.presentation.navigation.model.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,13 +23,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Provider
 
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val categoryTaskRepository: CategoryTaskRepository,
-    private val categoryIdStorage: CategoryIdStorage,
-    private val titleFormatter: TitleFormatter
+    private val getCorrectTitleUseCase: Provider<GetCorrectTitleUseCase>,
+    private val getCategoryIdUseCase: Provider<GetCategoryIdUseCase>,
+    private val setCategoryIdUseCase: Provider<SetCategoryIdUseCase>
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CategoriesState())
@@ -151,7 +154,7 @@ class CategoriesViewModel @Inject constructor(
     private fun updateCategory() {
         viewModelScope.launch {
             val category = _state.value.currentCategory?.copy(
-                title = titleFormatter.getCorrectTitle(_state.value.categoryTitle),
+                title = getCorrectTitleUseCase.get().execute(_state.value.categoryTitle),
                 hexColorCode = _state.value.hexColorCode
             )
             if (category != null) {
@@ -166,7 +169,7 @@ class CategoriesViewModel @Inject constructor(
 
     private fun createCategory() {
         val category = Category(
-            title = titleFormatter.getCorrectTitle(_state.value.categoryTitle),
+            title = getCorrectTitleUseCase.get().execute(_state.value.categoryTitle),
             id = 0L,
             hexColorCode = _state.value.hexColorCode
         )
@@ -189,7 +192,7 @@ class CategoriesViewModel @Inject constructor(
 
     fun onCategorySelectClick(id: Long) {
         viewModelScope.launch {
-            categoryIdStorage.setId(id)
+            setCategoryIdUseCase.get().execute(id)
             onNavigationClick(Screens.HOME_SCREEN)
         }
     }
@@ -237,9 +240,9 @@ class CategoriesViewModel @Inject constructor(
 
     private fun resetCurrentCategoryIfDeleted(categoryId: Long) {
         viewModelScope.launch {
-            val id = withContext(Dispatchers.IO) { categoryIdStorage.getId() }
+            val id = withContext(Dispatchers.IO) { getCategoryIdUseCase.get().execute() }
             if (categoryId == id) {
-                withContext(Dispatchers.IO) { categoryIdStorage.setId(null) }
+                withContext(Dispatchers.IO) { setCategoryIdUseCase.get().execute(null) }
             }
         }
     }

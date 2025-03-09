@@ -23,6 +23,7 @@ import com.example.taskapp.domain.model.database.dao.CategoryDao
 import com.example.taskapp.domain.model.database.dao.CategoryTaskDao
 import com.example.taskapp.domain.model.database.dao.TaskDao
 import com.example.taskapp.domain.usecase.category_storage.GetCategoryIdUseCase
+import com.example.taskapp.domain.usecase.category_storage.SetCategoryIdUseCase
 import com.example.taskapp.domain.usecase.date_formatter.FormatDateUseCase
 import com.example.taskapp.domain.usecase.date_formatter.FormatTimeUseCase
 import com.example.taskapp.domain.usecase.settings.GetGridColumnsUseCase
@@ -35,6 +36,7 @@ import com.example.taskapp.domain.usecase.task.GetAllInActiveRecentTasksUseCase
 import com.example.taskapp.domain.usecase.task.GetInActiveRecentTasksUseCase
 import com.example.taskapp.domain.usecase.task.GetInActiveTasksUseCase
 import com.example.taskapp.domain.usecase.task_storage.SetTaskIdUseCase
+import com.example.taskapp.domain.usecase.title_formatter.GetCorrectTitleUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -179,4 +181,15 @@ class DataModule {
     fun provideGetAllInActiveRecentTasksUseCase(taskRepository: TaskRepository): GetAllInActiveRecentTasksUseCase {
         return GetAllInActiveRecentTasksUseCase(taskRepository)
     }
+
+    @Provides
+    fun provideGetCorrectTitleUseCase(titleFormatter: TitleFormatter): GetCorrectTitleUseCase {
+        return GetCorrectTitleUseCase(titleFormatter)
+    }
+
+    @Provides
+    fun provideSetCategoryIdUseCase(categoryIdStorage: CategoryIdStorage): SetCategoryIdUseCase {
+        return SetCategoryIdUseCase(categoryIdStorage)
+    }
+
 }
