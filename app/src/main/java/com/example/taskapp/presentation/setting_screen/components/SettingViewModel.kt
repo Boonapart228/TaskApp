@@ -4,7 +4,12 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.taskapp.domain.AppSettings
+import com.example.taskapp.domain.usecase.settings.GetAppThemeUseCase
+import com.example.taskapp.domain.usecase.settings.GetLanguageUseCase
+import com.example.taskapp.domain.usecase.settings.GetRecentNoteFilterUseCase
+import com.example.taskapp.domain.usecase.settings.SetAppThemeUseCase
+import com.example.taskapp.domain.usecase.settings.SetLanguageUseCase
+import com.example.taskapp.domain.usecase.settings.SetRecentNoteFilterUseCase
 import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.presentation.setting_screen.models.Language
 import com.example.taskapp.presentation.setting_screen.models.RecentNoteFilter
@@ -16,9 +21,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Provider
 
 @HiltViewModel
-class SettingViewModel @Inject constructor(private val appSettings: AppSettings) : ViewModel() {
+class SettingViewModel @Inject constructor(
+    private val getAppThemeUseCase: Provider<GetAppThemeUseCase>,
+    private val getLanguageUseCase: Provider<GetLanguageUseCase>,
+    private val getRecentNoteFilterUseCase: Provider<GetRecentNoteFilterUseCase>,
+    private val setAppThemeUseCase: Provider<SetAppThemeUseCase>,
+    private val setLanguageUseCase: Provider<SetLanguageUseCase>,
+    private val setRecentNoteFilterUseCase: Provider<SetRecentNoteFilterUseCase>
+) : ViewModel() {
     private val _state = MutableStateFlow(SettingState())
     val state = _state.asStateFlow()
 
@@ -29,10 +42,10 @@ class SettingViewModel @Inject constructor(private val appSettings: AppSettings)
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    darkTheme = appSettings.getAppTheme(),
-                    languageCode = appSettings.getLanguage().languageCode,
-                    languageTextId = appSettings.getLanguage().languageTextId,
-                    recentNoteFilterTextId = appSettings.getRecentNoteFilter().textId
+                    darkTheme = getAppThemeUseCase.get().execute(),
+                    languageCode = getLanguageUseCase.get().execute().languageCode,
+                    languageTextId = getLanguageUseCase.get().execute().languageTextId,
+                    recentNoteFilterTextId = getRecentNoteFilterUseCase.get().execute().textId
                 )
             }
             switchTheme(_state.value.darkTheme)
@@ -51,9 +64,7 @@ class SettingViewModel @Inject constructor(private val appSettings: AppSettings)
             _state.update {
                 it.copy(darkTheme = newDarkThemeState)
             }
-
-            appSettings.setAppTheme(newDarkThemeState)
-
+            setAppThemeUseCase.get().execute(newDarkThemeState)
             switchTheme(newDarkThemeState)
         }
     }
@@ -93,7 +104,7 @@ class SettingViewModel @Inject constructor(private val appSettings: AppSettings)
                     language.languageCode
                 )
             )
-            appSettings.setLanguage(language)
+            setLanguageUseCase.get().execute(language)
         }
     }
 
@@ -114,7 +125,8 @@ class SettingViewModel @Inject constructor(private val appSettings: AppSettings)
                     recentNoteFilterTextId = recentNoteFilter.textId
                 )
             }
-            appSettings.setRecentNoteFilter(recentNoteFilter)
+            setRecentNoteFilterUseCase.get().execute(recentNoteFilter)
+
         }
     }
 

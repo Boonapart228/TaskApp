@@ -31,9 +31,14 @@ import com.example.taskapp.domain.usecase.category_storage.SetCategoryIdUseCase
 import com.example.taskapp.domain.usecase.category_task.GetCategoryTaskCountsUseCase
 import com.example.taskapp.domain.usecase.date_formatter.FormatDateUseCase
 import com.example.taskapp.domain.usecase.date_formatter.FormatTimeUseCase
+import com.example.taskapp.domain.usecase.settings.GetAppThemeUseCase
 import com.example.taskapp.domain.usecase.settings.GetGridColumnsUseCase
+import com.example.taskapp.domain.usecase.settings.GetLanguageUseCase
 import com.example.taskapp.domain.usecase.settings.GetRecentNoteFilterUseCase
+import com.example.taskapp.domain.usecase.settings.SetAppThemeUseCase
 import com.example.taskapp.domain.usecase.settings.SetGridColumnsUseCase
+import com.example.taskapp.domain.usecase.settings.SetLanguageUseCase
+import com.example.taskapp.domain.usecase.settings.SetRecentNoteFilterUseCase
 import com.example.taskapp.domain.usecase.task.GetActiveRecentTasksUseCase
 import com.example.taskapp.domain.usecase.task.GetActiveTasksUseCase
 import com.example.taskapp.domain.usecase.task.GetAllActiveRecentTasksUseCase
@@ -220,6 +225,31 @@ class DataModule {
     @Provides
     fun provideUpdateCategoryUseCase(categoryRepository: CategoryRepository): UpdateCategoryUseCase {
         return UpdateCategoryUseCase(categoryRepository)
+    }
+
+    @Provides
+    fun provideGetAppThemeUseCase(appSettings: AppSettings): GetAppThemeUseCase {
+        return GetAppThemeUseCase(appSettings)
+    }
+
+    @Provides
+    fun provideGetLanguageUseCase(appSettings: AppSettings): GetLanguageUseCase {
+        return GetLanguageUseCase(appSettings)
+    }
+
+    @Provides
+    fun provideSetAppThemeUseCase(appSettings: AppSettings): SetAppThemeUseCase {
+        return SetAppThemeUseCase(appSettings)
+    }
+
+    @Provides
+    fun provideSetLanguageUseCase(appSettings: AppSettings): SetLanguageUseCase {
+        return SetLanguageUseCase(appSettings)
+    }
+
+    @Provides
+    fun provideSetRecentNoteFilterUseCase(appSettings: AppSettings): SetRecentNoteFilterUseCase {
+        return SetRecentNoteFilterUseCase(appSettings)
     }
 
 }
