@@ -43,8 +43,13 @@ import com.example.taskapp.domain.usecase.task.GetActiveRecentTasksUseCase
 import com.example.taskapp.domain.usecase.task.GetActiveTasksUseCase
 import com.example.taskapp.domain.usecase.task.GetAllActiveRecentTasksUseCase
 import com.example.taskapp.domain.usecase.task.GetAllInActiveRecentTasksUseCase
+import com.example.taskapp.domain.usecase.task.GetCurrentTaskByIdUseCase
 import com.example.taskapp.domain.usecase.task.GetInActiveRecentTasksUseCase
 import com.example.taskapp.domain.usecase.task.GetInActiveTasksUseCase
+import com.example.taskapp.domain.usecase.task_actions.CreateTaskUseCase
+import com.example.taskapp.domain.usecase.task_actions.DeleteTaskUseCase
+import com.example.taskapp.domain.usecase.task_actions.UpdateTaskUseCase
+import com.example.taskapp.domain.usecase.task_storage.GetTaskIdUseCase
 import com.example.taskapp.domain.usecase.task_storage.SetTaskIdUseCase
 import com.example.taskapp.domain.usecase.title_formatter.GetCorrectTitleUseCase
 import dagger.Module
@@ -250,6 +255,31 @@ class DataModule {
     @Provides
     fun provideSetRecentNoteFilterUseCase(appSettings: AppSettings): SetRecentNoteFilterUseCase {
         return SetRecentNoteFilterUseCase(appSettings)
+    }
+
+    @Provides
+    fun provideGetTaskIdUseCase(taskIdStorage: TaskIdStorage): GetTaskIdUseCase {
+        return GetTaskIdUseCase(taskIdStorage)
+    }
+
+    @Provides
+    fun provideGetCurrentTaskByIdUseCase(taskRepository: TaskRepository): GetCurrentTaskByIdUseCase {
+        return GetCurrentTaskByIdUseCase(taskRepository)
+    }
+
+    @Provides
+    fun provideCreateTaskUseCase(taskRepository: TaskRepository): CreateTaskUseCase {
+        return CreateTaskUseCase(taskRepository)
+    }
+
+    @Provides
+    fun provideUpdateTaskUseCase(taskRepository: TaskRepository): UpdateTaskUseCase {
+        return UpdateTaskUseCase(taskRepository)
+    }
+
+    @Provides
+    fun provideDeleteTaskUseCase(taskRepository: TaskRepository): DeleteTaskUseCase {
+        return DeleteTaskUseCase(taskRepository)
     }
 
 }
