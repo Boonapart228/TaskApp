@@ -2,12 +2,16 @@ package com.example.taskapp.presentation.task_editor_screen.components
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.taskapp.domain.CategoryIdStorage
-import com.example.taskapp.domain.TaskIdStorage
-import com.example.taskapp.domain.TaskRepository
-import com.example.taskapp.domain.TitleFormatter
 import com.example.taskapp.domain.constants.ColorItems
 import com.example.taskapp.domain.model.Task
+import com.example.taskapp.domain.usecase.category_storage.GetCategoryIdUseCase
+import com.example.taskapp.domain.usecase.task.GetCurrentTaskByIdUseCase
+import com.example.taskapp.domain.usecase.task_actions.CreateTaskUseCase
+import com.example.taskapp.domain.usecase.task_actions.DeleteTaskUseCase
+import com.example.taskapp.domain.usecase.task_actions.UpdateTaskUseCase
+import com.example.taskapp.domain.usecase.task_storage.GetTaskIdUseCase
+import com.example.taskapp.domain.usecase.task_storage.SetTaskIdUseCase
+import com.example.taskapp.domain.usecase.title_formatter.GetCorrectTitleUseCase
 import com.example.taskapp.presentation.navigation.model.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -21,13 +25,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
 import javax.inject.Inject
+import javax.inject.Provider
 
 @HiltViewModel
 class TaskEditorViewModel @Inject constructor(
-    private val taskRepository: TaskRepository,
-    private val categoryIdStorage: CategoryIdStorage,
-    private val taskIdStorage: TaskIdStorage,
-    private val titleFormatter: TitleFormatter
+    private val getCategoryIdStorage: Provider<GetCategoryIdUseCase>,
+    private val getCorrectTitleUseCase: Provider<GetCorrectTitleUseCase>,
+    private val setTaskIdUseCase: Provider<SetTaskIdUseCase>,
+    private val getTaskIdUseCase: Provider<GetTaskIdUseCase>,
+    private val getCurrentTaskByIdUseCase: Provider<GetCurrentTaskByIdUseCase>,
+    private val createTaskUseCase: Provider<CreateTaskUseCase>,
+    private val updateTaskUseCase: Provider<UpdateTaskUseCase>,
+    private val deleteTaskUseCase: Provider<DeleteTaskUseCase>
 ) : ViewModel() {
     private val _event = MutableSharedFlow<TaskEditorNavigationEvent>()
     val event = _event.asSharedFlow()
@@ -45,9 +54,9 @@ class TaskEditorViewModel @Inject constructor(
     }
 
     private fun getCurrentTask() {
-        taskIdStorage.getId()?.let {
+        getTaskIdUseCase.get().execute()?.let {
             viewModelScope.launch {
-                taskRepository.getCurrentTaskById(taskId = it).collect { task ->
+                getCurrentTaskByIdUseCase.get().execute(taskId = it).collect { task ->
                     _state.update {
                         it.copy(
                             title = task.title,
@@ -70,19 +79,19 @@ class TaskEditorViewModel @Inject constructor(
 
     private fun updateLastOpenAt() {
         viewModelScope.launch {
-            val taskId = taskIdStorage.getId()
+            val taskId = getTaskIdUseCase.get().execute()
             if (taskId != null) {
                 val currentTimeMillis = Calendar.getInstance().timeInMillis
                 withContext(Dispatchers.IO) {
-                    val task = taskRepository.getCurrentTaskById(taskId = taskId).first()
-                    taskRepository.update(task.copy(lastActiveAt = currentTimeMillis))
+                    val task = getCurrentTaskByIdUseCase.get().execute(taskId = taskId).first()
+                    updateTaskUseCase.get().execute(task.copy(lastActiveAt = currentTimeMillis))
                 }
             }
         }
     }
 
     private fun randomHexColorCode() {
-        taskIdStorage.getId() ?: run {
+        getTaskIdUseCase.get().execute() ?: run {
             val randomColor = ColorItems.entries.random().hexColorCode
             _state.update { it.copy(hexColorCode = randomColor, previewColorCode = randomColor) }
         }
@@ -103,8 +112,8 @@ class TaskEditorViewModel @Inject constructor(
     private fun updateFieldChanges() {
         _state.update {
             it.copy(
-                title = titleFormatter.getCorrectTitle(_state.value.title),
-                oldTitle = titleFormatter.getCorrectTitle(_state.value.title),
+                title = getCorrectTitleUseCase.get().execute(_state.value.title),
+                oldTitle = getCorrectTitleUseCase.get().execute(_state.value.title),
                 oldDescription = it.description,
                 oldPin = it.pin,
                 oldHexColorCode = it.hexColorCode
@@ -167,12 +176,12 @@ class TaskEditorViewModel @Inject constructor(
 
     fun onEditTaskClick() {
         viewModelScope.launch {
-            val currentCategoryId = categoryIdStorage.getId()
+            val currentCategoryId = getCategoryIdStorage.get().execute()
             val currentTimeMillis = Calendar.getInstance().timeInMillis
             if (currentCategoryId != null) {
                 val newTask = Task(
                     id = 0L,
-                    title = titleFormatter.getCorrectTitle(_state.value.title),
+                    title = getCorrectTitleUseCase.get().execute(_state.value.title),
                     description = _state.value.description,
                     isActive = _state.value.pin,
                     categoryId = _state.value.categoryId ?: currentCategoryId,
@@ -191,16 +200,16 @@ class TaskEditorViewModel @Inject constructor(
                 _messageEvent.emit(TaskEditorMessageEvent.TaskTitleCannotBeEmpty)
                 return@launch
             }
-            val taskId = taskIdStorage.getId()
+            val taskId = getTaskIdUseCase.get().execute()
             if (taskId == null) {
                 withContext(Dispatchers.IO) {
-                    val id = taskRepository.create(task)
-                    taskIdStorage.setId(id)
+                    val id = createTaskUseCase.get().execute(task)
+                    setTaskIdUseCase.get().execute(id)
                 }
                 _messageEvent.emit(TaskEditorMessageEvent.TaskCreationSuccess)
             } else {
                 withContext(Dispatchers.IO) {
-                    taskRepository.update(task.copy(id = taskId))
+                    updateTaskUseCase.get().execute(task.copy(id = taskId))
                 }
                 _messageEvent.emit(TaskEditorMessageEvent.TaskUpdateSuccess)
             }
@@ -252,11 +261,11 @@ class TaskEditorViewModel @Inject constructor(
 
     fun onDeleteTask() {
         viewModelScope.launch {
-            val taskId = taskIdStorage.getId()
+            val taskId = getTaskIdUseCase.get().execute()
             if (taskId != null) {
                 withContext(Dispatchers.IO) {
-                    val id = taskRepository.getCurrentTaskById(taskId).first()
-                    taskRepository.delete(task = id.copy(id = taskId))
+                    val id = getCurrentTaskByIdUseCase.get().execute(taskId).first()
+                    deleteTaskUseCase.get().execute(task = id.copy(id = taskId))
                 }
                 _messageEvent.emit(TaskEditorMessageEvent.TaskDeletionSuccess)
                 onHomeScreenNavigationClick(Screens.HOME_SCREEN)
