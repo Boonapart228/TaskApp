@@ -2,7 +2,8 @@ package com.example.taskapp.presentation.task_editor_screen.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import com.example.taskapp.presentation.task_editor_screen.contents.TaskEditorCu
 import com.example.taskapp.presentation.task_editor_screen.contents.TaskEditorDeleteDialog
 import com.example.taskapp.presentation.task_editor_screen.contents.TaskEditorTopBar
 import com.example.taskapp.ui.theme.LocalDimen
+import com.example.taskapp.ui.theme.LocalProperty
 
 @Composable
 fun TaskEditorContent(
@@ -54,7 +56,7 @@ fun TaskEditorContent(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxWidth(),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -63,14 +65,24 @@ fun TaskEditorContent(
                 onValueChange = { newTitle -> onSetTaskTitle(newTitle) },
                 placeholderId = R.string.enter_title_text,
                 fontSize = LocalDimen.current.taskEditorTaskTitleSize,
-                singleLine = true
+                singleLine = true,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(LocalDimen.current.taskEditorTextFieldPaddingAll)
+                    .weight(LocalProperty.current.tenPercent)
             )
             TaskEditorCustomTextField(
                 value = state.description,
                 onValueChange = { newDescription -> onSetTaskDescription(newDescription) },
                 placeholderId = R.string.enter_description_text,
                 fontSize = LocalDimen.current.taskEditorTaskDescriptionSize,
-                singleLine = false
+                singleLine = false,
+                modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(LocalDimen.current.taskEditorTextFieldPaddingAll)
+                    .imePadding()
+                    .weight(LocalProperty.current.ninetyPercent)
             )
         }
         if (state.showDialogColorPicker) {
