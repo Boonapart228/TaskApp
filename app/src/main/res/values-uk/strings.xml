@@ -41,6 +41,7 @@
     <string name="category_success_update_text">Категорію успішно оновлено</string>
     <string name="category_success_delete_text">Категорію успішно видалено</string>
     <string name="category_title_empty_text">Назва категорії не може бути порожньою</string>
+    <string name="category_not_selected_text">Категорію не вибрано</string>
     <string name="choose_category_text">Виберіть категорію</string>
     <string name="choose_color_text">Виберіть колір</string>
     <string name="sort_by_title_text">За заголовком</string>

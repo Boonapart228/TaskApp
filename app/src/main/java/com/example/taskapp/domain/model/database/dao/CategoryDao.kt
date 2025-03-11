@@ -25,4 +25,7 @@ interface CategoryDao {
     @Query("SELECT * from category_table")
     fun getAllCategories(): Flow<List<CategoryEntity>>
 
+    @Query("SELECT title FROM category_table WHERE id = :categoryId")
+    fun getCategoryTitleById(categoryId: Long): String?
+
 }

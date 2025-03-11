@@ -24,4 +24,8 @@ class CategoryRepositoryImpl(private val categoryDao: CategoryDao) : CategoryRep
 
     override fun getCategoryById(categoryId: Long): Category? =
         categoryDao.getCategoryById(categoryId = categoryId)?.toCategory()
+
+    override fun getCategoryTitleById(categoryId: Long): String? {
+        return categoryDao.getCategoryTitleById(categoryId = categoryId)
+    }
 }

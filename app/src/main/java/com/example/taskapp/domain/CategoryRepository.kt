@@ -9,4 +9,5 @@ interface CategoryRepository {
     suspend fun deleteCategory(category: Category)
     fun getAllCategories(): Flow<List<Category>>
     fun getCategoryById(categoryId: Long): Category?
+    fun getCategoryTitleById(categoryId: Long): String?
 }
