@@ -19,6 +19,7 @@ data class HomeState(
     val gridColumns: Int = 2,
     val notesFilterType: NotesFilterType = NotesFilterType.ALL,
     val searchTitle: String = "",
+    val categoryTitle: String? = null,
     val showSearchBar: Boolean = false,
     val allPinnedTitleLines: Boolean = false,
     val allUnpinnedTitleLines: Boolean = false,

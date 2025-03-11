@@ -3,6 +3,7 @@ package com.example.taskapp.presentation.home_screen.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,15 +16,19 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskapp.R
+import com.example.taskapp.domain.constants.SortDirection
 import com.example.taskapp.presentation.bottom_bar.BottomBar
 import com.example.taskapp.presentation.home_screen.contents.HomeListBar
 import com.example.taskapp.presentation.home_screen.contents.HomeTaskDetails
 import com.example.taskapp.presentation.home_screen.contents.HomeTopBar
-import com.example.taskapp.domain.constants.SortDirection
 import com.example.taskapp.presentation.home_screen.model.HomeSortParameter
 import com.example.taskapp.presentation.home_screen.model.NotesFilterType
 import com.example.taskapp.presentation.home_screen.model.TaskType
@@ -85,6 +90,17 @@ fun HomeContent(
                 .padding(innerPadding)
                 .padding(top = LocalDimen.current.homeColumnPaddingTop)
         ) {
+            Text(
+                text = state.categoryTitle
+                    ?: stringResource(id = R.string.category_not_selected_text),
+                fontSize = LocalDimen.current.categoryTitleTextSize,
+                fontWeight = FontWeight.Medium,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = LocalDimen.current.rowCategoriesHorizontalPadding),
+            )
             HomeListBar(
                 textId = R.string.pinned_notes_text,
                 expanded = state.showPinnedSortDialog,

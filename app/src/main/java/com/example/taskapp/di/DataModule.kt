@@ -25,6 +25,7 @@ import com.example.taskapp.domain.model.database.dao.TaskDao
 import com.example.taskapp.domain.usecase.category.CreateCategoryUseCase
 import com.example.taskapp.domain.usecase.category.DeleteCategoryUseCase
 import com.example.taskapp.domain.usecase.category.GetCategoryByIdUseCase
+import com.example.taskapp.domain.usecase.category.GetCategoryTitleByIdUseCase
 import com.example.taskapp.domain.usecase.category.UpdateCategoryUseCase
 import com.example.taskapp.domain.usecase.category_storage.GetCategoryIdUseCase
 import com.example.taskapp.domain.usecase.category_storage.SetCategoryIdUseCase
@@ -280,6 +281,11 @@ class DataModule {
     @Provides
     fun provideDeleteTaskUseCase(taskRepository: TaskRepository): DeleteTaskUseCase {
         return DeleteTaskUseCase(taskRepository)
+    }
+
+    @Provides
+    fun provideGetCategoryTitleByIdUseCase(categoryRepository: CategoryRepository): GetCategoryTitleByIdUseCase {
+        return GetCategoryTitleByIdUseCase(categoryRepository)
     }
 
 }

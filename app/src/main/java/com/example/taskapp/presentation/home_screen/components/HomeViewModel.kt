@@ -3,6 +3,7 @@ package com.example.taskapp.presentation.home_screen.components
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.taskapp.domain.constants.SortDirection
+import com.example.taskapp.domain.usecase.category.GetCategoryTitleByIdUseCase
 import com.example.taskapp.domain.usecase.category_storage.GetCategoryIdUseCase
 import com.example.taskapp.domain.usecase.date_formatter.FormatDateUseCase
 import com.example.taskapp.domain.usecase.date_formatter.FormatTimeUseCase
@@ -46,7 +47,8 @@ class HomeViewModel @Inject constructor(
     private val getActiveRecentTasksUseCase: Provider<GetActiveRecentTasksUseCase>,
     private val getInActiveRecentTasksUseCase: Provider<GetInActiveRecentTasksUseCase>,
     private val getAllActiveRecentTasksUseCase: Provider<GetAllActiveRecentTasksUseCase>,
-    private val getAllInActiveRecentTasksUseCase: Provider<GetAllInActiveRecentTasksUseCase>
+    private val getAllInActiveRecentTasksUseCase: Provider<GetAllInActiveRecentTasksUseCase>,
+    private val getCategoryTitleByIdUseCase: Provider<GetCategoryTitleByIdUseCase>,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
@@ -64,8 +66,20 @@ class HomeViewModel @Inject constructor(
         handleInActiveTasks()
 
         getGridColumns()
+
+        getCategoryTitle()
     }
 
+
+    private fun getCategoryTitle() {
+        viewModelScope.launch {
+            val title = withContext(Dispatchers.IO) {
+                val id = getCategoryIdUseCase.get().execute()
+                id?.let { getCategoryTitleByIdUseCase.get().execute(it) }
+            }
+            _state.update { it.copy(categoryTitle = title) }
+        }
+    }
 
     private fun handleActiveTasks() {
         when (_state.value.notesFilterType) {
