@@ -1,3 +1,60 @@
 <resources>
-    <string name="app_name">TaskApp</string>
+    <string name="app_name" translatable="false">TaskApp</string>
+    <string name="home_title">Home</string>
+    <string name="categories_title">Categories</string>
+    <string name="settings_title">Settings</string>
+    <string name="all_notes">All Notes</string>
+    <string name="recent">Recent</string>
+    <string name="home_bottom_bar_text">Home</string>
+    <string name="categories_bottom_bar_text">Categories</string>
+    <string name="create_categories_text">Create Category</string>
+    <string name="categories_list_text">Categories List</string>
+    <string name="sort_by_text">Sort by</string>
+    <string name="create_text">Create</string>
+    <string name="dismiss_text">Dismiss</string>
+    <string name="back_text">Back</string>
+    <string name="next_text">Next</string>
+    <string name="save_text">Save</string>
+    <string name="confirm_text">Confirm</string>
+    <string name="confirm_deletion_text">Confirm Deletion</string>
+    <string name="delete_task_confirmation">Are you sure you want to delete this task?</string>
+    <string name="delete_category_confirmation">Are you sure you want to delete this category?</string>
+    <string name="enter_category_name_text">Enter category name</string>
+    <string name="edit_text">Edit</string>
+    <string name="delete_text">Delete</string>
+    <string name="update_text">Update</string>
+    <string name="search_text">Search…</string>
+    <string name="list_notes_text">List Notes</string>
+    <string name="pinned_notes_text">Pinned</string>
+    <string name="task_editor_title">Task Editor</string>
+    <string name="enter_title_text">Title…</string>
+    <string name="enter_description_text">Description…</string>
+    <string name="color_text">Color</string>
+    <string name="pin_text">Pin</string>
+    <string name="unpin_text">Unpin</string>
+    <string name="task_success_create_text">Task successfully created</string>
+    <string name="task_success_update_text">Task successfully updated</string>
+    <string name="task_success_delete_text">Task successfully deleted</string>
+    <string name="task_title_cannot_be_empty_text">Task title cannot be empty</string>
+    <string name="task_failed_delete_text">Cannot delete: Task not found</string>
+    <string name="category_success_create_text">Category successfully created</string>
+    <string name="category_success_update_text">Category successfully updated</string>
+    <string name="category_success_delete_text">Category successfully deleted</string>
+    <string name="category_title_empty_text">Category title cannot be empty</string>
+    <string name="category_not_selected_text">Category not selected</string>
+    <string name="choose_category_text">Choose category</string>
+    <string name="choose_color_text">Choose color</string>
+    <string name="sort_by_title_text">Title</string>
+    <string name="sort_by_date_text">Date</string>
+    <string name="sort_by_note_text">Note</string>
+    <string name="en" translatable="false">eng</string>
+    <string name="uk" translatable="false">uk</string>
+    <string name="select_language">Choose a language</string>
+    <string name="select_recent_note_filter">Filter recent notes</string>
+    <string name="all_note_filter">All</string>
+    <string name="current_note_filter">Current</string>
+    <string name="switch_theme_text">Switch Theme</string>
+    <string name="english_language_text" translatable="false">English</string>
+    <string name="ukrainian_language_text" translatable="false">Українська</string>
+    <string name="empty_text" translatable="false" />
 </resources>
