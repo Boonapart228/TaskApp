@@ -4,9 +4,11 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,11 +24,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.taskapp.R
 import com.example.taskapp.domain.constants.SortDirection
 import com.example.taskapp.presentation.bottom_bar.BottomBar
@@ -61,6 +69,7 @@ fun HomeContent(
     onUnPinnedSortParameterChange: (HomeSortParameter) -> Unit,
     onChangeNoteFilterType: (NotesFilterType) -> Unit
 ) {
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.animation_file_not_found))
     Scaffold(topBar = {
         HomeTopBar(
             showSearchBar = state.showSearchBar,
@@ -106,30 +115,31 @@ fun HomeContent(
                     .fillMaxWidth()
                     .padding(horizontal = LocalDimen.current.rowCategoriesHorizontalPadding),
             )
-            HomeListBar(
-                textId = R.string.pinned_notes_text,
-                expanded = state.showPinnedSortDialog,
-                selectedHomeSortParameter = state.pinnedHomeSortParameter,
-                selectedSortDirection = state.pinnedSortDirection,
-                onAscendingSortClick = { onPinnedDirectionChange(SortDirection.ASCENDING) },
-                onDescendingSortClick = { onPinnedDirectionChange(SortDirection.DESCENDING) },
-                onSortByDateClick = { onPinnedSortParameterChange(HomeSortParameter.DATE) },
-                onSortByTitleClick = { onPinnedSortParameterChange(HomeSortParameter.TITLE) },
-                onToggleMenuClick = onTogglePinnedMenuClick
-            )
-            AnimatedVisibility(
-                visible = state.activeTasks.isNotEmpty(),
-                enter = slideInVertically(tween(LocalProperty.current.noteAnimationDurationMs)),
-                exit = slideOutVertically(tween(LocalProperty.current.noteAnimationDurationMs))
-            ) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(state.gridColumns),
-                    contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding),
-                    modifier = Modifier.height(LocalDimen.current.lazyVerticalGridHeight)
+            if (state.activeTasks.isNotEmpty() || state.inActiveTasks.isNotEmpty()) {
+                HomeListBar(
+                    textId = R.string.pinned_notes_text,
+                    expanded = state.showPinnedSortDialog,
+                    selectedHomeSortParameter = state.pinnedHomeSortParameter,
+                    selectedSortDirection = state.pinnedSortDirection,
+                    onAscendingSortClick = { onPinnedDirectionChange(SortDirection.ASCENDING) },
+                    onDescendingSortClick = { onPinnedDirectionChange(SortDirection.DESCENDING) },
+                    onSortByDateClick = { onPinnedSortParameterChange(HomeSortParameter.DATE) },
+                    onSortByTitleClick = { onPinnedSortParameterChange(HomeSortParameter.TITLE) },
+                    onToggleMenuClick = onTogglePinnedMenuClick
+                )
+                AnimatedVisibility(
+                    visible = state.activeTasks.isNotEmpty(),
+                    enter = slideInVertically(tween(LocalProperty.current.noteAnimationDurationMs)),
+                    exit = slideOutVertically(tween(LocalProperty.current.noteAnimationDurationMs))
                 ) {
-                    items(state.activeTasks.filter {
-                        it.title.lowercase().contains(state.searchTitle.lowercase())
-                    }) {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(state.gridColumns),
+                        contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding),
+                        modifier = Modifier.height(LocalDimen.current.lazyVerticalGridHeight)
+                    ) {
+                        items(state.activeTasks.filter {
+                            it.title.lowercase().contains(state.searchTitle.lowercase())
+                        }) {
 
                             HomeTaskDetails(
                                 title = it.title,
@@ -143,32 +153,32 @@ fun HomeContent(
                                 onToggleAllTitleLines = { onToggleAllTitleLines(TaskType.PINNED) }
                             )
 
+                        }
                     }
                 }
-            }
-            Spacer(modifier = Modifier.padding(top = LocalDimen.current.homeSpacerPaddingTop))
-            HomeListBar(
-                textId = R.string.list_notes_text,
-                expanded = state.showUnpinnedSortDialog,
-                selectedHomeSortParameter = state.unpinnedHomeSortParameter,
-                selectedSortDirection = state.unpinnedSortDirection,
-                onAscendingSortClick = { onUnPinnedDirectionChange(SortDirection.ASCENDING) },
-                onDescendingSortClick = { onUnPinnedDirectionChange(SortDirection.DESCENDING) },
-                onSortByDateClick = { onUnPinnedSortParameterChange(HomeSortParameter.DATE) },
-                onSortByTitleClick = { onUnPinnedSortParameterChange(HomeSortParameter.TITLE) },
-                onToggleMenuClick = { onToggleUnPinnedMenuClick() })
-            AnimatedVisibility(
-                visible = state.inActiveTasks.isNotEmpty(),
-                enter = slideInVertically(tween(LocalProperty.current.noteAnimationDurationMs)),
-                exit = slideOutVertically(tween(LocalProperty.current.noteAnimationDurationMs))
-            ) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(state.gridColumns),
-                    contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding)
+                Spacer(modifier = Modifier.padding(top = LocalDimen.current.homeSpacerPaddingTop))
+                HomeListBar(
+                    textId = R.string.list_notes_text,
+                    expanded = state.showUnpinnedSortDialog,
+                    selectedHomeSortParameter = state.unpinnedHomeSortParameter,
+                    selectedSortDirection = state.unpinnedSortDirection,
+                    onAscendingSortClick = { onUnPinnedDirectionChange(SortDirection.ASCENDING) },
+                    onDescendingSortClick = { onUnPinnedDirectionChange(SortDirection.DESCENDING) },
+                    onSortByDateClick = { onUnPinnedSortParameterChange(HomeSortParameter.DATE) },
+                    onSortByTitleClick = { onUnPinnedSortParameterChange(HomeSortParameter.TITLE) },
+                    onToggleMenuClick = { onToggleUnPinnedMenuClick() })
+                AnimatedVisibility(
+                    visible = state.inActiveTasks.isNotEmpty(),
+                    enter = slideInVertically(tween(LocalProperty.current.noteAnimationDurationMs)),
+                    exit = slideOutVertically(tween(LocalProperty.current.noteAnimationDurationMs))
                 ) {
-                    items(state.inActiveTasks.filter {
-                        it.title.lowercase().contains(state.searchTitle.lowercase())
-                    }) {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(state.gridColumns),
+                        contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding)
+                    ) {
+                        items(state.inActiveTasks.filter {
+                            it.title.lowercase().contains(state.searchTitle.lowercase())
+                        }) {
                             HomeTaskDetails(
                                 title = it.title,
                                 description = it.description,
@@ -180,9 +190,17 @@ fun HomeContent(
                                 onTaskSelectClick = { onTaskSelectClick(it.id) },
                                 onToggleAllTitleLines = { onToggleAllTitleLines(TaskType.UNPINNED) }
                             )
+                        }
                     }
-                }
 
+                }
+            } else {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    LottieAnimation(
+                        composition = composition,
+                        iterations = LottieConstants.IterateForever
+                    )
+                }
             }
         }
 

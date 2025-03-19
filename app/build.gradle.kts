@@ -53,6 +53,9 @@ android {
 }
 
 dependencies {
+    //Animation
+    implementation("com.airbnb.android:lottie-compose:6.5.2")
+
     //AppCompat
     implementation(libs.androidx.appcompat)
 
