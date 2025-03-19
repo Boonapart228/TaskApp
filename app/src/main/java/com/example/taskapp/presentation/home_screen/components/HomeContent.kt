@@ -115,7 +115,6 @@ fun HomeContent(
                     .fillMaxWidth()
                     .padding(horizontal = LocalDimen.current.rowCategoriesHorizontalPadding),
             )
-            if (state.activeTasks.isNotEmpty() || state.inActiveTasks.isNotEmpty()) {
                 HomeListBar(
                     textId = R.string.pinned_notes_text,
                     expanded = state.showPinnedSortDialog,
@@ -194,15 +193,13 @@ fun HomeContent(
                     }
 
                 }
-            } else {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            if(state.inActiveTasks.isEmpty() && state.activeTasks.isEmpty())
                     LottieAnimation(
                         composition = composition,
                         iterations = LottieConstants.IterateForever
                     )
-                }
             }
-        }
+
 
     }
 }
