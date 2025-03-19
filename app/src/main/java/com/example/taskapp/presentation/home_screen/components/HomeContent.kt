@@ -1,5 +1,9 @@
 package com.example.taskapp.presentation.home_screen.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +38,7 @@ import com.example.taskapp.presentation.home_screen.model.NotesFilterType
 import com.example.taskapp.presentation.home_screen.model.TaskType
 import com.example.taskapp.presentation.navigation.model.Screens
 import com.example.taskapp.ui.theme.LocalDimen
+import com.example.taskapp.ui.theme.LocalProperty
 
 
 @Composable
@@ -112,25 +117,33 @@ fun HomeContent(
                 onSortByTitleClick = { onPinnedSortParameterChange(HomeSortParameter.TITLE) },
                 onToggleMenuClick = onTogglePinnedMenuClick
             )
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(state.gridColumns),
-                contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding),
-                modifier = Modifier.height(LocalDimen.current.lazyVerticalGridHeight)
+            AnimatedVisibility(
+                visible = state.activeTasks.isNotEmpty(),
+                enter = slideInVertically(tween(LocalProperty.current.noteAnimationDurationMs)),
+                exit = slideOutVertically(tween(LocalProperty.current.noteAnimationDurationMs))
             ) {
-                items(state.activeTasks.filter {
-                    it.title.lowercase().contains(state.searchTitle.lowercase())
-                }) {
-                    HomeTaskDetails(
-                        title = it.title,
-                        description = it.description,
-                        pinned = it.isActive,
-                        allTitleLines = state.allPinnedTitleLines,
-                        hexColorCode = it.hexColorCode,
-                        formatDate = { formatDate(it.createdAt) },
-                        formatTime = { formatTime(it.createdAt) },
-                        onTaskSelectClick = { onTaskSelectClick(it.id) },
-                        onToggleAllTitleLines = { onToggleAllTitleLines(TaskType.PINNED) }
-                    )
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(state.gridColumns),
+                    contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding),
+                    modifier = Modifier.height(LocalDimen.current.lazyVerticalGridHeight)
+                ) {
+                    items(state.activeTasks.filter {
+                        it.title.lowercase().contains(state.searchTitle.lowercase())
+                    }) {
+
+                            HomeTaskDetails(
+                                title = it.title,
+                                description = it.description,
+                                pinned = it.isActive,
+                                allTitleLines = state.allPinnedTitleLines,
+                                hexColorCode = it.hexColorCode,
+                                formatDate = { formatDate(it.createdAt) },
+                                formatTime = { formatTime(it.createdAt) },
+                                onTaskSelectClick = { onTaskSelectClick(it.id) },
+                                onToggleAllTitleLines = { onToggleAllTitleLines(TaskType.PINNED) }
+                            )
+
+                    }
                 }
             }
             Spacer(modifier = Modifier.padding(top = LocalDimen.current.homeSpacerPaddingTop))
@@ -144,27 +157,33 @@ fun HomeContent(
                 onSortByDateClick = { onUnPinnedSortParameterChange(HomeSortParameter.DATE) },
                 onSortByTitleClick = { onUnPinnedSortParameterChange(HomeSortParameter.TITLE) },
                 onToggleMenuClick = { onToggleUnPinnedMenuClick() })
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(state.gridColumns),
-                contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding)
+            AnimatedVisibility(
+                visible = state.inActiveTasks.isNotEmpty(),
+                enter = slideInVertically(tween(LocalProperty.current.noteAnimationDurationMs)),
+                exit = slideOutVertically(tween(LocalProperty.current.noteAnimationDurationMs))
             ) {
-                items(state.inActiveTasks.filter {
-                    it.title.lowercase().contains(state.searchTitle.lowercase())
-                }) {
-                    HomeTaskDetails(
-                        title = it.title,
-                        description = it.description,
-                        pinned = it.isActive,
-                        allTitleLines = state.allUnpinnedTitleLines,
-                        hexColorCode = it.hexColorCode,
-                        formatDate = { formatDate(it.createdAt) },
-                        formatTime = { formatTime(it.createdAt) },
-                        onTaskSelectClick = { onTaskSelectClick(it.id) },
-                        onToggleAllTitleLines = { onToggleAllTitleLines(TaskType.UNPINNED) }
-                    )
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(state.gridColumns),
+                    contentPadding = PaddingValues(horizontal = LocalDimen.current.verticalGridHorizontalPadding)
+                ) {
+                    items(state.inActiveTasks.filter {
+                        it.title.lowercase().contains(state.searchTitle.lowercase())
+                    }) {
+                            HomeTaskDetails(
+                                title = it.title,
+                                description = it.description,
+                                pinned = it.isActive,
+                                allTitleLines = state.allUnpinnedTitleLines,
+                                hexColorCode = it.hexColorCode,
+                                formatDate = { formatDate(it.createdAt) },
+                                formatTime = { formatTime(it.createdAt) },
+                                onTaskSelectClick = { onTaskSelectClick(it.id) },
+                                onToggleAllTitleLines = { onToggleAllTitleLines(TaskType.UNPINNED) }
+                            )
+                    }
                 }
-            }
 
+            }
         }
 
     }
