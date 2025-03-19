@@ -23,6 +23,8 @@ data class Property(
     val offSetByXTextButton: Int = -10,
     val offSetByYCategoryDescendingIconButton: Int = -7,
     val offSetByXSearchBarIconButton: Int = 10,
+    val offSetByXSelectedColorIcon: Int = 12,
+    val offSetByYSelectedColorIcon: Int = 12,
     val colorAnimationDurationMs: Int = 400,
     val noteAnimationDurationMs: Int = 200,
     val offSetByYCategoriesDropDawnMenu: Int = -14,
